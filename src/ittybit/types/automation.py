@@ -4,13 +4,14 @@ import datetime as dt
 import typing
 
 import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.pydantic_utilities import IS_PYDANTIC_V2
+from ..core.unchecked_base_model import UncheckedBaseModel
 from .automation_status import AutomationStatus
 from .automation_trigger import AutomationTrigger
 from .workflow_task_step import WorkflowTaskStep
 
 
-class Automation(UniversalBaseModel):
+class Automation(UncheckedBaseModel):
     """
     Represents an automated workflow triggered by specific events.
     """

@@ -28,8 +28,7 @@ class Ittybit:
 
 
 
-    accept_version : str
-    token : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
+    token : typing.Union[str, typing.Callable[[], str]]
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
@@ -42,7 +41,7 @@ class Ittybit:
     Examples
     --------
     from ittybit import Ittybit
-    client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+    client = Ittybit(token="YOUR_TOKEN", )
     """
 
     def __init__(
@@ -50,8 +49,7 @@ class Ittybit:
         *,
         base_url: typing.Optional[str] = None,
         environment: IttybitEnvironment = IttybitEnvironment.DEFAULT,
-        accept_version: str,
-        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        token: typing.Union[str, typing.Callable[[], str]],
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.Client] = None,
@@ -61,7 +59,6 @@ class Ittybit:
         )
         self._client_wrapper = SyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
-            accept_version=accept_version,
             token=token,
             httpx_client=httpx_client
             if httpx_client is not None
@@ -93,8 +90,7 @@ class AsyncIttybit:
 
 
 
-    accept_version : str
-    token : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
+    token : typing.Union[str, typing.Callable[[], str]]
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
@@ -107,7 +103,7 @@ class AsyncIttybit:
     Examples
     --------
     from ittybit import AsyncIttybit
-    client = AsyncIttybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+    client = AsyncIttybit(token="YOUR_TOKEN", )
     """
 
     def __init__(
@@ -115,8 +111,7 @@ class AsyncIttybit:
         *,
         base_url: typing.Optional[str] = None,
         environment: IttybitEnvironment = IttybitEnvironment.DEFAULT,
-        accept_version: str,
-        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        token: typing.Union[str, typing.Callable[[], str]],
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.AsyncClient] = None,
@@ -126,7 +121,6 @@ class AsyncIttybit:
         )
         self._client_wrapper = AsyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
-            accept_version=accept_version,
             token=token,
             httpx_client=httpx_client
             if httpx_client is not None

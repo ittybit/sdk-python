@@ -1,6 +1,6 @@
 # Ittybit Python Library
 
-[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Ffern-demo%2Fittybit-python-sdk)
+[![fern shield](https://img.shields.io/badge/%F0%9F%8C%BF-Built%20with%20Fern-brightgreen)](https://buildwithfern.com?utm_source=github&utm_medium=github&utm_campaign=readme&utm_source=https%3A%2F%2Fgithub.com%2Fittybit%2Fsdk-python)
 [![pypi](https://img.shields.io/pypi/v/ittybit)](https://pypi.python.org/pypi/ittybit)
 
 The Ittybit Python library provides convenient access to the Ittybit API from Python.
@@ -21,7 +21,7 @@ Instantiate and use the client with the following:
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.automations.create()
 ```
 
@@ -32,10 +32,11 @@ The SDK also exports an `async` client so that you can make non-blocking calls t
 ```python
 from ittybit import AsyncIttybit
 import asyncio
-client = AsyncIttybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = AsyncIttybit(token="YOUR_TOKEN", )
 async def main() -> None:
     await client.automations.create()
-asyncio.run(main())```
+asyncio.run(main())
+```
 
 ## Exception Handling
 

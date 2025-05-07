@@ -6,13 +6,14 @@ import datetime as dt
 import typing
 
 import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel, update_forward_refs
+from ..core.pydantic_utilities import IS_PYDANTIC_V2, update_forward_refs
+from ..core.unchecked_base_model import UncheckedBaseModel
 from .task_kind import TaskKind
 from .task_results import TaskResults
 from .task_status import TaskStatus
 
 
-class Task(UniversalBaseModel):
+class Task(UncheckedBaseModel):
     """
     Represents a processing task or a step in a workflow.
     """

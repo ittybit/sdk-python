@@ -2,6 +2,3 @@
 
 # isort: skip_file
 
-from .types import MediaGetResponse, MediaGetResponseLinks, MediaGetResponseMeta
-
-__all__ = ["MediaGetResponse", "MediaGetResponseLinks", "MediaGetResponseMeta"]

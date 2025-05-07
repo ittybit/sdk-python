@@ -2,6 +2,3 @@
 
 # isort: skip_file
 
-from .automations_list_response import AutomationsListResponse
-
-__all__ = ["AutomationsListResponse"]

@@ -67,7 +67,7 @@ class TasksClient:
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = Ittybit(token="YOUR_TOKEN", )
         client.tasks.list_filtered()
         """
         _response = self._raw_client.list_filtered(
@@ -144,7 +144,7 @@ class TasksClient:
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = Ittybit(token="YOUR_TOKEN", )
         client.tasks.create(kind="ingest", url='https://example.com/some_video.mov', input={'options': {'filename': 'custom_name.mov'}
         }, )
         """
@@ -185,7 +185,7 @@ class TasksClient:
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = Ittybit(token="YOUR_TOKEN", )
         client.tasks.get(id='id', )
         """
         _response = self._raw_client.get(id, request_options=request_options)
@@ -245,7 +245,7 @@ class AsyncTasksClient:
         --------
         from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = AsyncIttybit(token="YOUR_TOKEN", )
         async def main() -> None:
             await client.tasks.list_filtered()
         asyncio.run(main())
@@ -325,7 +325,7 @@ class AsyncTasksClient:
         --------
         from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = AsyncIttybit(token="YOUR_TOKEN", )
         async def main() -> None:
             await client.tasks.create(kind="ingest", url='https://example.com/some_video.mov', input={'options': {'filename': 'custom_name.mov'}
             }, )
@@ -369,7 +369,7 @@ class AsyncTasksClient:
         --------
         from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = AsyncIttybit(token="YOUR_TOKEN", )
         async def main() -> None:
             await client.tasks.get(id='id', )
         asyncio.run(main())

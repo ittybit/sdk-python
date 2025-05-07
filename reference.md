@@ -28,7 +28,7 @@ Retrieves a list of all automations for the current project
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.automations.list()
 
 ```
@@ -85,7 +85,7 @@ Creates a new automation for the current project
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.automations.create()
 
 ```
@@ -142,7 +142,7 @@ Retrieves a specific automation by its ID
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.automations.get(id='id', )
 
 ```
@@ -207,7 +207,7 @@ Updates an existing automation by its ID
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.automations.update(id='id', name='Transcode Uploaded Videos (Updated)', trigger=[{'event': 'media.ready'
 , 'conditions': [{'prop': 'media.kind', 'value': 'image'}]
 }], )
@@ -258,7 +258,7 @@ client.automations.update(id='id', name='Transcode Uploaded Videos (Updated)', t
 <dl>
 <dd>
 
-**workflow:** `typing.Optional[typing.Sequence[WorkflowTaskStep]]` — The updated sequence of tasks for the automation.
+**workflow:** `typing.Optional[typing.Sequence[WorkflowTaskStepParams]]` — The updated sequence of tasks for the automation.
     
 </dd>
 </dl>
@@ -306,7 +306,7 @@ Deletes an automation by its ID
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.automations.delete(id='id', )
 
 ```
@@ -372,7 +372,7 @@ Retrieves a paginated list of all files associated with the current project. Fil
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.files.list()
 
 ```
@@ -445,7 +445,7 @@ Registers a file from a publicly accessible URL. The file will be ingested async
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.files.create_from_url(url='https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', filename='BigBuckBunny.mp4', folder='examples/cartoons', metadata={'source': 'google_storage_sample'
 }, )
 
@@ -559,7 +559,7 @@ Retrieves detailed information about a specific file identified by its unique ID
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.files.get(id='id', )
 
 ```
@@ -624,7 +624,7 @@ Permanently removes a file from the system. This action cannot be undone. Associ
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.files.delete(id='id', )
 
 ```
@@ -689,7 +689,7 @@ Updates metadata, filename, or folder properties of an existing file. Only the s
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.files.update_metadata(id='id', filename='final_approved_video.mp4', folder='archive/2024', )
 
 ```
@@ -779,7 +779,7 @@ Retrieves a list of all media for the current project
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.media.list()
 
 ```
@@ -852,7 +852,7 @@ Creates a new media item from a URL or as an empty placeholder
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.media.create(title='Placeholder for User Upload', metadata={'user_id': 'user_789'
 }, empty=True, )
 
@@ -974,7 +974,7 @@ Retrieves a specific media item by its ID
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.media.get(id='id', )
 
 ```
@@ -1039,7 +1039,7 @@ Deletes a specific media item by its ID
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.media.delete(id='id', )
 
 ```
@@ -1105,7 +1105,7 @@ Retrieves a list of tasks for the project, optionally filtered by status or kind
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.tasks.list_filtered()
 
 ```
@@ -1194,7 +1194,7 @@ Creates a new processing task (e.g., ingest, video transcode, speech analysis) o
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.tasks.create(kind="ingest", url='https://example.com/some_video.mov', input={'options': {'filename': 'custom_name.mov'}
 }, )
 
@@ -1348,7 +1348,7 @@ Retrieves the details of a specific task by its ID.
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.tasks.get(id='id', )
 
 ```
@@ -1414,7 +1414,7 @@ Creates a cryptographically signed URL that provides temporary and restricted ac
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+client = Ittybit(token="YOUR_TOKEN", )
 client.signatures.create(filename='video.mp4', folder='private/user_123', expiry=1735689600, method="get", )
 
 ```

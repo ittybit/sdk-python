@@ -3,13 +3,14 @@
 import typing
 
 import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.pydantic_utilities import IS_PYDANTIC_V2
+from ..core.unchecked_base_model import UncheckedBaseModel
 from .links import Links
 from .meta import Meta
 from .task import Task
 
 
-class TaskResponse(UniversalBaseModel):
+class TaskResponse(UncheckedBaseModel):
     """
     Standard wrapper for single Task responses.
     """

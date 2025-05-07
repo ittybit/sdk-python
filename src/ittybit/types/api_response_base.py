@@ -3,12 +3,13 @@
 import typing
 
 import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.pydantic_utilities import IS_PYDANTIC_V2
+from ..core.unchecked_base_model import UncheckedBaseModel
 from .links import Links
 from .meta import Meta
 
 
-class ApiResponseBase(UniversalBaseModel):
+class ApiResponseBase(UncheckedBaseModel):
     """
     Base structure for standard API responses.
     """

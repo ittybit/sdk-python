@@ -4,8 +4,8 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..requests.workflow_task_step import WorkflowTaskStepParams
 from ..types.automation_response import AutomationResponse
-from ..types.workflow_task_step import WorkflowTaskStep
 from .raw_client import AsyncRawAutomationsClient, RawAutomationsClient
 from .types.automations_list_response import AutomationsListResponse
 
@@ -45,7 +45,7 @@ class AutomationsClient:
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = Ittybit(token="YOUR_TOKEN", )
         client.automations.list()
         """
         _response = self._raw_client.list(request_options=request_options)
@@ -68,7 +68,7 @@ class AutomationsClient:
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = Ittybit(token="YOUR_TOKEN", )
         client.automations.create()
         """
         _response = self._raw_client.create(request_options=request_options)
@@ -94,7 +94,7 @@ class AutomationsClient:
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = Ittybit(token="YOUR_TOKEN", )
         client.automations.get(id='id', )
         """
         _response = self._raw_client.get(id, request_options=request_options)
@@ -107,7 +107,7 @@ class AutomationsClient:
         name: str,
         trigger: typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]],
         description: typing.Optional[str] = OMIT,
-        workflow: typing.Optional[typing.Sequence[WorkflowTaskStep]] = OMIT,
+        workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AutomationResponse:
         """
@@ -124,7 +124,7 @@ class AutomationsClient:
 
         description : typing.Optional[str]
 
-        workflow : typing.Optional[typing.Sequence[WorkflowTaskStep]]
+        workflow : typing.Optional[typing.Sequence[WorkflowTaskStepParams]]
             The updated sequence of tasks for the automation.
 
         request_options : typing.Optional[RequestOptions]
@@ -138,7 +138,7 @@ class AutomationsClient:
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = Ittybit(token="YOUR_TOKEN", )
         client.automations.update(id='id', name='Transcode Uploaded Videos (Updated)', trigger=[{'event': 'media.ready'
         , 'conditions': [{'prop': 'media.kind', 'value': 'image'}]
         }], )
@@ -167,7 +167,7 @@ class AutomationsClient:
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = Ittybit(token="YOUR_TOKEN", )
         client.automations.delete(id='id', )
         """
         _response = self._raw_client.delete(id, request_options=request_options)
@@ -207,7 +207,7 @@ class AsyncAutomationsClient:
         --------
         from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = AsyncIttybit(token="YOUR_TOKEN", )
         async def main() -> None:
             await client.automations.list()
         asyncio.run(main())
@@ -233,7 +233,7 @@ class AsyncAutomationsClient:
         --------
         from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = AsyncIttybit(token="YOUR_TOKEN", )
         async def main() -> None:
             await client.automations.create()
         asyncio.run(main())
@@ -262,7 +262,7 @@ class AsyncAutomationsClient:
         --------
         from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = AsyncIttybit(token="YOUR_TOKEN", )
         async def main() -> None:
             await client.automations.get(id='id', )
         asyncio.run(main())
@@ -277,7 +277,7 @@ class AsyncAutomationsClient:
         name: str,
         trigger: typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]],
         description: typing.Optional[str] = OMIT,
-        workflow: typing.Optional[typing.Sequence[WorkflowTaskStep]] = OMIT,
+        workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AutomationResponse:
         """
@@ -294,7 +294,7 @@ class AsyncAutomationsClient:
 
         description : typing.Optional[str]
 
-        workflow : typing.Optional[typing.Sequence[WorkflowTaskStep]]
+        workflow : typing.Optional[typing.Sequence[WorkflowTaskStepParams]]
             The updated sequence of tasks for the automation.
 
         request_options : typing.Optional[RequestOptions]
@@ -309,7 +309,7 @@ class AsyncAutomationsClient:
         --------
         from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = AsyncIttybit(token="YOUR_TOKEN", )
         async def main() -> None:
             await client.automations.update(id='id', name='Transcode Uploaded Videos (Updated)', trigger=[{'event': 'media.ready'
             , 'conditions': [{'prop': 'media.kind', 'value': 'image'}]
@@ -341,7 +341,7 @@ class AsyncAutomationsClient:
         --------
         from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = AsyncIttybit(token="YOUR_TOKEN", )
         async def main() -> None:
             await client.automations.delete(id='id', )
         asyncio.run(main())

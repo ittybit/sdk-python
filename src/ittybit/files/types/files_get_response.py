@@ -3,13 +3,14 @@
 import typing
 
 import pydantic
-from ...core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ...core.pydantic_utilities import IS_PYDANTIC_V2
+from ...core.unchecked_base_model import UncheckedBaseModel
 from .files_get_response_data import FilesGetResponseData
 from .files_get_response_links import FilesGetResponseLinks
 from .files_get_response_meta import FilesGetResponseMeta
 
 
-class FilesGetResponse(UniversalBaseModel):
+class FilesGetResponse(UncheckedBaseModel):
     meta: typing.Optional[FilesGetResponseMeta] = None
     data: typing.Optional[FilesGetResponseData] = None
     links: typing.Optional[FilesGetResponseLinks] = None

@@ -2,6 +2,3 @@
 
 # isort: skip_file
 
-from .signatures_create_request_method import SignaturesCreateRequestMethod
-
-__all__ = ["SignaturesCreateRequestMethod"]

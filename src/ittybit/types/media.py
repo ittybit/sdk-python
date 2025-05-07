@@ -4,13 +4,14 @@ import datetime as dt
 import typing
 
 import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.pydantic_utilities import IS_PYDANTIC_V2
+from ..core.unchecked_base_model import UncheckedBaseModel
 from .media_kind import MediaKind
 from .media_source import MediaSource
 from .media_status import MediaStatus
 
 
-class Media(UniversalBaseModel):
+class Media(UncheckedBaseModel):
     """
     Represents a media item, which can contain multiple source files and associated data.
     """

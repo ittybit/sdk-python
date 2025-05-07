@@ -6,8 +6,8 @@ from json.decoder import JSONDecodeError
 from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
-from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
+from ..core.unchecked_base_model import construct_type
 from ..errors.bad_request_error import BadRequestError
 from ..errors.unauthorized_error import UnauthorizedError
 from ..types.signature_response import SignatureResponse
@@ -74,7 +74,7 @@ class RawSignaturesClient:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
                     SignatureResponse,
-                    parse_obj_as(
+                    construct_type(
                         type_=SignatureResponse,  # type: ignore
                         object_=_response.json(),
                     ),
@@ -82,28 +82,30 @@ class RawSignaturesClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
-            raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response.text)
-        raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response_json)
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
 
 class AsyncRawSignaturesClient:
@@ -163,7 +165,7 @@ class AsyncRawSignaturesClient:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
                     SignatureResponse,
-                    parse_obj_as(
+                    construct_type(
                         type_=SignatureResponse,  # type: ignore
                         object_=_response.json(),
                     ),
@@ -171,25 +173,27 @@ class AsyncRawSignaturesClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
-            raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response.text)
-        raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response_json)
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)

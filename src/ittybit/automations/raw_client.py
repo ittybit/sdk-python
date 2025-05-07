@@ -7,15 +7,15 @@ from ..core.api_error import ApiError
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
-from ..core.pydantic_utilities import parse_obj_as
 from ..core.request_options import RequestOptions
 from ..core.serialization import convert_and_respect_annotation_metadata
+from ..core.unchecked_base_model import construct_type
 from ..errors.bad_request_error import BadRequestError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
+from ..requests.workflow_task_step import WorkflowTaskStepParams
 from ..types.automation_response import AutomationResponse
-from ..types.workflow_task_step import WorkflowTaskStep
 from .types.automations_list_response import AutomationsListResponse
 
 # this is used as the default value for optional parameters
@@ -49,7 +49,7 @@ class RawAutomationsClient:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
                     AutomationsListResponse,
-                    parse_obj_as(
+                    construct_type(
                         type_=AutomationsListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
@@ -57,28 +57,30 @@ class RawAutomationsClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
-            raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response.text)
-        raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response_json)
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def create(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[AutomationResponse]:
         """
@@ -103,7 +105,7 @@ class RawAutomationsClient:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
                     AutomationResponse,
-                    parse_obj_as(
+                    construct_type(
                         type_=AutomationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
@@ -111,38 +113,41 @@ class RawAutomationsClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
-            raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response.text)
-        raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response_json)
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def get(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
@@ -172,7 +177,7 @@ class RawAutomationsClient:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
                     AutomationResponse,
-                    parse_obj_as(
+                    construct_type(
                         type_=AutomationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
@@ -180,38 +185,41 @@ class RawAutomationsClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
-            raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response.text)
-        raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response_json)
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def update(
         self,
@@ -220,7 +228,7 @@ class RawAutomationsClient:
         name: str,
         trigger: typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]],
         description: typing.Optional[str] = OMIT,
-        workflow: typing.Optional[typing.Sequence[WorkflowTaskStep]] = OMIT,
+        workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[AutomationResponse]:
         """
@@ -237,7 +245,7 @@ class RawAutomationsClient:
 
         description : typing.Optional[str]
 
-        workflow : typing.Optional[typing.Sequence[WorkflowTaskStep]]
+        workflow : typing.Optional[typing.Sequence[WorkflowTaskStepParams]]
             The updated sequence of tasks for the automation.
 
         request_options : typing.Optional[RequestOptions]
@@ -256,7 +264,7 @@ class RawAutomationsClient:
                 "description": description,
                 "trigger": trigger,
                 "workflow": convert_and_respect_annotation_metadata(
-                    object_=workflow, annotation=typing.Sequence[WorkflowTaskStep], direction="write"
+                    object_=workflow, annotation=typing.Sequence[WorkflowTaskStepParams], direction="write"
                 ),
             },
             headers={
@@ -269,7 +277,7 @@ class RawAutomationsClient:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
                     AutomationResponse,
-                    parse_obj_as(
+                    construct_type(
                         type_=AutomationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
@@ -277,48 +285,52 @@ class RawAutomationsClient:
                 return HttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
-            raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response.text)
-        raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response_json)
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[None]:
         """
@@ -346,38 +358,41 @@ class RawAutomationsClient:
                 return HttpResponse(response=_response, data=None)
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
-            raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response.text)
-        raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response_json)
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
 
 class AsyncRawAutomationsClient:
@@ -409,7 +424,7 @@ class AsyncRawAutomationsClient:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
                     AutomationsListResponse,
-                    parse_obj_as(
+                    construct_type(
                         type_=AutomationsListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
@@ -417,28 +432,30 @@ class AsyncRawAutomationsClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
-            raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response.text)
-        raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response_json)
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def create(
         self, *, request_options: typing.Optional[RequestOptions] = None
@@ -465,7 +482,7 @@ class AsyncRawAutomationsClient:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
                     AutomationResponse,
-                    parse_obj_as(
+                    construct_type(
                         type_=AutomationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
@@ -473,38 +490,41 @@ class AsyncRawAutomationsClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
-            raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response.text)
-        raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response_json)
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def get(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
@@ -534,7 +554,7 @@ class AsyncRawAutomationsClient:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
                     AutomationResponse,
-                    parse_obj_as(
+                    construct_type(
                         type_=AutomationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
@@ -542,38 +562,41 @@ class AsyncRawAutomationsClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
-            raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response.text)
-        raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response_json)
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def update(
         self,
@@ -582,7 +605,7 @@ class AsyncRawAutomationsClient:
         name: str,
         trigger: typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]],
         description: typing.Optional[str] = OMIT,
-        workflow: typing.Optional[typing.Sequence[WorkflowTaskStep]] = OMIT,
+        workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[AutomationResponse]:
         """
@@ -599,7 +622,7 @@ class AsyncRawAutomationsClient:
 
         description : typing.Optional[str]
 
-        workflow : typing.Optional[typing.Sequence[WorkflowTaskStep]]
+        workflow : typing.Optional[typing.Sequence[WorkflowTaskStepParams]]
             The updated sequence of tasks for the automation.
 
         request_options : typing.Optional[RequestOptions]
@@ -618,7 +641,7 @@ class AsyncRawAutomationsClient:
                 "description": description,
                 "trigger": trigger,
                 "workflow": convert_and_respect_annotation_metadata(
-                    object_=workflow, annotation=typing.Sequence[WorkflowTaskStep], direction="write"
+                    object_=workflow, annotation=typing.Sequence[WorkflowTaskStepParams], direction="write"
                 ),
             },
             headers={
@@ -631,7 +654,7 @@ class AsyncRawAutomationsClient:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
                     AutomationResponse,
-                    parse_obj_as(
+                    construct_type(
                         type_=AutomationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
@@ -639,48 +662,52 @@ class AsyncRawAutomationsClient:
                 return AsyncHttpResponse(response=_response, data=_data)
             if _response.status_code == 400:
                 raise BadRequestError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
-            raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response.text)
-        raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response_json)
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def delete(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
@@ -710,35 +737,38 @@ class AsyncRawAutomationsClient:
                 return AsyncHttpResponse(response=_response, data=None)
             if _response.status_code == 401:
                 raise UnauthorizedError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             if _response.status_code == 404:
                 raise NotFoundError(
-                    typing.cast(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
                         typing.Optional[typing.Any],
-                        parse_obj_as(
+                        construct_type(
                             type_=typing.Optional[typing.Any],  # type: ignore
                             object_=_response.json(),
                         ),
-                    )
+                    ),
                 )
             _response_json = _response.json()
         except JSONDecodeError:
-            raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response.text)
-        raise ApiError(headers=dict(_response.headers), status_code=_response.status_code, body=_response_json)
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)

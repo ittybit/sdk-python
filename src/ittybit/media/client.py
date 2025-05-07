@@ -58,7 +58,7 @@ class MediaClient:
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = Ittybit(token="YOUR_TOKEN", )
         client.media.list()
         """
         _response = self._raw_client.list(page=page, limit=limit, request_options=request_options)
@@ -117,7 +117,7 @@ class MediaClient:
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = Ittybit(token="YOUR_TOKEN", )
         client.media.create(url='https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4', folder='examples/movies', filename='escapes.mp4', metadata={'genre': 'Animation'
         , 'rating': 'G'
         }, )
@@ -155,7 +155,7 @@ class MediaClient:
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = Ittybit(token="YOUR_TOKEN", )
         client.media.get(id='id', )
         """
         _response = self._raw_client.get(id, request_options=request_options)
@@ -181,7 +181,7 @@ class MediaClient:
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = Ittybit(token="YOUR_TOKEN", )
         client.media.delete(id='id', )
         """
         _response = self._raw_client.delete(id, request_options=request_options)
@@ -233,7 +233,7 @@ class AsyncMediaClient:
         --------
         from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = AsyncIttybit(token="YOUR_TOKEN", )
         async def main() -> None:
             await client.media.list()
         asyncio.run(main())
@@ -295,7 +295,7 @@ class AsyncMediaClient:
         --------
         from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = AsyncIttybit(token="YOUR_TOKEN", )
         async def main() -> None:
             await client.media.create(url='https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4', folder='examples/movies', filename='escapes.mp4', metadata={'genre': 'Animation'
             , 'rating': 'G'
@@ -336,7 +336,7 @@ class AsyncMediaClient:
         --------
         from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = AsyncIttybit(token="YOUR_TOKEN", )
         async def main() -> None:
             await client.media.get(id='id', )
         asyncio.run(main())
@@ -365,7 +365,7 @@ class AsyncMediaClient:
         --------
         from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = AsyncIttybit(token="YOUR_TOKEN", )
         async def main() -> None:
             await client.media.delete(id='id', )
         asyncio.run(main())

@@ -64,7 +64,7 @@ class SignaturesClient:
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = Ittybit(token="YOUR_TOKEN", )
         client.signatures.create(filename='video.mp4', folder='private/user_123', expiry=1735689600, method="get", )
         """
         _response = self._raw_client.create(
@@ -126,7 +126,7 @@ class AsyncSignaturesClient:
         --------
         from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(accept_version="YOUR_ACCEPT_VERSION", token="YOUR_TOKEN", )
+        client = AsyncIttybit(token="YOUR_TOKEN", )
         async def main() -> None:
             await client.signatures.create(filename='video.mp4', folder='private/user_123', expiry=1735689600, method="get", )
         asyncio.run(main())

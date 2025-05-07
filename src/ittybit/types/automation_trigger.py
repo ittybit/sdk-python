@@ -3,11 +3,12 @@
 import typing
 
 import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2, UniversalBaseModel
+from ..core.pydantic_utilities import IS_PYDANTIC_V2
+from ..core.unchecked_base_model import UncheckedBaseModel
 from .automation_trigger_conditions_item import AutomationTriggerConditionsItem
 
 
-class AutomationTrigger(UniversalBaseModel):
+class AutomationTrigger(UncheckedBaseModel):
     """
     The event and conditions that trigger this automation.
     """
