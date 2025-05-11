@@ -4,14 +4,16 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
-from ...types.api_response_base import ApiResponseBase
+from ...core.unchecked_base_model import UncheckedBaseModel
+from .files_list_response_data_item import FilesListResponseDataItem
+from .files_list_response_links import FilesListResponseLinks
+from .files_list_response_meta import FilesListResponseMeta
 
 
-class FilesListResponse(ApiResponseBase):
-    data: typing.Optional[typing.List[typing.Optional[typing.Any]]] = pydantic.Field(default=None)
-    """
-    List of file objects
-    """
+class FilesListResponse(UncheckedBaseModel):
+    meta: typing.Optional[FilesListResponseMeta] = None
+    data: typing.Optional[typing.List[FilesListResponseDataItem]] = None
+    links: typing.Optional[FilesListResponseLinks] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

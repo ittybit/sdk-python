@@ -4,14 +4,16 @@ import typing
 
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
-from ...types.api_response_base import ApiResponseBase
+from ...core.unchecked_base_model import UncheckedBaseModel
+from .automations_list_response_data_item import AutomationsListResponseDataItem
+from .automations_list_response_links import AutomationsListResponseLinks
+from .automations_list_response_meta import AutomationsListResponseMeta
 
 
-class AutomationsListResponse(ApiResponseBase):
-    data: typing.Optional[typing.List[typing.Optional[typing.Any]]] = pydantic.Field(default=None)
-    """
-    List of automation objects
-    """
+class AutomationsListResponse(UncheckedBaseModel):
+    meta: typing.Optional[AutomationsListResponseMeta] = None
+    data: typing.Optional[typing.List[AutomationsListResponseDataItem]] = None
+    links: typing.Optional[AutomationsListResponseLinks] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

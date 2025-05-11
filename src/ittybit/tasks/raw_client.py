@@ -13,11 +13,12 @@ from ..errors.bad_request_error import BadRequestError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
-from ..types.task_list_response import TaskListResponse
-from ..types.task_response import TaskResponse
 from .types.tasks_create_request_kind import TasksCreateRequestKind
+from .types.tasks_create_response import TasksCreateResponse
+from .types.tasks_get_response import TasksGetResponse
 from .types.tasks_list_filtered_request_kind import TasksListFilteredRequestKind
 from .types.tasks_list_filtered_request_status import TasksListFilteredRequestStatus
+from .types.tasks_list_filtered_response import TasksListFilteredResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -35,7 +36,7 @@ class RawTasksClient:
         status: typing.Optional[TasksListFilteredRequestStatus] = None,
         kind: typing.Optional[TasksListFilteredRequestKind] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[TaskListResponse]:
+    ) -> HttpResponse[TasksListFilteredResponse]:
         """
         Retrieves a list of tasks for the project, optionally filtered by status or kind.
 
@@ -58,7 +59,7 @@ class RawTasksClient:
 
         Returns
         -------
-        HttpResponse[TaskListResponse]
+        HttpResponse[TasksListFilteredResponse]
             A list of tasks.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -75,9 +76,9 @@ class RawTasksClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TaskListResponse,
+                    TasksListFilteredResponse,
                     construct_type(
-                        type_=TaskListResponse,  # type: ignore
+                        type_=TasksListFilteredResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -125,7 +126,7 @@ class RawTasksClient:
         height: typing.Optional[int] = OMIT,
         quality: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[TaskResponse]:
+    ) -> HttpResponse[TasksCreateResponse]:
         """
         Creates a new processing task (e.g., ingest, video transcode, speech analysis) or a workflow task.
 
@@ -172,7 +173,7 @@ class RawTasksClient:
 
         Returns
         -------
-        HttpResponse[TaskResponse]
+        HttpResponse[TasksCreateResponse]
             Created task (Deprecated endpoint)
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -201,9 +202,9 @@ class RawTasksClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TaskResponse,
+                    TasksCreateResponse,
                     construct_type(
-                        type_=TaskResponse,  # type: ignore
+                        type_=TasksCreateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -257,7 +258,67 @@ class RawTasksClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[TaskResponse]:
+    def get_task_config(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]:
+        """
+        Retrieves available task kinds and their configuration options.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]
+            Task configuration details.
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            "tasks/config",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.Dict[str, typing.Optional[typing.Any]],
+                    construct_type(
+                        type_=typing.Dict[str, typing.Optional[typing.Any]],  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        construct_type(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        construct_type(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def get(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[TasksGetResponse]:
         """
         Retrieves the details of a specific task by its ID.
 
@@ -271,7 +332,7 @@ class RawTasksClient:
 
         Returns
         -------
-        HttpResponse[TaskResponse]
+        HttpResponse[TasksGetResponse]
             Task details.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -282,9 +343,9 @@ class RawTasksClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TaskResponse,
+                    TasksGetResponse,
                     construct_type(
-                        type_=TaskResponse,  # type: ignore
+                        type_=TasksGetResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -340,7 +401,7 @@ class AsyncRawTasksClient:
         status: typing.Optional[TasksListFilteredRequestStatus] = None,
         kind: typing.Optional[TasksListFilteredRequestKind] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[TaskListResponse]:
+    ) -> AsyncHttpResponse[TasksListFilteredResponse]:
         """
         Retrieves a list of tasks for the project, optionally filtered by status or kind.
 
@@ -363,7 +424,7 @@ class AsyncRawTasksClient:
 
         Returns
         -------
-        AsyncHttpResponse[TaskListResponse]
+        AsyncHttpResponse[TasksListFilteredResponse]
             A list of tasks.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -380,9 +441,9 @@ class AsyncRawTasksClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TaskListResponse,
+                    TasksListFilteredResponse,
                     construct_type(
-                        type_=TaskListResponse,  # type: ignore
+                        type_=TasksListFilteredResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -430,7 +491,7 @@ class AsyncRawTasksClient:
         height: typing.Optional[int] = OMIT,
         quality: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[TaskResponse]:
+    ) -> AsyncHttpResponse[TasksCreateResponse]:
         """
         Creates a new processing task (e.g., ingest, video transcode, speech analysis) or a workflow task.
 
@@ -477,7 +538,7 @@ class AsyncRawTasksClient:
 
         Returns
         -------
-        AsyncHttpResponse[TaskResponse]
+        AsyncHttpResponse[TasksCreateResponse]
             Created task (Deprecated endpoint)
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -506,9 +567,9 @@ class AsyncRawTasksClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TaskResponse,
+                    TasksCreateResponse,
                     construct_type(
-                        type_=TaskResponse,  # type: ignore
+                        type_=TasksCreateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -562,9 +623,67 @@ class AsyncRawTasksClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
+    async def get_task_config(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]:
+        """
+        Retrieves available task kinds and their configuration options.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[typing.Dict[str, typing.Optional[typing.Any]]]
+            Task configuration details.
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            "tasks/config",
+            method="GET",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    typing.Dict[str, typing.Optional[typing.Any]],
+                    construct_type(
+                        type_=typing.Dict[str, typing.Optional[typing.Any]],  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        construct_type(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        construct_type(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
     async def get(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[TaskResponse]:
+    ) -> AsyncHttpResponse[TasksGetResponse]:
         """
         Retrieves the details of a specific task by its ID.
 
@@ -578,7 +697,7 @@ class AsyncRawTasksClient:
 
         Returns
         -------
-        AsyncHttpResponse[TaskResponse]
+        AsyncHttpResponse[TasksGetResponse]
             Task details.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -589,9 +708,9 @@ class AsyncRawTasksClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TaskResponse,
+                    TasksGetResponse,
                     construct_type(
-                        type_=TaskResponse,  # type: ignore
+                        type_=TasksGetResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

@@ -10,7 +10,35 @@ from ...core.unchecked_base_model import UncheckedBaseModel
 
 
 class FilesGetResponseLinks(UncheckedBaseModel):
-    self_: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="self")] = None
+    self_: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="self")] = pydantic.Field(default=None)
+    """
+    The absolute URL of the current request, potentially including query parameters.
+    """
+
+    next: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    URL for the next page of results.
+    """
+
+    prev: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    URL for the previous page of results.
+    """
+
+    parent: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    URL for the parent resource.
+    """
+
+    first: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    URL for the first page of results.
+    """
+
+    last: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    URL for the last page of results.
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

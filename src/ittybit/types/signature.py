@@ -8,10 +8,6 @@ from ..core.unchecked_base_model import UncheckedBaseModel
 
 
 class Signature(UncheckedBaseModel):
-    """
-    Details of a generated signature and signed URL.
-    """
-
     domain: str = pydantic.Field()
     """
     Domain of the signed URL

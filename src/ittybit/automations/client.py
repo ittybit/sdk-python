@@ -4,10 +4,13 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..requests.workflow_task_step import WorkflowTaskStepParams
-from ..types.automation_response import AutomationResponse
 from .raw_client import AsyncRawAutomationsClient, RawAutomationsClient
+from .requests.automations_update_request_trigger import AutomationsUpdateRequestTriggerParams
+from .requests.automations_update_request_workflow_item import AutomationsUpdateRequestWorkflowItemParams
+from .types.automations_create_response import AutomationsCreateResponse
+from .types.automations_get_response import AutomationsGetResponse
 from .types.automations_list_response import AutomationsListResponse
+from .types.automations_update_response import AutomationsUpdateResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -51,7 +54,7 @@ class AutomationsClient:
         _response = self._raw_client.list(request_options=request_options)
         return _response.data
 
-    def create(self, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationResponse:
+    def create(self, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationsCreateResponse:
         """
         Creates a new automation for the current project
 
@@ -62,7 +65,7 @@ class AutomationsClient:
 
         Returns
         -------
-        AutomationResponse
+        AutomationsCreateResponse
             Automation created successfully
 
         Examples
@@ -74,7 +77,7 @@ class AutomationsClient:
         _response = self._raw_client.create(request_options=request_options)
         return _response.data
 
-    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationResponse:
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationsGetResponse:
         """
         Retrieves a specific automation by its ID
 
@@ -88,7 +91,7 @@ class AutomationsClient:
 
         Returns
         -------
-        AutomationResponse
+        AutomationsGetResponse
             Automation details
 
         Examples
@@ -105,11 +108,11 @@ class AutomationsClient:
         id: str,
         *,
         name: str,
-        trigger: typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]],
         description: typing.Optional[str] = OMIT,
-        workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
+        trigger: typing.Optional[AutomationsUpdateRequestTriggerParams] = OMIT,
+        workflow: typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AutomationResponse:
+    ) -> AutomationsUpdateResponse:
         """
         Updates an existing automation by its ID
 
@@ -120,11 +123,12 @@ class AutomationsClient:
 
         name : str
 
-        trigger : typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]]
-
         description : typing.Optional[str]
 
-        workflow : typing.Optional[typing.Sequence[WorkflowTaskStepParams]]
+        trigger : typing.Optional[AutomationsUpdateRequestTriggerParams]
+            Defines the trigger event and conditions. To clear/remove a trigger, provide null. To update, provide the new trigger object.
+
+        workflow : typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]]
             The updated sequence of tasks for the automation.
 
         request_options : typing.Optional[RequestOptions]
@@ -132,19 +136,17 @@ class AutomationsClient:
 
         Returns
         -------
-        AutomationResponse
+        AutomationsUpdateResponse
             Automation updated successfully
 
         Examples
         --------
         from ittybit import Ittybit
         client = Ittybit(token="YOUR_TOKEN", )
-        client.automations.update(id='id', name='Transcode Uploaded Videos (Updated)', trigger=[{'event': 'media.ready'
-        , 'conditions': [{'prop': 'media.kind', 'value': 'image'}]
-        }], )
+        client.automations.update(id='id', name='Updated Transcoder Example', trigger={'event': 'upload.completed', 'conditions': [{'prop': 'file.type', 'value': 'image/*'}]}, workflow=[{'kind': "image", 'label': 'archive_image', 'format': 'webp'}], )
         """
         _response = self._raw_client.update(
-            id, name=name, trigger=trigger, description=description, workflow=workflow, request_options=request_options
+            id, name=name, description=description, trigger=trigger, workflow=workflow, request_options=request_options
         )
         return _response.data
 
@@ -215,7 +217,7 @@ class AsyncAutomationsClient:
         _response = await self._raw_client.list(request_options=request_options)
         return _response.data
 
-    async def create(self, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationResponse:
+    async def create(self, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationsCreateResponse:
         """
         Creates a new automation for the current project
 
@@ -226,7 +228,7 @@ class AsyncAutomationsClient:
 
         Returns
         -------
-        AutomationResponse
+        AutomationsCreateResponse
             Automation created successfully
 
         Examples
@@ -241,7 +243,7 @@ class AsyncAutomationsClient:
         _response = await self._raw_client.create(request_options=request_options)
         return _response.data
 
-    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationResponse:
+    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationsGetResponse:
         """
         Retrieves a specific automation by its ID
 
@@ -255,7 +257,7 @@ class AsyncAutomationsClient:
 
         Returns
         -------
-        AutomationResponse
+        AutomationsGetResponse
             Automation details
 
         Examples
@@ -275,11 +277,11 @@ class AsyncAutomationsClient:
         id: str,
         *,
         name: str,
-        trigger: typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]],
         description: typing.Optional[str] = OMIT,
-        workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
+        trigger: typing.Optional[AutomationsUpdateRequestTriggerParams] = OMIT,
+        workflow: typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AutomationResponse:
+    ) -> AutomationsUpdateResponse:
         """
         Updates an existing automation by its ID
 
@@ -290,11 +292,12 @@ class AsyncAutomationsClient:
 
         name : str
 
-        trigger : typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]]
-
         description : typing.Optional[str]
 
-        workflow : typing.Optional[typing.Sequence[WorkflowTaskStepParams]]
+        trigger : typing.Optional[AutomationsUpdateRequestTriggerParams]
+            Defines the trigger event and conditions. To clear/remove a trigger, provide null. To update, provide the new trigger object.
+
+        workflow : typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]]
             The updated sequence of tasks for the automation.
 
         request_options : typing.Optional[RequestOptions]
@@ -302,7 +305,7 @@ class AsyncAutomationsClient:
 
         Returns
         -------
-        AutomationResponse
+        AutomationsUpdateResponse
             Automation updated successfully
 
         Examples
@@ -311,13 +314,11 @@ class AsyncAutomationsClient:
         import asyncio
         client = AsyncIttybit(token="YOUR_TOKEN", )
         async def main() -> None:
-            await client.automations.update(id='id', name='Transcode Uploaded Videos (Updated)', trigger=[{'event': 'media.ready'
-            , 'conditions': [{'prop': 'media.kind', 'value': 'image'}]
-            }], )
+            await client.automations.update(id='id', name='Updated Transcoder Example', trigger={'event': 'upload.completed', 'conditions': [{'prop': 'file.type', 'value': 'image/*'}]}, workflow=[{'kind': "image", 'label': 'archive_image', 'format': 'webp'}], )
         asyncio.run(main())
         """
         _response = await self._raw_client.update(
-            id, name=name, trigger=trigger, description=description, workflow=workflow, request_options=request_options
+            id, name=name, description=description, trigger=trigger, workflow=workflow, request_options=request_options
         )
         return _response.data
 

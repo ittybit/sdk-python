@@ -4,11 +4,12 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..types.file_response import FileResponse
 from .raw_client import AsyncRawFilesClient, RawFilesClient
+from .types.files_create_from_url_response import FilesCreateFromUrlResponse
 from .types.files_delete_response import FilesDeleteResponse
 from .types.files_get_response import FilesGetResponse
 from .types.files_list_response import FilesListResponse
+from .types.files_update_metadata_response import FilesUpdateMetadataResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -75,7 +76,7 @@ class FilesClient:
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         async_: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FileResponse:
+    ) -> FilesCreateFromUrlResponse:
         """
         Registers a file from a publicly accessible URL. The file will be ingested asynchronously.
 
@@ -107,7 +108,7 @@ class FilesClient:
 
         Returns
         -------
-        FileResponse
+        FilesCreateFromUrlResponse
             File accepted for ingestion.
 
         Examples
@@ -189,7 +190,7 @@ class FilesClient:
         filename: typing.Optional[str] = OMIT,
         folder: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FileResponse:
+    ) -> FilesUpdateMetadataResponse:
         """
         Updates metadata, filename, or folder properties of an existing file. Only the specified fields will be updated.
 
@@ -212,7 +213,7 @@ class FilesClient:
 
         Returns
         -------
-        FileResponse
+        FilesUpdateMetadataResponse
             File updated successfully.
 
         Examples
@@ -293,7 +294,7 @@ class AsyncFilesClient:
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         async_: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FileResponse:
+    ) -> FilesCreateFromUrlResponse:
         """
         Registers a file from a publicly accessible URL. The file will be ingested asynchronously.
 
@@ -325,7 +326,7 @@ class AsyncFilesClient:
 
         Returns
         -------
-        FileResponse
+        FilesCreateFromUrlResponse
             File accepted for ingestion.
 
         Examples
@@ -416,7 +417,7 @@ class AsyncFilesClient:
         filename: typing.Optional[str] = OMIT,
         folder: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FileResponse:
+    ) -> FilesUpdateMetadataResponse:
         """
         Updates metadata, filename, or folder properties of an existing file. Only the specified fields will be updated.
 
@@ -439,7 +440,7 @@ class AsyncFilesClient:
 
         Returns
         -------
-        FileResponse
+        FilesUpdateMetadataResponse
             File updated successfully.
 
         Examples

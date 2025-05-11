@@ -2,8 +2,19 @@
 
 # isort: skip_file
 
-from . import automations, files, media, signatures, tasks
+from . import automations, billing, example, files, media, signatures, tasks
 from .client import AsyncIttybit, Ittybit
 from .version import __version__
 
-__all__ = ["AsyncIttybit", "Ittybit", "__version__", "automations", "files", "media", "signatures", "tasks"]
+__all__ = [
+    "AsyncIttybit",
+    "Ittybit",
+    "__version__",
+    "automations",
+    "billing",
+    "example",
+    "files",
+    "media",
+    "signatures",
+    "tasks",
+]

@@ -4,16 +4,16 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
-from .api_response_base import ApiResponseBase
-from .file import File
+from ..core.unchecked_base_model import UncheckedBaseModel
+from .file_list_response_data_item import FileListResponseDataItem
+from .file_list_response_links import FileListResponseLinks
+from .file_list_response_meta import FileListResponseMeta
 
 
-class FileListResponse(ApiResponseBase):
-    """
-    Standard wrapper for File list responses.
-    """
-
-    data: typing.Optional[typing.List[File]] = None
+class FileListResponse(UncheckedBaseModel):
+    meta: typing.Optional[FileListResponseMeta] = None
+    data: typing.Optional[typing.List[FileListResponseDataItem]] = None
+    links: typing.Optional[FileListResponseLinks] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -5,17 +5,13 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
-from .links import Links
-from .meta import Meta
+from .api_response_base_links import ApiResponseBaseLinks
+from .api_response_base_meta import ApiResponseBaseMeta
 
 
 class ApiResponseBase(UncheckedBaseModel):
-    """
-    Base structure for standard API responses.
-    """
-
-    meta: typing.Optional[Meta] = None
-    links: typing.Optional[Links] = None
+    meta: typing.Optional[ApiResponseBaseMeta] = None
+    links: typing.Optional[ApiResponseBaseLinks] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

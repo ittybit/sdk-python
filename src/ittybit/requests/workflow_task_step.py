@@ -5,10 +5,6 @@ from ..types.workflow_task_step_kind import WorkflowTaskStepKind
 
 
 class WorkflowTaskStepParams(typing_extensions.TypedDict):
-    """
-    A single task step definition within an automation workflow.
-    """
-
     kind: WorkflowTaskStepKind
     """
     The type of operation the task performs.

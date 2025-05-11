@@ -5,10 +5,6 @@ from ..core.serialization import FieldMetadata
 
 
 class LinksParams(typing_extensions.TypedDict):
-    """
-    Standard pagination and self links for API responses.
-    """
-
     self_: typing_extensions.NotRequired[typing_extensions.Annotated[str, FieldMetadata(alias="self")]]
     """
     The absolute URL of the current request, potentially including query parameters.

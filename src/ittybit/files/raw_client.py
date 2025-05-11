@@ -13,10 +13,11 @@ from ..errors.bad_request_error import BadRequestError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
-from ..types.file_response import FileResponse
+from .types.files_create_from_url_response import FilesCreateFromUrlResponse
 from .types.files_delete_response import FilesDeleteResponse
 from .types.files_get_response import FilesGetResponse
 from .types.files_list_response import FilesListResponse
+from .types.files_update_metadata_response import FilesUpdateMetadataResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -98,7 +99,7 @@ class RawFilesClient:
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         async_: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[FileResponse]:
+    ) -> HttpResponse[FilesCreateFromUrlResponse]:
         """
         Registers a file from a publicly accessible URL. The file will be ingested asynchronously.
 
@@ -130,7 +131,7 @@ class RawFilesClient:
 
         Returns
         -------
-        HttpResponse[FileResponse]
+        HttpResponse[FilesCreateFromUrlResponse]
             File accepted for ingestion.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -154,9 +155,9 @@ class RawFilesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FileResponse,
+                    FilesCreateFromUrlResponse,
                     construct_type(
-                        type_=FileResponse,  # type: ignore
+                        type_=FilesCreateFromUrlResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -185,6 +186,17 @@ class RawFilesClient:
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        construct_type(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -329,7 +341,7 @@ class RawFilesClient:
         filename: typing.Optional[str] = OMIT,
         folder: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[FileResponse]:
+    ) -> HttpResponse[FilesUpdateMetadataResponse]:
         """
         Updates metadata, filename, or folder properties of an existing file. Only the specified fields will be updated.
 
@@ -352,7 +364,7 @@ class RawFilesClient:
 
         Returns
         -------
-        HttpResponse[FileResponse]
+        HttpResponse[FilesUpdateMetadataResponse]
             File updated successfully.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -372,9 +384,9 @@ class RawFilesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FileResponse,
+                    FilesUpdateMetadataResponse,
                     construct_type(
-                        type_=FileResponse,  # type: ignore
+                        type_=FilesUpdateMetadataResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -505,7 +517,7 @@ class AsyncRawFilesClient:
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         async_: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[FileResponse]:
+    ) -> AsyncHttpResponse[FilesCreateFromUrlResponse]:
         """
         Registers a file from a publicly accessible URL. The file will be ingested asynchronously.
 
@@ -537,7 +549,7 @@ class AsyncRawFilesClient:
 
         Returns
         -------
-        AsyncHttpResponse[FileResponse]
+        AsyncHttpResponse[FilesCreateFromUrlResponse]
             File accepted for ingestion.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -561,9 +573,9 @@ class AsyncRawFilesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FileResponse,
+                    FilesCreateFromUrlResponse,
                     construct_type(
-                        type_=FileResponse,  # type: ignore
+                        type_=FilesCreateFromUrlResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -592,6 +604,17 @@ class AsyncRawFilesClient:
                 )
             if _response.status_code == 403:
                 raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        typing.Optional[typing.Any],
+                        construct_type(
+                            type_=typing.Optional[typing.Any],  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
                         typing.Optional[typing.Any],
@@ -736,7 +759,7 @@ class AsyncRawFilesClient:
         filename: typing.Optional[str] = OMIT,
         folder: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[FileResponse]:
+    ) -> AsyncHttpResponse[FilesUpdateMetadataResponse]:
         """
         Updates metadata, filename, or folder properties of an existing file. Only the specified fields will be updated.
 
@@ -759,7 +782,7 @@ class AsyncRawFilesClient:
 
         Returns
         -------
-        AsyncHttpResponse[FileResponse]
+        AsyncHttpResponse[FilesUpdateMetadataResponse]
             File updated successfully.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -779,9 +802,9 @@ class AsyncRawFilesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FileResponse,
+                    FilesUpdateMetadataResponse,
                     construct_type(
-                        type_=FileResponse,  # type: ignore
+                        type_=FilesUpdateMetadataResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

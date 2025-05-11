@@ -4,10 +4,10 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..types.confirmation_response import ConfirmationResponse
 from ..types.media_list_response import MediaListResponse
-from ..types.media_response import MediaResponse
 from .raw_client import AsyncRawMediaClient, RawMediaClient
+from .types.media_create_response import MediaCreateResponse
+from .types.media_delete_response import MediaDeleteResponse
 from .types.media_get_response import MediaGetResponse
 
 # this is used as the default value for optional parameters
@@ -76,7 +76,7 @@ class MediaClient:
         async_: typing.Optional[bool] = OMIT,
         empty: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> MediaResponse:
+    ) -> MediaCreateResponse:
         """
         Creates a new media item from a URL or as an empty placeholder
 
@@ -111,7 +111,7 @@ class MediaClient:
 
         Returns
         -------
-        MediaResponse
+        MediaCreateResponse
             Media created successfully
 
         Examples
@@ -161,7 +161,7 @@ class MediaClient:
         _response = self._raw_client.get(id, request_options=request_options)
         return _response.data
 
-    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> ConfirmationResponse:
+    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> MediaDeleteResponse:
         """
         Deletes a specific media item by its ID
 
@@ -175,7 +175,7 @@ class MediaClient:
 
         Returns
         -------
-        ConfirmationResponse
+        MediaDeleteResponse
             Media deleted successfully
 
         Examples
@@ -253,7 +253,7 @@ class AsyncMediaClient:
         async_: typing.Optional[bool] = OMIT,
         empty: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> MediaResponse:
+    ) -> MediaCreateResponse:
         """
         Creates a new media item from a URL or as an empty placeholder
 
@@ -288,7 +288,7 @@ class AsyncMediaClient:
 
         Returns
         -------
-        MediaResponse
+        MediaCreateResponse
             Media created successfully
 
         Examples
@@ -344,7 +344,7 @@ class AsyncMediaClient:
         _response = await self._raw_client.get(id, request_options=request_options)
         return _response.data
 
-    async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> ConfirmationResponse:
+    async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> MediaDeleteResponse:
         """
         Deletes a specific media item by its ID
 
@@ -358,7 +358,7 @@ class AsyncMediaClient:
 
         Returns
         -------
-        ConfirmationResponse
+        MediaDeleteResponse
             Media deleted successfully
 
         Examples

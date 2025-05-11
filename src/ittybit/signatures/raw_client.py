@@ -10,8 +10,8 @@ from ..core.request_options import RequestOptions
 from ..core.unchecked_base_model import construct_type
 from ..errors.bad_request_error import BadRequestError
 from ..errors.unauthorized_error import UnauthorizedError
-from ..types.signature_response import SignatureResponse
 from .types.signatures_create_request_method import SignaturesCreateRequestMethod
+from .types.signatures_create_response import SignaturesCreateResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -29,7 +29,7 @@ class RawSignaturesClient:
         expiry: typing.Optional[int] = OMIT,
         method: typing.Optional[SignaturesCreateRequestMethod] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[SignatureResponse]:
+    ) -> HttpResponse[SignaturesCreateResponse]:
         """
         Creates a cryptographically signed URL that provides temporary and restricted access to a file. The URL can expire after a specified time and be limited to specific HTTP methods.
 
@@ -52,7 +52,7 @@ class RawSignaturesClient:
 
         Returns
         -------
-        HttpResponse[SignatureResponse]
+        HttpResponse[SignaturesCreateResponse]
             Signed URL generated successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -73,9 +73,9 @@ class RawSignaturesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SignatureResponse,
+                    SignaturesCreateResponse,
                     construct_type(
-                        type_=SignatureResponse,  # type: ignore
+                        type_=SignaturesCreateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -120,7 +120,7 @@ class AsyncRawSignaturesClient:
         expiry: typing.Optional[int] = OMIT,
         method: typing.Optional[SignaturesCreateRequestMethod] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[SignatureResponse]:
+    ) -> AsyncHttpResponse[SignaturesCreateResponse]:
         """
         Creates a cryptographically signed URL that provides temporary and restricted access to a file. The URL can expire after a specified time and be limited to specific HTTP methods.
 
@@ -143,7 +143,7 @@ class AsyncRawSignaturesClient:
 
         Returns
         -------
-        AsyncHttpResponse[SignatureResponse]
+        AsyncHttpResponse[SignaturesCreateResponse]
             Signed URL generated successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -164,9 +164,9 @@ class AsyncRawSignaturesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SignatureResponse,
+                    SignaturesCreateResponse,
                     construct_type(
-                        type_=SignatureResponse,  # type: ignore
+                        type_=SignaturesCreateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

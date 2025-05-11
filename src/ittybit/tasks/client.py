@@ -4,12 +4,13 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..types.task_list_response import TaskListResponse
-from ..types.task_response import TaskResponse
 from .raw_client import AsyncRawTasksClient, RawTasksClient
 from .types.tasks_create_request_kind import TasksCreateRequestKind
+from .types.tasks_create_response import TasksCreateResponse
+from .types.tasks_get_response import TasksGetResponse
 from .types.tasks_list_filtered_request_kind import TasksListFilteredRequestKind
 from .types.tasks_list_filtered_request_status import TasksListFilteredRequestStatus
+from .types.tasks_list_filtered_response import TasksListFilteredResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -38,7 +39,7 @@ class TasksClient:
         status: typing.Optional[TasksListFilteredRequestStatus] = None,
         kind: typing.Optional[TasksListFilteredRequestKind] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> TaskListResponse:
+    ) -> TasksListFilteredResponse:
         """
         Retrieves a list of tasks for the project, optionally filtered by status or kind.
 
@@ -61,7 +62,7 @@ class TasksClient:
 
         Returns
         -------
-        TaskListResponse
+        TasksListFilteredResponse
             A list of tasks.
 
         Examples
@@ -91,7 +92,7 @@ class TasksClient:
         height: typing.Optional[int] = OMIT,
         quality: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> TaskResponse:
+    ) -> TasksCreateResponse:
         """
         Creates a new processing task (e.g., ingest, video transcode, speech analysis) or a workflow task.
 
@@ -138,7 +139,7 @@ class TasksClient:
 
         Returns
         -------
-        TaskResponse
+        TasksCreateResponse
             Created task (Deprecated endpoint)
 
         Examples
@@ -165,7 +166,32 @@ class TasksClient:
         )
         return _response.data
 
-    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> TaskResponse:
+    def get_task_config(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Dict[str, typing.Optional[typing.Any]]:
+        """
+        Retrieves available task kinds and their configuration options.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Dict[str, typing.Optional[typing.Any]]
+            Task configuration details.
+
+        Examples
+        --------
+        from ittybit import Ittybit
+        client = Ittybit(token="YOUR_TOKEN", )
+        client.tasks.get_task_config()
+        """
+        _response = self._raw_client.get_task_config(request_options=request_options)
+        return _response.data
+
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> TasksGetResponse:
         """
         Retrieves the details of a specific task by its ID.
 
@@ -179,7 +205,7 @@ class TasksClient:
 
         Returns
         -------
-        TaskResponse
+        TasksGetResponse
             Task details.
 
         Examples
@@ -215,7 +241,7 @@ class AsyncTasksClient:
         status: typing.Optional[TasksListFilteredRequestStatus] = None,
         kind: typing.Optional[TasksListFilteredRequestKind] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> TaskListResponse:
+    ) -> TasksListFilteredResponse:
         """
         Retrieves a list of tasks for the project, optionally filtered by status or kind.
 
@@ -238,7 +264,7 @@ class AsyncTasksClient:
 
         Returns
         -------
-        TaskListResponse
+        TasksListFilteredResponse
             A list of tasks.
 
         Examples
@@ -271,7 +297,7 @@ class AsyncTasksClient:
         height: typing.Optional[int] = OMIT,
         quality: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> TaskResponse:
+    ) -> TasksCreateResponse:
         """
         Creates a new processing task (e.g., ingest, video transcode, speech analysis) or a workflow task.
 
@@ -318,7 +344,7 @@ class AsyncTasksClient:
 
         Returns
         -------
-        TaskResponse
+        TasksCreateResponse
             Created task (Deprecated endpoint)
 
         Examples
@@ -348,7 +374,35 @@ class AsyncTasksClient:
         )
         return _response.data
 
-    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> TaskResponse:
+    async def get_task_config(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> typing.Dict[str, typing.Optional[typing.Any]]:
+        """
+        Retrieves available task kinds and their configuration options.
+
+        Parameters
+        ----------
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        typing.Dict[str, typing.Optional[typing.Any]]
+            Task configuration details.
+
+        Examples
+        --------
+        from ittybit import AsyncIttybit
+        import asyncio
+        client = AsyncIttybit(token="YOUR_TOKEN", )
+        async def main() -> None:
+            await client.tasks.get_task_config()
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get_task_config(request_options=request_options)
+        return _response.data
+
+    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> TasksGetResponse:
         """
         Retrieves the details of a specific task by its ID.
 
@@ -362,7 +416,7 @@ class AsyncTasksClient:
 
         Returns
         -------
-        TaskResponse
+        TasksGetResponse
             Task details.
 
         Examples

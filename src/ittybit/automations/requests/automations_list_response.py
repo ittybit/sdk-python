@@ -3,11 +3,12 @@
 import typing
 
 import typing_extensions
-from ...requests.api_response_base import ApiResponseBaseParams
+from .automations_list_response_data_item import AutomationsListResponseDataItemParams
+from .automations_list_response_links import AutomationsListResponseLinksParams
+from .automations_list_response_meta import AutomationsListResponseMetaParams
 
 
-class AutomationsListResponseParams(ApiResponseBaseParams):
-    data: typing_extensions.NotRequired[typing.Sequence[typing.Optional[typing.Any]]]
-    """
-    List of automation objects
-    """
+class AutomationsListResponseParams(typing_extensions.TypedDict):
+    meta: typing_extensions.NotRequired[AutomationsListResponseMetaParams]
+    data: typing_extensions.NotRequired[typing.Sequence[AutomationsListResponseDataItemParams]]
+    links: typing_extensions.NotRequired[AutomationsListResponseLinksParams]

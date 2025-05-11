@@ -5,15 +5,13 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
-from .meta import Meta
+from .not_found_error_body_error import NotFoundErrorBodyError
+from .not_found_error_body_meta import NotFoundErrorBodyMeta
 
 
 class NotFoundErrorBody(UncheckedBaseModel):
-    meta: typing.Optional[Meta] = None
-    error: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Error message
-    """
+    meta: typing.Optional[NotFoundErrorBodyMeta] = None
+    error: typing.Optional[NotFoundErrorBodyError] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

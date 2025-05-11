@@ -4,16 +4,16 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
-from .api_response_base import ApiResponseBase
+from ..core.unchecked_base_model import UncheckedBaseModel
 from .confirmation_response_data import ConfirmationResponseData
+from .confirmation_response_links import ConfirmationResponseLinks
+from .confirmation_response_meta import ConfirmationResponseMeta
 
 
-class ConfirmationResponse(ApiResponseBase):
-    """
-    Standard wrapper for confirmation message responses.
-    """
-
+class ConfirmationResponse(UncheckedBaseModel):
+    meta: typing.Optional[ConfirmationResponseMeta] = None
     data: typing.Optional[ConfirmationResponseData] = None
+    links: typing.Optional[ConfirmationResponseLinks] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

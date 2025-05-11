@@ -9,10 +9,6 @@ from .workflow_task_step_kind import WorkflowTaskStepKind
 
 
 class WorkflowTaskStep(UncheckedBaseModel):
-    """
-    A single task step definition within an automation workflow.
-    """
-
     kind: WorkflowTaskStepKind = pydantic.Field()
     """
     The type of operation the task performs.

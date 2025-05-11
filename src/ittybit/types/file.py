@@ -10,10 +10,6 @@ from .file_kind import FileKind
 
 
 class File(UncheckedBaseModel):
-    """
-    Represents a file stored in the system, including its metadata and source information.
-    """
-
     id: str = pydantic.Field()
     """
     Unique identifier for the file.

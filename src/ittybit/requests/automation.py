@@ -6,14 +6,10 @@ import typing
 import typing_extensions
 from ..types.automation_status import AutomationStatus
 from .automation_trigger import AutomationTriggerParams
-from .workflow_task_step import WorkflowTaskStepParams
+from .automation_workflow_item import AutomationWorkflowItemParams
 
 
 class AutomationParams(typing_extensions.TypedDict):
-    """
-    Represents an automated workflow triggered by specific events.
-    """
-
     id: str
     """
     Unique identifier for the automation
@@ -29,12 +25,17 @@ class AutomationParams(typing_extensions.TypedDict):
     Optional description for the automation
     """
 
+    metadata: typing_extensions.NotRequired[typing.Dict[str, typing.Optional[typing.Any]]]
+    """
+    User-defined key-value metadata for the automation.
+    """
+
     trigger: AutomationTriggerParams
     """
     The event and conditions that trigger this automation.
     """
 
-    workflow: typing.Sequence[WorkflowTaskStepParams]
+    workflow: typing.Sequence[AutomationWorkflowItemParams]
     """
     The sequence of tasks to be executed when the automation is triggered. The structure of each task object varies depending on its 'kind'.
     """

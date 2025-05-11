@@ -4,16 +4,16 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
-from .api_response_base import ApiResponseBase
-from .file import File
+from ..core.unchecked_base_model import UncheckedBaseModel
+from .file_response_data import FileResponseData
+from .file_response_links import FileResponseLinks
+from .file_response_meta import FileResponseMeta
 
 
-class FileResponse(ApiResponseBase):
-    """
-    Standard wrapper for single File responses.
-    """
-
-    data: typing.Optional[File] = None
+class FileResponse(UncheckedBaseModel):
+    meta: typing.Optional[FileResponseMeta] = None
+    data: typing.Optional[FileResponseData] = None
+    links: typing.Optional[FileResponseLinks] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

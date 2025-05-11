@@ -4,16 +4,16 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
-from .api_response_base import ApiResponseBase
-from .task import Task
+from ..core.unchecked_base_model import UncheckedBaseModel
+from .task_list_response_data_item import TaskListResponseDataItem
+from .task_list_response_links import TaskListResponseLinks
+from .task_list_response_meta import TaskListResponseMeta
 
 
-class TaskListResponse(ApiResponseBase):
-    """
-    Standard wrapper for Task list responses.
-    """
-
-    data: typing.Optional[typing.List[Task]] = None
+class TaskListResponse(UncheckedBaseModel):
+    meta: typing.Optional[TaskListResponseMeta] = None
+    data: typing.Optional[typing.List[TaskListResponseDataItem]] = None
+    links: typing.Optional[TaskListResponseLinks] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -3,42 +3,19 @@
 import typing
 
 import pydantic
-import typing_extensions
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
-from ..core.serialization import FieldMetadata
 from ..core.unchecked_base_model import UncheckedBaseModel
 
 
 class Meta(UncheckedBaseModel):
-    """
-    Standard metadata included in API responses.
-    """
-
-    id: typing.Optional[str] = pydantic.Field(default=None)
+    request_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     Request ID
     """
 
-    org_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Organisation ID associated with the request
-    """
-
-    project_id: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Project ID associated with the request
-    """
-
-    object: typing.Optional[str] = pydantic.Field(default=None)
+    type: typing.Optional[str] = pydantic.Field(default=None)
     """
     Type of the primary data object in the response (e.g., list, object)
-    """
-
-    list_: typing_extensions.Annotated[typing.Optional[bool], FieldMetadata(alias="list")] = pydantic.Field(
-        default=None
-    )
-    """
-    Whether the response is a list of objects.
     """
 
     limit: typing.Optional[int] = pydantic.Field(default=None)

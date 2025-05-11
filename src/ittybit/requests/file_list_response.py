@@ -3,13 +3,12 @@
 import typing
 
 import typing_extensions
-from .api_response_base import ApiResponseBaseParams
-from .file import FileParams
+from .file_list_response_data_item import FileListResponseDataItemParams
+from .file_list_response_links import FileListResponseLinksParams
+from .file_list_response_meta import FileListResponseMetaParams
 
 
-class FileListResponseParams(ApiResponseBaseParams):
-    """
-    Standard wrapper for File list responses.
-    """
-
-    data: typing_extensions.NotRequired[typing.Sequence[FileParams]]
+class FileListResponseParams(typing_extensions.TypedDict):
+    meta: typing_extensions.NotRequired[FileListResponseMetaParams]
+    data: typing_extensions.NotRequired[typing.Sequence[FileListResponseDataItemParams]]
+    links: typing_extensions.NotRequired[FileListResponseLinksParams]

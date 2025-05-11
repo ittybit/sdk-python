@@ -8,10 +8,6 @@ from ..types.file_kind import FileKind
 
 
 class FileParams(typing_extensions.TypedDict):
-    """
-    Represents a file stored in the system, including its metadata and source information.
-    """
-
     id: str
     """
     Unique identifier for the file.

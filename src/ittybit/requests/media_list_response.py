@@ -3,13 +3,12 @@
 import typing
 
 import typing_extensions
-from .api_response_base import ApiResponseBaseParams
-from .media import MediaParams
+from .media_list_response_data_item import MediaListResponseDataItemParams
+from .media_list_response_links import MediaListResponseLinksParams
+from .media_list_response_meta import MediaListResponseMetaParams
 
 
-class MediaListResponseParams(ApiResponseBaseParams):
-    """
-    Standard wrapper for Media list responses.
-    """
-
-    data: typing_extensions.NotRequired[typing.Sequence[MediaParams]]
+class MediaListResponseParams(typing_extensions.TypedDict):
+    meta: typing_extensions.NotRequired[MediaListResponseMetaParams]
+    data: typing_extensions.NotRequired[typing.Sequence[MediaListResponseDataItemParams]]
+    links: typing_extensions.NotRequired[MediaListResponseLinksParams]

@@ -6,14 +6,10 @@ import typing
 import typing_extensions
 from ..types.media_kind import MediaKind
 from ..types.media_status import MediaStatus
-from .media_source import MediaSourceParams
+from .media_sources_item import MediaSourcesItemParams
 
 
 class MediaParams(typing_extensions.TypedDict):
-    """
-    Represents a media item, which can contain multiple source files and associated data.
-    """
-
     id: str
     """
     Unique identifier for the media item.
@@ -69,7 +65,7 @@ class MediaParams(typing_extensions.TypedDict):
     Combined file size of all sources in bytes.
     """
 
-    sources: typing.Sequence[MediaSourceParams]
+    sources: typing.Sequence[MediaSourcesItemParams]
     """
     Array of source files associated with this media item.
     """

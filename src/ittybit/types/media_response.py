@@ -4,16 +4,16 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
-from .api_response_base import ApiResponseBase
-from .media import Media
+from ..core.unchecked_base_model import UncheckedBaseModel
+from .media_response_data import MediaResponseData
+from .media_response_links import MediaResponseLinks
+from .media_response_meta import MediaResponseMeta
 
 
-class MediaResponse(ApiResponseBase):
-    """
-    Standard wrapper for single Media responses.
-    """
-
-    data: typing.Optional[Media] = None
+class MediaResponse(UncheckedBaseModel):
+    meta: typing.Optional[MediaResponseMeta] = None
+    data: typing.Optional[MediaResponseData] = None
+    links: typing.Optional[MediaResponseLinks] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

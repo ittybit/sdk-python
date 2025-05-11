@@ -4,9 +4,9 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..types.signature_response import SignatureResponse
 from .raw_client import AsyncRawSignaturesClient, RawSignaturesClient
 from .types.signatures_create_request_method import SignaturesCreateRequestMethod
+from .types.signatures_create_response import SignaturesCreateResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -35,7 +35,7 @@ class SignaturesClient:
         expiry: typing.Optional[int] = OMIT,
         method: typing.Optional[SignaturesCreateRequestMethod] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SignatureResponse:
+    ) -> SignaturesCreateResponse:
         """
         Creates a cryptographically signed URL that provides temporary and restricted access to a file. The URL can expire after a specified time and be limited to specific HTTP methods.
 
@@ -58,7 +58,7 @@ class SignaturesClient:
 
         Returns
         -------
-        SignatureResponse
+        SignaturesCreateResponse
             Signed URL generated successfully
 
         Examples
@@ -96,7 +96,7 @@ class AsyncSignaturesClient:
         expiry: typing.Optional[int] = OMIT,
         method: typing.Optional[SignaturesCreateRequestMethod] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SignatureResponse:
+    ) -> SignaturesCreateResponse:
         """
         Creates a cryptographically signed URL that provides temporary and restricted access to a file. The URL can expire after a specified time and be limited to specific HTTP methods.
 
@@ -119,7 +119,7 @@ class AsyncSignaturesClient:
 
         Returns
         -------
-        SignatureResponse
+        SignaturesCreateResponse
             Signed URL generated successfully
 
         Examples

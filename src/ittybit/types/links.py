@@ -10,10 +10,6 @@ from ..core.unchecked_base_model import UncheckedBaseModel
 
 
 class Links(UncheckedBaseModel):
-    """
-    Standard pagination and self links for API responses.
-    """
-
     self_: typing_extensions.Annotated[typing.Optional[str], FieldMetadata(alias="self")] = pydantic.Field(default=None)
     """
     The absolute URL of the current request, potentially including query parameters.

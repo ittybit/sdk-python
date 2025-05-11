@@ -4,16 +4,16 @@ import typing
 
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
-from .api_response_base import ApiResponseBase
-from .automation import Automation
+from ..core.unchecked_base_model import UncheckedBaseModel
+from .automation_list_response_data_item import AutomationListResponseDataItem
+from .automation_list_response_links import AutomationListResponseLinks
+from .automation_list_response_meta import AutomationListResponseMeta
 
 
-class AutomationListResponse(ApiResponseBase):
-    """
-    Standard wrapper for Automation list responses.
-    """
-
-    data: typing.Optional[typing.List[Automation]] = None
+class AutomationListResponse(UncheckedBaseModel):
+    meta: typing.Optional[AutomationListResponseMeta] = None
+    data: typing.Optional[typing.List[AutomationListResponseDataItem]] = None
+    links: typing.Optional[AutomationListResponseLinks] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

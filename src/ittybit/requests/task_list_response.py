@@ -3,13 +3,12 @@
 import typing
 
 import typing_extensions
-from .api_response_base import ApiResponseBaseParams
-from .task import TaskParams
+from .task_list_response_data_item import TaskListResponseDataItemParams
+from .task_list_response_links import TaskListResponseLinksParams
+from .task_list_response_meta import TaskListResponseMetaParams
 
 
-class TaskListResponseParams(ApiResponseBaseParams):
-    """
-    Standard wrapper for Task list responses.
-    """
-
-    data: typing_extensions.NotRequired[typing.Sequence[TaskParams]]
+class TaskListResponseParams(typing_extensions.TypedDict):
+    meta: typing_extensions.NotRequired[TaskListResponseMetaParams]
+    data: typing_extensions.NotRequired[typing.Sequence[TaskListResponseDataItemParams]]
+    links: typing_extensions.NotRequired[TaskListResponseLinksParams]

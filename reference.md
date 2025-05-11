@@ -208,9 +208,7 @@ Updates an existing automation by its ID
 ```python
 from ittybit import Ittybit
 client = Ittybit(token="YOUR_TOKEN", )
-client.automations.update(id='id', name='Transcode Uploaded Videos (Updated)', trigger=[{'event': 'media.ready'
-, 'conditions': [{'prop': 'media.kind', 'value': 'image'}]
-}], )
+client.automations.update(id='id', name='Updated Transcoder Example', trigger={'event': 'upload.completed', 'conditions': [{'prop': 'file.type', 'value': 'image/*'}]}, workflow=[{'kind': "image", 'label': 'archive_image', 'format': 'webp'}], )
 
 ```
 </dd>
@@ -242,14 +240,6 @@ client.automations.update(id='id', name='Transcode Uploaded Videos (Updated)', t
 <dl>
 <dd>
 
-**trigger:** `typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
 **description:** `typing.Optional[str]` 
     
 </dd>
@@ -258,7 +248,15 @@ client.automations.update(id='id', name='Transcode Uploaded Videos (Updated)', t
 <dl>
 <dd>
 
-**workflow:** `typing.Optional[typing.Sequence[WorkflowTaskStepParams]]` — The updated sequence of tasks for the automation.
+**trigger:** `typing.Optional[AutomationsUpdateRequestTriggerParams]` — Defines the trigger event and conditions. To clear/remove a trigger, provide null. To update, provide the new trigger object.
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workflow:** `typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]]` — The updated sequence of tasks for the automation.
     
 </dd>
 </dl>
@@ -327,6 +325,50 @@ client.automations.delete(id='id', )
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+## Billing
+<details><summary><code>client.billing.<a href="src/ittybit/billing/client.py">get_billing_information_for_the_organization</a>()</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from ittybit import Ittybit
+client = Ittybit(token="YOUR_TOKEN", )
+client.billing.get_billing_information_for_the_organization()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
 
 <dl>
 <dd>
@@ -1076,6 +1118,58 @@ client.media.delete(id='id', )
 </dl>
 </details>
 
+## Example
+<details><summary><code>client.example.<a href="src/ittybit/example/client.py">example_endpoint</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from ittybit import Ittybit
+client = Ittybit(token="YOUR_TOKEN", )
+client.example.example_endpoint()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**param:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
 ## Tasks
 <details><summary><code>client.tasks.<a href="src/ittybit/tasks/client.py">list_filtered</a>(...)</code></summary>
 <dl>
@@ -1304,6 +1398,63 @@ client.tasks.create(kind="ingest", url='https://example.com/some_video.mov', inp
     
 </dd>
 </dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.tasks.<a href="src/ittybit/tasks/client.py">get_task_config</a>()</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves available task kinds and their configuration options.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from ittybit import Ittybit
+client = Ittybit(token="YOUR_TOKEN", )
+client.tasks.get_task_config()
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
 
 <dl>
 <dd>

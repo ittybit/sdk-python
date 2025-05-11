@@ -14,9 +14,12 @@ from ..errors.bad_request_error import BadRequestError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
-from ..requests.workflow_task_step import WorkflowTaskStepParams
-from ..types.automation_response import AutomationResponse
+from .requests.automations_update_request_trigger import AutomationsUpdateRequestTriggerParams
+from .requests.automations_update_request_workflow_item import AutomationsUpdateRequestWorkflowItemParams
+from .types.automations_create_response import AutomationsCreateResponse
+from .types.automations_get_response import AutomationsGetResponse
 from .types.automations_list_response import AutomationsListResponse
+from .types.automations_update_response import AutomationsUpdateResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -82,7 +85,9 @@ class RawAutomationsClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def create(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[AutomationResponse]:
+    def create(
+        self, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[AutomationsCreateResponse]:
         """
         Creates a new automation for the current project
 
@@ -93,7 +98,7 @@ class RawAutomationsClient:
 
         Returns
         -------
-        HttpResponse[AutomationResponse]
+        HttpResponse[AutomationsCreateResponse]
             Automation created successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -104,9 +109,9 @@ class RawAutomationsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AutomationResponse,
+                    AutomationsCreateResponse,
                     construct_type(
-                        type_=AutomationResponse,  # type: ignore
+                        type_=AutomationsCreateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -151,7 +156,7 @@ class RawAutomationsClient:
 
     def get(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[AutomationResponse]:
+    ) -> HttpResponse[AutomationsGetResponse]:
         """
         Retrieves a specific automation by its ID
 
@@ -165,7 +170,7 @@ class RawAutomationsClient:
 
         Returns
         -------
-        HttpResponse[AutomationResponse]
+        HttpResponse[AutomationsGetResponse]
             Automation details
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -176,9 +181,9 @@ class RawAutomationsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AutomationResponse,
+                    AutomationsGetResponse,
                     construct_type(
-                        type_=AutomationResponse,  # type: ignore
+                        type_=AutomationsGetResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -226,11 +231,11 @@ class RawAutomationsClient:
         id: str,
         *,
         name: str,
-        trigger: typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]],
         description: typing.Optional[str] = OMIT,
-        workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
+        trigger: typing.Optional[AutomationsUpdateRequestTriggerParams] = OMIT,
+        workflow: typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[AutomationResponse]:
+    ) -> HttpResponse[AutomationsUpdateResponse]:
         """
         Updates an existing automation by its ID
 
@@ -241,11 +246,12 @@ class RawAutomationsClient:
 
         name : str
 
-        trigger : typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]]
-
         description : typing.Optional[str]
 
-        workflow : typing.Optional[typing.Sequence[WorkflowTaskStepParams]]
+        trigger : typing.Optional[AutomationsUpdateRequestTriggerParams]
+            Defines the trigger event and conditions. To clear/remove a trigger, provide null. To update, provide the new trigger object.
+
+        workflow : typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]]
             The updated sequence of tasks for the automation.
 
         request_options : typing.Optional[RequestOptions]
@@ -253,7 +259,7 @@ class RawAutomationsClient:
 
         Returns
         -------
-        HttpResponse[AutomationResponse]
+        HttpResponse[AutomationsUpdateResponse]
             Automation updated successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -262,9 +268,13 @@ class RawAutomationsClient:
             json={
                 "name": name,
                 "description": description,
-                "trigger": trigger,
+                "trigger": convert_and_respect_annotation_metadata(
+                    object_=trigger, annotation=AutomationsUpdateRequestTriggerParams, direction="write"
+                ),
                 "workflow": convert_and_respect_annotation_metadata(
-                    object_=workflow, annotation=typing.Sequence[WorkflowTaskStepParams], direction="write"
+                    object_=workflow,
+                    annotation=typing.Sequence[AutomationsUpdateRequestWorkflowItemParams],
+                    direction="write",
                 ),
             },
             headers={
@@ -276,9 +286,9 @@ class RawAutomationsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AutomationResponse,
+                    AutomationsUpdateResponse,
                     construct_type(
-                        type_=AutomationResponse,  # type: ignore
+                        type_=AutomationsUpdateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -459,7 +469,7 @@ class AsyncRawAutomationsClient:
 
     async def create(
         self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[AutomationResponse]:
+    ) -> AsyncHttpResponse[AutomationsCreateResponse]:
         """
         Creates a new automation for the current project
 
@@ -470,7 +480,7 @@ class AsyncRawAutomationsClient:
 
         Returns
         -------
-        AsyncHttpResponse[AutomationResponse]
+        AsyncHttpResponse[AutomationsCreateResponse]
             Automation created successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -481,9 +491,9 @@ class AsyncRawAutomationsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AutomationResponse,
+                    AutomationsCreateResponse,
                     construct_type(
-                        type_=AutomationResponse,  # type: ignore
+                        type_=AutomationsCreateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -528,7 +538,7 @@ class AsyncRawAutomationsClient:
 
     async def get(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[AutomationResponse]:
+    ) -> AsyncHttpResponse[AutomationsGetResponse]:
         """
         Retrieves a specific automation by its ID
 
@@ -542,7 +552,7 @@ class AsyncRawAutomationsClient:
 
         Returns
         -------
-        AsyncHttpResponse[AutomationResponse]
+        AsyncHttpResponse[AutomationsGetResponse]
             Automation details
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -553,9 +563,9 @@ class AsyncRawAutomationsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AutomationResponse,
+                    AutomationsGetResponse,
                     construct_type(
-                        type_=AutomationResponse,  # type: ignore
+                        type_=AutomationsGetResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -603,11 +613,11 @@ class AsyncRawAutomationsClient:
         id: str,
         *,
         name: str,
-        trigger: typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]],
         description: typing.Optional[str] = OMIT,
-        workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
+        trigger: typing.Optional[AutomationsUpdateRequestTriggerParams] = OMIT,
+        workflow: typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[AutomationResponse]:
+    ) -> AsyncHttpResponse[AutomationsUpdateResponse]:
         """
         Updates an existing automation by its ID
 
@@ -618,11 +628,12 @@ class AsyncRawAutomationsClient:
 
         name : str
 
-        trigger : typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]]
-
         description : typing.Optional[str]
 
-        workflow : typing.Optional[typing.Sequence[WorkflowTaskStepParams]]
+        trigger : typing.Optional[AutomationsUpdateRequestTriggerParams]
+            Defines the trigger event and conditions. To clear/remove a trigger, provide null. To update, provide the new trigger object.
+
+        workflow : typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]]
             The updated sequence of tasks for the automation.
 
         request_options : typing.Optional[RequestOptions]
@@ -630,7 +641,7 @@ class AsyncRawAutomationsClient:
 
         Returns
         -------
-        AsyncHttpResponse[AutomationResponse]
+        AsyncHttpResponse[AutomationsUpdateResponse]
             Automation updated successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -639,9 +650,13 @@ class AsyncRawAutomationsClient:
             json={
                 "name": name,
                 "description": description,
-                "trigger": trigger,
+                "trigger": convert_and_respect_annotation_metadata(
+                    object_=trigger, annotation=AutomationsUpdateRequestTriggerParams, direction="write"
+                ),
                 "workflow": convert_and_respect_annotation_metadata(
-                    object_=workflow, annotation=typing.Sequence[WorkflowTaskStepParams], direction="write"
+                    object_=workflow,
+                    annotation=typing.Sequence[AutomationsUpdateRequestWorkflowItemParams],
+                    direction="write",
                 ),
             },
             headers={
@@ -653,9 +668,9 @@ class AsyncRawAutomationsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AutomationResponse,
+                    AutomationsUpdateResponse,
                     construct_type(
-                        type_=AutomationResponse,  # type: ignore
+                        type_=AutomationsUpdateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

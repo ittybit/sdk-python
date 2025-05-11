@@ -5,15 +5,13 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
-from .meta import Meta
+from .forbidden_error_body_error import ForbiddenErrorBodyError
+from .forbidden_error_body_meta import ForbiddenErrorBodyMeta
 
 
 class ForbiddenErrorBody(UncheckedBaseModel):
-    meta: typing.Optional[Meta] = None
-    error: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Error message
-    """
+    meta: typing.Optional[ForbiddenErrorBodyMeta] = None
+    error: typing.Optional[ForbiddenErrorBodyError] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

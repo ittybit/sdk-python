@@ -5,11 +5,13 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
+from .bad_request_error_body_error import BadRequestErrorBodyError
+from .bad_request_error_body_meta import BadRequestErrorBodyMeta
 
 
 class BadRequestErrorBody(UncheckedBaseModel):
-    meta: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = None
-    error: typing.Optional[str] = None
+    meta: typing.Optional[BadRequestErrorBodyMeta] = None
+    error: typing.Optional[BadRequestErrorBodyError] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

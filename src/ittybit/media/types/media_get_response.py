@@ -5,14 +5,14 @@ import typing
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 from ...core.unchecked_base_model import UncheckedBaseModel
-from ...types.media import Media
+from .media_get_response_data import MediaGetResponseData
 from .media_get_response_links import MediaGetResponseLinks
 from .media_get_response_meta import MediaGetResponseMeta
 
 
 class MediaGetResponse(UncheckedBaseModel):
     meta: typing.Optional[MediaGetResponseMeta] = None
-    data: typing.Optional[Media] = None
+    data: typing.Optional[MediaGetResponseData] = None
     links: typing.Optional[MediaGetResponseLinks] = None
 
     if IS_PYDANTIC_V2:

@@ -2,28 +2,4 @@
 
 import typing
 
-import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2
-from ..core.unchecked_base_model import UncheckedBaseModel
-from .meta import Meta
-
-
-class Error(UncheckedBaseModel):
-    """
-    Standard error response format.
-    """
-
-    meta: typing.Optional[Meta] = None
-    error: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Error message
-    """
-
-    if IS_PYDANTIC_V2:
-        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
-    else:
-
-        class Config:
-            frozen = True
-            smart_union = True
-            extra = pydantic.Extra.allow
+Error = typing.Optional[str]

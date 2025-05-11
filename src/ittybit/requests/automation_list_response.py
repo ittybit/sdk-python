@@ -3,13 +3,12 @@
 import typing
 
 import typing_extensions
-from .api_response_base import ApiResponseBaseParams
-from .automation import AutomationParams
+from .automation_list_response_data_item import AutomationListResponseDataItemParams
+from .automation_list_response_links import AutomationListResponseLinksParams
+from .automation_list_response_meta import AutomationListResponseMetaParams
 
 
-class AutomationListResponseParams(ApiResponseBaseParams):
-    """
-    Standard wrapper for Automation list responses.
-    """
-
-    data: typing_extensions.NotRequired[typing.Sequence[AutomationParams]]
+class AutomationListResponseParams(typing_extensions.TypedDict):
+    meta: typing_extensions.NotRequired[AutomationListResponseMetaParams]
+    data: typing_extensions.NotRequired[typing.Sequence[AutomationListResponseDataItemParams]]
+    links: typing_extensions.NotRequired[AutomationListResponseLinksParams]

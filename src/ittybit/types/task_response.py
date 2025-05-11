@@ -5,19 +5,15 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
-from .links import Links
-from .meta import Meta
-from .task import Task
+from .task_response_data import TaskResponseData
+from .task_response_links import TaskResponseLinks
+from .task_response_meta import TaskResponseMeta
 
 
 class TaskResponse(UncheckedBaseModel):
-    """
-    Standard wrapper for single Task responses.
-    """
-
-    meta: typing.Optional[Meta] = None
-    data: typing.Optional[Task] = None
-    links: typing.Optional[Links] = None
+    meta: typing.Optional[TaskResponseMeta] = None
+    data: typing.Optional[TaskResponseData] = None
+    links: typing.Optional[TaskResponseLinks] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

@@ -4,8 +4,10 @@ import typing
 
 import httpx
 from .automations.client import AsyncAutomationsClient, AutomationsClient
+from .billing.client import AsyncBillingClient, BillingClient
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .environment import IttybitEnvironment
+from .example.client import AsyncExampleClient, ExampleClient
 from .files.client import AsyncFilesClient, FilesClient
 from .media.client import AsyncMediaClient, MediaClient
 from .signatures.client import AsyncSignaturesClient, SignaturesClient
@@ -68,8 +70,10 @@ class Ittybit:
             timeout=_defaulted_timeout,
         )
         self.automations = AutomationsClient(client_wrapper=self._client_wrapper)
+        self.billing = BillingClient(client_wrapper=self._client_wrapper)
         self.files = FilesClient(client_wrapper=self._client_wrapper)
         self.media = MediaClient(client_wrapper=self._client_wrapper)
+        self.example = ExampleClient(client_wrapper=self._client_wrapper)
         self.tasks = TasksClient(client_wrapper=self._client_wrapper)
         self.signatures = SignaturesClient(client_wrapper=self._client_wrapper)
 
@@ -130,8 +134,10 @@ class AsyncIttybit:
             timeout=_defaulted_timeout,
         )
         self.automations = AsyncAutomationsClient(client_wrapper=self._client_wrapper)
+        self.billing = AsyncBillingClient(client_wrapper=self._client_wrapper)
         self.files = AsyncFilesClient(client_wrapper=self._client_wrapper)
         self.media = AsyncMediaClient(client_wrapper=self._client_wrapper)
+        self.example = AsyncExampleClient(client_wrapper=self._client_wrapper)
         self.tasks = AsyncTasksClient(client_wrapper=self._client_wrapper)
         self.signatures = AsyncSignaturesClient(client_wrapper=self._client_wrapper)
 

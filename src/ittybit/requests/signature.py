@@ -4,10 +4,6 @@ import typing_extensions
 
 
 class SignatureParams(typing_extensions.TypedDict):
-    """
-    Details of a generated signature and signed URL.
-    """
-
     domain: str
     """
     Domain of the signed URL

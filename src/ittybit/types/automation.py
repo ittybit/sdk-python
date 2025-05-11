@@ -8,14 +8,10 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
 from .automation_status import AutomationStatus
 from .automation_trigger import AutomationTrigger
-from .workflow_task_step import WorkflowTaskStep
+from .automation_workflow_item import AutomationWorkflowItem
 
 
 class Automation(UncheckedBaseModel):
-    """
-    Represents an automated workflow triggered by specific events.
-    """
-
     id: str = pydantic.Field()
     """
     Unique identifier for the automation
@@ -31,12 +27,17 @@ class Automation(UncheckedBaseModel):
     Optional description for the automation
     """
 
+    metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
+    """
+    User-defined key-value metadata for the automation.
+    """
+
     trigger: AutomationTrigger = pydantic.Field()
     """
     The event and conditions that trigger this automation.
     """
 
-    workflow: typing.List[WorkflowTaskStep] = pydantic.Field()
+    workflow: typing.List[AutomationWorkflowItem] = pydantic.Field()
     """
     The sequence of tasks to be executed when the automation is triggered. The structure of each task object varies depending on its 'kind'.
     """

@@ -3,11 +3,12 @@
 import typing
 
 import typing_extensions
-from ...requests.api_response_base import ApiResponseBaseParams
+from .files_list_response_data_item import FilesListResponseDataItemParams
+from .files_list_response_links import FilesListResponseLinksParams
+from .files_list_response_meta import FilesListResponseMetaParams
 
 
-class FilesListResponseParams(ApiResponseBaseParams):
-    data: typing_extensions.NotRequired[typing.Sequence[typing.Optional[typing.Any]]]
-    """
-    List of file objects
-    """
+class FilesListResponseParams(typing_extensions.TypedDict):
+    meta: typing_extensions.NotRequired[FilesListResponseMetaParams]
+    data: typing_extensions.NotRequired[typing.Sequence[FilesListResponseDataItemParams]]
+    links: typing_extensions.NotRequired[FilesListResponseLinksParams]
