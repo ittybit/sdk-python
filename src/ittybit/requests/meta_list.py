@@ -3,7 +3,7 @@
 import typing_extensions
 
 
-class TasksListFilteredResponseMetaParams(typing_extensions.TypedDict):
+class MetaListParams(typing_extensions.TypedDict):
     request_id: typing_extensions.NotRequired[str]
     """
     Request ID

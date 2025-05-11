@@ -11,25 +11,5 @@ class MetaParams(typing_extensions.TypedDict):
 
     type: typing_extensions.NotRequired[str]
     """
-    Type of the primary data object in the response (e.g., list, object)
-    """
-
-    limit: typing_extensions.NotRequired[int]
-    """
-    Number of items per page.
-    """
-
-    total: typing_extensions.NotRequired[int]
-    """
-    Total number of items matching the query.
-    """
-
-    page: typing_extensions.NotRequired[int]
-    """
-    Current page number.
-    """
-
-    pages: typing_extensions.NotRequired[int]
-    """
-    Total number of pages.
+    Type of the primary data value in the response
     """

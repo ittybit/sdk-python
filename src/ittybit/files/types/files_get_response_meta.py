@@ -15,27 +15,7 @@ class FilesGetResponseMeta(UncheckedBaseModel):
 
     type: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Type of the primary data object in the response (e.g., list, object)
-    """
-
-    limit: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Number of items per page.
-    """
-
-    total: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Total number of items matching the query.
-    """
-
-    page: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Current page number.
-    """
-
-    pages: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Total number of pages.
+    Type of the primary data value in the response
     """
 
     if IS_PYDANTIC_V2:

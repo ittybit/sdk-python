@@ -11,7 +11,7 @@ class AutomationsListResponseMetaParams(typing_extensions.TypedDict):
 
     type: typing_extensions.NotRequired[str]
     """
-    Type of the primary data object in the response (e.g., list, object)
+    Type of the primary data value in the response
     """
 
     limit: typing_extensions.NotRequired[int]

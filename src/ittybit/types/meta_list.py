@@ -3,11 +3,11 @@
 import typing
 
 import pydantic
-from ...core.pydantic_utilities import IS_PYDANTIC_V2
-from ...core.unchecked_base_model import UncheckedBaseModel
+from ..core.pydantic_utilities import IS_PYDANTIC_V2
+from ..core.unchecked_base_model import UncheckedBaseModel
 
 
-class AutomationsUpdateResponseMeta(UncheckedBaseModel):
+class MetaList(UncheckedBaseModel):
     request_id: typing.Optional[str] = pydantic.Field(default=None)
     """
     Request ID
@@ -16,6 +16,26 @@ class AutomationsUpdateResponseMeta(UncheckedBaseModel):
     type: typing.Optional[str] = pydantic.Field(default=None)
     """
     Type of the primary data value in the response
+    """
+
+    limit: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Number of items per page.
+    """
+
+    total: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Total number of items matching the query.
+    """
+
+    page: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Current page number.
+    """
+
+    pages: typing.Optional[int] = pydantic.Field(default=None)
+    """
+    Total number of pages.
     """
 
     if IS_PYDANTIC_V2:

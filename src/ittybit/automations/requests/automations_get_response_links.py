@@ -10,27 +10,7 @@ class AutomationsGetResponseLinksParams(typing_extensions.TypedDict):
     The absolute URL of the current request, potentially including query parameters.
     """
 
-    next: typing_extensions.NotRequired[str]
-    """
-    URL for the next page of results.
-    """
-
-    prev: typing_extensions.NotRequired[str]
-    """
-    URL for the previous page of results.
-    """
-
     parent: typing_extensions.NotRequired[str]
     """
     URL for the parent resource.
-    """
-
-    first: typing_extensions.NotRequired[str]
-    """
-    URL for the first page of results.
-    """
-
-    last: typing_extensions.NotRequired[str]
-    """
-    URL for the last page of results.
     """

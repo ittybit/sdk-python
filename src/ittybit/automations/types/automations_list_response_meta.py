@@ -15,7 +15,7 @@ class AutomationsListResponseMeta(UncheckedBaseModel):
 
     type: typing.Optional[str] = pydantic.Field(default=None)
     """
-    Type of the primary data object in the response (e.g., list, object)
+    Type of the primary data value in the response
     """
 
     limit: typing.Optional[int] = pydantic.Field(default=None)
