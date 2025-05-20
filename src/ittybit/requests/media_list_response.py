@@ -3,12 +3,12 @@
 import typing
 
 import typing_extensions
-from .media_list_response_data_item import MediaListResponseDataItemParams
-from .media_list_response_links import MediaListResponseLinksParams
-from .media_list_response_meta import MediaListResponseMetaParams
+from .links_list import LinksListParams
+from .media import MediaParams
+from .meta_list import MetaListParams
 
 
 class MediaListResponseParams(typing_extensions.TypedDict):
-    meta: typing_extensions.NotRequired[MediaListResponseMetaParams]
-    data: typing_extensions.NotRequired[typing.Sequence[MediaListResponseDataItemParams]]
-    links: typing_extensions.NotRequired[MediaListResponseLinksParams]
+    meta: typing_extensions.NotRequired[MetaListParams]
+    data: typing_extensions.NotRequired[typing.Sequence[MediaParams]]
+    links: typing_extensions.NotRequired[LinksListParams]

@@ -14,12 +14,11 @@ from ..errors.bad_request_error import BadRequestError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
+from ..requests.workflow_task_step import WorkflowTaskStepParams
+from ..types.automation_list_response import AutomationListResponse
+from ..types.automation_response import AutomationResponse
+from ..types.error_response import ErrorResponse
 from .requests.automations_update_request_trigger import AutomationsUpdateRequestTriggerParams
-from .requests.automations_update_request_workflow_item import AutomationsUpdateRequestWorkflowItemParams
-from .types.automations_create_response import AutomationsCreateResponse
-from .types.automations_get_response import AutomationsGetResponse
-from .types.automations_list_response import AutomationsListResponse
-from .types.automations_update_response import AutomationsUpdateResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -29,7 +28,7 @@ class RawAutomationsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[AutomationsListResponse]:
+    def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[AutomationListResponse]:
         """
         Retrieves a list of all automations for the current project
 
@@ -40,7 +39,7 @@ class RawAutomationsClient:
 
         Returns
         -------
-        HttpResponse[AutomationsListResponse]
+        HttpResponse[AutomationListResponse]
             A list of automations
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -51,9 +50,9 @@ class RawAutomationsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AutomationsListResponse,
+                    AutomationListResponse,
                     construct_type(
-                        type_=AutomationsListResponse,  # type: ignore
+                        type_=AutomationListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -62,9 +61,9 @@ class RawAutomationsClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -73,9 +72,9 @@ class RawAutomationsClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -85,9 +84,7 @@ class RawAutomationsClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def create(
-        self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[AutomationsCreateResponse]:
+    def create(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[AutomationResponse]:
         """
         Creates a new automation for the current project
 
@@ -98,7 +95,7 @@ class RawAutomationsClient:
 
         Returns
         -------
-        HttpResponse[AutomationsCreateResponse]
+        HttpResponse[AutomationResponse]
             Automation created successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -109,9 +106,9 @@ class RawAutomationsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AutomationsCreateResponse,
+                    AutomationResponse,
                     construct_type(
-                        type_=AutomationsCreateResponse,  # type: ignore
+                        type_=AutomationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -120,9 +117,9 @@ class RawAutomationsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -131,9 +128,9 @@ class RawAutomationsClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -142,9 +139,9 @@ class RawAutomationsClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -156,21 +153,20 @@ class RawAutomationsClient:
 
     def get(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[AutomationsGetResponse]:
+    ) -> HttpResponse[AutomationResponse]:
         """
         Retrieves a specific automation by its ID
 
         Parameters
         ----------
         id : str
-            The automation ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[AutomationsGetResponse]
+        HttpResponse[AutomationResponse]
             Automation details
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -181,9 +177,9 @@ class RawAutomationsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AutomationsGetResponse,
+                    AutomationResponse,
                     construct_type(
-                        type_=AutomationsGetResponse,  # type: ignore
+                        type_=AutomationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -192,9 +188,9 @@ class RawAutomationsClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -203,9 +199,9 @@ class RawAutomationsClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -214,9 +210,9 @@ class RawAutomationsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -233,16 +229,15 @@ class RawAutomationsClient:
         name: str,
         description: typing.Optional[str] = OMIT,
         trigger: typing.Optional[AutomationsUpdateRequestTriggerParams] = OMIT,
-        workflow: typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]] = OMIT,
+        workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[AutomationsUpdateResponse]:
+    ) -> HttpResponse[AutomationResponse]:
         """
         Updates an existing automation by its ID
 
         Parameters
         ----------
         id : str
-            The ID of the automation to update.
 
         name : str
 
@@ -251,7 +246,7 @@ class RawAutomationsClient:
         trigger : typing.Optional[AutomationsUpdateRequestTriggerParams]
             Defines the trigger event and conditions. To clear/remove a trigger, provide null. To update, provide the new trigger object.
 
-        workflow : typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]]
+        workflow : typing.Optional[typing.Sequence[WorkflowTaskStepParams]]
             The updated sequence of tasks for the automation.
 
         request_options : typing.Optional[RequestOptions]
@@ -259,7 +254,7 @@ class RawAutomationsClient:
 
         Returns
         -------
-        HttpResponse[AutomationsUpdateResponse]
+        HttpResponse[AutomationResponse]
             Automation updated successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -272,9 +267,7 @@ class RawAutomationsClient:
                     object_=trigger, annotation=AutomationsUpdateRequestTriggerParams, direction="write"
                 ),
                 "workflow": convert_and_respect_annotation_metadata(
-                    object_=workflow,
-                    annotation=typing.Sequence[AutomationsUpdateRequestWorkflowItemParams],
-                    direction="write",
+                    object_=workflow, annotation=typing.Sequence[WorkflowTaskStepParams], direction="write"
                 ),
             },
             headers={
@@ -286,9 +279,9 @@ class RawAutomationsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AutomationsUpdateResponse,
+                    AutomationResponse,
                     construct_type(
-                        type_=AutomationsUpdateResponse,  # type: ignore
+                        type_=AutomationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -297,9 +290,9 @@ class RawAutomationsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -308,9 +301,9 @@ class RawAutomationsClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -319,9 +312,9 @@ class RawAutomationsClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -330,9 +323,9 @@ class RawAutomationsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -349,7 +342,6 @@ class RawAutomationsClient:
         Parameters
         ----------
         id : str
-            The automation ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -370,9 +362,9 @@ class RawAutomationsClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -381,9 +373,9 @@ class RawAutomationsClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -392,9 +384,9 @@ class RawAutomationsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -411,7 +403,7 @@ class AsyncRawAutomationsClient:
 
     async def list(
         self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[AutomationsListResponse]:
+    ) -> AsyncHttpResponse[AutomationListResponse]:
         """
         Retrieves a list of all automations for the current project
 
@@ -422,7 +414,7 @@ class AsyncRawAutomationsClient:
 
         Returns
         -------
-        AsyncHttpResponse[AutomationsListResponse]
+        AsyncHttpResponse[AutomationListResponse]
             A list of automations
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -433,9 +425,9 @@ class AsyncRawAutomationsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AutomationsListResponse,
+                    AutomationListResponse,
                     construct_type(
-                        type_=AutomationsListResponse,  # type: ignore
+                        type_=AutomationListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -444,9 +436,9 @@ class AsyncRawAutomationsClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -455,9 +447,9 @@ class AsyncRawAutomationsClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -469,7 +461,7 @@ class AsyncRawAutomationsClient:
 
     async def create(
         self, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[AutomationsCreateResponse]:
+    ) -> AsyncHttpResponse[AutomationResponse]:
         """
         Creates a new automation for the current project
 
@@ -480,7 +472,7 @@ class AsyncRawAutomationsClient:
 
         Returns
         -------
-        AsyncHttpResponse[AutomationsCreateResponse]
+        AsyncHttpResponse[AutomationResponse]
             Automation created successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -491,9 +483,9 @@ class AsyncRawAutomationsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AutomationsCreateResponse,
+                    AutomationResponse,
                     construct_type(
-                        type_=AutomationsCreateResponse,  # type: ignore
+                        type_=AutomationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -502,9 +494,9 @@ class AsyncRawAutomationsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -513,9 +505,9 @@ class AsyncRawAutomationsClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -524,9 +516,9 @@ class AsyncRawAutomationsClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -538,21 +530,20 @@ class AsyncRawAutomationsClient:
 
     async def get(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[AutomationsGetResponse]:
+    ) -> AsyncHttpResponse[AutomationResponse]:
         """
         Retrieves a specific automation by its ID
 
         Parameters
         ----------
         id : str
-            The automation ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[AutomationsGetResponse]
+        AsyncHttpResponse[AutomationResponse]
             Automation details
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -563,9 +554,9 @@ class AsyncRawAutomationsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AutomationsGetResponse,
+                    AutomationResponse,
                     construct_type(
-                        type_=AutomationsGetResponse,  # type: ignore
+                        type_=AutomationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -574,9 +565,9 @@ class AsyncRawAutomationsClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -585,9 +576,9 @@ class AsyncRawAutomationsClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -596,9 +587,9 @@ class AsyncRawAutomationsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -615,16 +606,15 @@ class AsyncRawAutomationsClient:
         name: str,
         description: typing.Optional[str] = OMIT,
         trigger: typing.Optional[AutomationsUpdateRequestTriggerParams] = OMIT,
-        workflow: typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]] = OMIT,
+        workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[AutomationsUpdateResponse]:
+    ) -> AsyncHttpResponse[AutomationResponse]:
         """
         Updates an existing automation by its ID
 
         Parameters
         ----------
         id : str
-            The ID of the automation to update.
 
         name : str
 
@@ -633,7 +623,7 @@ class AsyncRawAutomationsClient:
         trigger : typing.Optional[AutomationsUpdateRequestTriggerParams]
             Defines the trigger event and conditions. To clear/remove a trigger, provide null. To update, provide the new trigger object.
 
-        workflow : typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]]
+        workflow : typing.Optional[typing.Sequence[WorkflowTaskStepParams]]
             The updated sequence of tasks for the automation.
 
         request_options : typing.Optional[RequestOptions]
@@ -641,7 +631,7 @@ class AsyncRawAutomationsClient:
 
         Returns
         -------
-        AsyncHttpResponse[AutomationsUpdateResponse]
+        AsyncHttpResponse[AutomationResponse]
             Automation updated successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -654,9 +644,7 @@ class AsyncRawAutomationsClient:
                     object_=trigger, annotation=AutomationsUpdateRequestTriggerParams, direction="write"
                 ),
                 "workflow": convert_and_respect_annotation_metadata(
-                    object_=workflow,
-                    annotation=typing.Sequence[AutomationsUpdateRequestWorkflowItemParams],
-                    direction="write",
+                    object_=workflow, annotation=typing.Sequence[WorkflowTaskStepParams], direction="write"
                 ),
             },
             headers={
@@ -668,9 +656,9 @@ class AsyncRawAutomationsClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    AutomationsUpdateResponse,
+                    AutomationResponse,
                     construct_type(
-                        type_=AutomationsUpdateResponse,  # type: ignore
+                        type_=AutomationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -679,9 +667,9 @@ class AsyncRawAutomationsClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -690,9 +678,9 @@ class AsyncRawAutomationsClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -701,9 +689,9 @@ class AsyncRawAutomationsClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -712,9 +700,9 @@ class AsyncRawAutomationsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -733,7 +721,6 @@ class AsyncRawAutomationsClient:
         Parameters
         ----------
         id : str
-            The automation ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -754,9 +741,9 @@ class AsyncRawAutomationsClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -765,9 +752,9 @@ class AsyncRawAutomationsClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -776,9 +763,9 @@ class AsyncRawAutomationsClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),

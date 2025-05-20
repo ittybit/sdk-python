@@ -2,22 +2,4 @@
 
 import typing
 
-import pydantic
-from ..core.pydantic_utilities import IS_PYDANTIC_V2
-from ..core.unchecked_base_model import UncheckedBaseModel
-from .api_response_base_links import ApiResponseBaseLinks
-from .api_response_base_meta import ApiResponseBaseMeta
-
-
-class ApiResponseBase(UncheckedBaseModel):
-    meta: typing.Optional[ApiResponseBaseMeta] = None
-    links: typing.Optional[ApiResponseBaseLinks] = None
-
-    if IS_PYDANTIC_V2:
-        model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
-    else:
-
-        class Config:
-            frozen = True
-            smart_union = True
-            extra = pydantic.Extra.allow
+ApiResponseBase = typing.Optional[typing.Any]

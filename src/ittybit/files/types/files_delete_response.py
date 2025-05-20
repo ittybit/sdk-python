@@ -5,15 +5,19 @@ import typing
 import pydantic
 from ...core.pydantic_utilities import IS_PYDANTIC_V2
 from ...core.unchecked_base_model import UncheckedBaseModel
+from ...types.links import Links
+from ...types.meta import Meta
 from .files_delete_response_data import FilesDeleteResponseData
-from .files_delete_response_links import FilesDeleteResponseLinks
-from .files_delete_response_meta import FilesDeleteResponseMeta
 
 
 class FilesDeleteResponse(UncheckedBaseModel):
-    data: typing.Optional[FilesDeleteResponseData] = None
-    meta: typing.Optional[FilesDeleteResponseMeta] = None
-    links: typing.Optional[FilesDeleteResponseLinks] = None
+    data: typing.Optional[FilesDeleteResponseData] = pydantic.Field(default=None)
+    """
+    Contains a confirmation message
+    """
+
+    meta: typing.Optional[Meta] = None
+    links: typing.Optional[Links] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

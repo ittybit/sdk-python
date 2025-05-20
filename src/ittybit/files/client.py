@@ -4,12 +4,10 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.file_list_response import FileListResponse
+from ..types.file_response import FileResponse
 from .raw_client import AsyncRawFilesClient, RawFilesClient
-from .types.files_create_from_url_response import FilesCreateFromUrlResponse
 from .types.files_delete_response import FilesDeleteResponse
-from .types.files_get_response import FilesGetResponse
-from .types.files_list_response import FilesListResponse
-from .types.files_update_metadata_response import FilesUpdateMetadataResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -31,20 +29,13 @@ class FilesClient:
         return self._raw_client
 
     def list(
-        self,
-        *,
-        page: typing.Optional[int] = None,
-        limit: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> FilesListResponse:
+        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+    ) -> FileListResponse:
         """
         Retrieves a paginated list of all files associated with the current project. Files can be filtered using query parameters.
 
         Parameters
         ----------
-        page : typing.Optional[int]
-            Page number
-
         limit : typing.Optional[int]
             Items per page
 
@@ -53,19 +44,23 @@ class FilesClient:
 
         Returns
         -------
-        FilesListResponse
+        FileListResponse
             A paginated list of files.
 
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(token="YOUR_TOKEN", )
+
+        client = Ittybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
         client.files.list()
         """
-        _response = self._raw_client.list(page=page, limit=limit, request_options=request_options)
+        _response = self._raw_client.list(limit=limit, request_options=request_options)
         return _response.data
 
-    def create_from_url(
+    def create(
         self,
         *,
         url: str,
@@ -76,7 +71,7 @@ class FilesClient:
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         async_: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FilesCreateFromUrlResponse:
+    ) -> FileResponse:
         """
         Registers a file from a publicly accessible URL. The file will be ingested asynchronously.
 
@@ -108,17 +103,25 @@ class FilesClient:
 
         Returns
         -------
-        FilesCreateFromUrlResponse
-            File accepted for ingestion.
+        FileResponse
+            File created successfully.
 
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(token="YOUR_TOKEN", )
-        client.files.create_from_url(url='https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', filename='BigBuckBunny.mp4', folder='examples/cartoons', metadata={'source': 'google_storage_sample'
-        }, )
+
+        client = Ittybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+        client.files.create(
+            url="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+            filename="bunny.mp4",
+            folder="examples/cartoons",
+            metadata={"credit": "gtv-videos-bucket"},
+        )
         """
-        _response = self._raw_client.create_from_url(
+        _response = self._raw_client.create(
             url=url,
             filename=filename,
             folder=folder,
@@ -130,28 +133,33 @@ class FilesClient:
         )
         return _response.data
 
-    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> FilesGetResponse:
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> FileResponse:
         """
         Retrieves detailed information about a specific file identified by its unique ID, including its metadata, media associations, and technical properties.
 
         Parameters
         ----------
         id : str
-            Unique identifier of the file to retrieve. Must be a valid file ID (e.g., file_7bKpN2950Dx4EW8T).
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        FilesGetResponse
+        FileResponse
             Returns the file details
 
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(token="YOUR_TOKEN", )
-        client.files.get(id='id', )
+
+        client = Ittybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+        client.files.get(
+            id="id",
+        )
         """
         _response = self._raw_client.get(id, request_options=request_options)
         return _response.data
@@ -163,7 +171,6 @@ class FilesClient:
         Parameters
         ----------
         id : str
-            Unique identifier of the file to delete. Must be a valid file ID (e.g., file_7bKpN2950Dx4EW8T).
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -176,13 +183,19 @@ class FilesClient:
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(token="YOUR_TOKEN", )
-        client.files.delete(id='id', )
+
+        client = Ittybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+        client.files.delete(
+            id="id",
+        )
         """
         _response = self._raw_client.delete(id, request_options=request_options)
         return _response.data
 
-    def update_metadata(
+    def update(
         self,
         id: str,
         *,
@@ -190,14 +203,13 @@ class FilesClient:
         filename: typing.Optional[str] = OMIT,
         folder: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FilesUpdateMetadataResponse:
+    ) -> FileResponse:
         """
         Updates metadata, filename, or folder properties of an existing file. Only the specified fields will be updated.
 
         Parameters
         ----------
         id : str
-            Unique identifier of the file to update. Must be a valid file ID (e.g., file_abc123).
 
         metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
             An object containing key-value pairs to set or update. Set a key to null to remove it.
@@ -213,18 +225,24 @@ class FilesClient:
 
         Returns
         -------
-        FilesUpdateMetadataResponse
+        FileResponse
             File updated successfully.
 
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(token="YOUR_TOKEN", )
-        client.files.update_metadata(id='id', metadata={'status': 'approved'
-        , 'reviewed_by': 'user_abc'
-        }, )
+
+        client = Ittybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+        client.files.update(
+            id="id",
+            filename="final_approved_video.mp4",
+            folder="archive/2024",
+        )
         """
-        _response = self._raw_client.update_metadata(
+        _response = self._raw_client.update(
             id, metadata=metadata, filename=filename, folder=folder, request_options=request_options
         )
         return _response.data
@@ -246,20 +264,13 @@ class AsyncFilesClient:
         return self._raw_client
 
     async def list(
-        self,
-        *,
-        page: typing.Optional[int] = None,
-        limit: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> FilesListResponse:
+        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+    ) -> FileListResponse:
         """
         Retrieves a paginated list of all files associated with the current project. Files can be filtered using query parameters.
 
         Parameters
         ----------
-        page : typing.Optional[int]
-            Page number
-
         limit : typing.Optional[int]
             Items per page
 
@@ -268,22 +279,31 @@ class AsyncFilesClient:
 
         Returns
         -------
-        FilesListResponse
+        FileListResponse
             A paginated list of files.
 
         Examples
         --------
-        from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(token="YOUR_TOKEN", )
+
+        from ittybit import AsyncIttybit
+
+        client = AsyncIttybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.files.list()
+
+
         asyncio.run(main())
         """
-        _response = await self._raw_client.list(page=page, limit=limit, request_options=request_options)
+        _response = await self._raw_client.list(limit=limit, request_options=request_options)
         return _response.data
 
-    async def create_from_url(
+    async def create(
         self,
         *,
         url: str,
@@ -294,7 +314,7 @@ class AsyncFilesClient:
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         async_: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FilesCreateFromUrlResponse:
+    ) -> FileResponse:
         """
         Registers a file from a publicly accessible URL. The file will be ingested asynchronously.
 
@@ -326,20 +346,33 @@ class AsyncFilesClient:
 
         Returns
         -------
-        FilesCreateFromUrlResponse
-            File accepted for ingestion.
+        FileResponse
+            File created successfully.
 
         Examples
         --------
-        from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(token="YOUR_TOKEN", )
+
+        from ittybit import AsyncIttybit
+
+        client = AsyncIttybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.files.create_from_url(url='https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4', filename='BigBuckBunny.mp4', folder='examples/cartoons', metadata={'source': 'google_storage_sample'
-            }, )
+            await client.files.create(
+                url="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                filename="bunny.mp4",
+                folder="examples/cartoons",
+                metadata={"credit": "gtv-videos-bucket"},
+            )
+
+
         asyncio.run(main())
         """
-        _response = await self._raw_client.create_from_url(
+        _response = await self._raw_client.create(
             url=url,
             filename=filename,
             folder=folder,
@@ -351,30 +384,40 @@ class AsyncFilesClient:
         )
         return _response.data
 
-    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> FilesGetResponse:
+    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> FileResponse:
         """
         Retrieves detailed information about a specific file identified by its unique ID, including its metadata, media associations, and technical properties.
 
         Parameters
         ----------
         id : str
-            Unique identifier of the file to retrieve. Must be a valid file ID (e.g., file_7bKpN2950Dx4EW8T).
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        FilesGetResponse
+        FileResponse
             Returns the file details
 
         Examples
         --------
-        from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(token="YOUR_TOKEN", )
+
+        from ittybit import AsyncIttybit
+
+        client = AsyncIttybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.files.get(id='id', )
+            await client.files.get(
+                id="id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(id, request_options=request_options)
@@ -387,7 +430,6 @@ class AsyncFilesClient:
         Parameters
         ----------
         id : str
-            Unique identifier of the file to delete. Must be a valid file ID (e.g., file_7bKpN2950Dx4EW8T).
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -399,17 +441,28 @@ class AsyncFilesClient:
 
         Examples
         --------
-        from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(token="YOUR_TOKEN", )
+
+        from ittybit import AsyncIttybit
+
+        client = AsyncIttybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.files.delete(id='id', )
+            await client.files.delete(
+                id="id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete(id, request_options=request_options)
         return _response.data
 
-    async def update_metadata(
+    async def update(
         self,
         id: str,
         *,
@@ -417,14 +470,13 @@ class AsyncFilesClient:
         filename: typing.Optional[str] = OMIT,
         folder: typing.Optional[str] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FilesUpdateMetadataResponse:
+    ) -> FileResponse:
         """
         Updates metadata, filename, or folder properties of an existing file. Only the specified fields will be updated.
 
         Parameters
         ----------
         id : str
-            Unique identifier of the file to update. Must be a valid file ID (e.g., file_abc123).
 
         metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
             An object containing key-value pairs to set or update. Set a key to null to remove it.
@@ -440,21 +492,32 @@ class AsyncFilesClient:
 
         Returns
         -------
-        FilesUpdateMetadataResponse
+        FileResponse
             File updated successfully.
 
         Examples
         --------
-        from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(token="YOUR_TOKEN", )
+
+        from ittybit import AsyncIttybit
+
+        client = AsyncIttybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.files.update_metadata(id='id', metadata={'status': 'approved'
-            , 'reviewed_by': 'user_abc'
-            }, )
+            await client.files.update(
+                id="id",
+                filename="final_approved_video.mp4",
+                folder="archive/2024",
+            )
+
+
         asyncio.run(main())
         """
-        _response = await self._raw_client.update_metadata(
+        _response = await self._raw_client.update(
             id, metadata=metadata, filename=filename, folder=folder, request_options=request_options
         )
         return _response.data

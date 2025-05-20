@@ -5,15 +5,15 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
-from .file_list_response_data_item import FileListResponseDataItem
-from .file_list_response_links import FileListResponseLinks
-from .file_list_response_meta import FileListResponseMeta
+from .file import File
+from .links_list import LinksList
+from .meta_list import MetaList
 
 
 class FileListResponse(UncheckedBaseModel):
-    meta: typing.Optional[FileListResponseMeta] = None
-    data: typing.Optional[typing.List[FileListResponseDataItem]] = None
-    links: typing.Optional[FileListResponseLinks] = None
+    meta: typing.Optional[MetaList] = None
+    data: typing.Optional[typing.List[File]] = None
+    links: typing.Optional[LinksList] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

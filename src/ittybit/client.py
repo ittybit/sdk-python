@@ -4,10 +4,8 @@ import typing
 
 import httpx
 from .automations.client import AsyncAutomationsClient, AutomationsClient
-from .billing.client import AsyncBillingClient, BillingClient
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .environment import IttybitEnvironment
-from .example.client import AsyncExampleClient, ExampleClient
 from .files.client import AsyncFilesClient, FilesClient
 from .media.client import AsyncMediaClient, MediaClient
 from .signatures.client import AsyncSignaturesClient, SignaturesClient
@@ -26,10 +24,13 @@ class Ittybit:
     environment : IttybitEnvironment
         The environment to use for requests from the client. from .environment import IttybitEnvironment
 
+
+
         Defaults to IttybitEnvironment.DEFAULT
 
 
 
+    version : typing.Optional[str]
     token : typing.Union[str, typing.Callable[[], str]]
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
@@ -43,7 +44,11 @@ class Ittybit:
     Examples
     --------
     from ittybit import Ittybit
-    client = Ittybit(token="YOUR_TOKEN", )
+
+    client = Ittybit(
+        version="YOUR_VERSION",
+        token="YOUR_TOKEN",
+    )
     """
 
     def __init__(
@@ -51,6 +56,7 @@ class Ittybit:
         *,
         base_url: typing.Optional[str] = None,
         environment: IttybitEnvironment = IttybitEnvironment.DEFAULT,
+        version: typing.Optional[str] = None,
         token: typing.Union[str, typing.Callable[[], str]],
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
@@ -61,6 +67,7 @@ class Ittybit:
         )
         self._client_wrapper = SyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
+            version=version,
             token=token,
             httpx_client=httpx_client
             if httpx_client is not None
@@ -70,10 +77,8 @@ class Ittybit:
             timeout=_defaulted_timeout,
         )
         self.automations = AutomationsClient(client_wrapper=self._client_wrapper)
-        self.billing = BillingClient(client_wrapper=self._client_wrapper)
         self.files = FilesClient(client_wrapper=self._client_wrapper)
         self.media = MediaClient(client_wrapper=self._client_wrapper)
-        self.example = ExampleClient(client_wrapper=self._client_wrapper)
         self.tasks = TasksClient(client_wrapper=self._client_wrapper)
         self.signatures = SignaturesClient(client_wrapper=self._client_wrapper)
 
@@ -90,10 +95,13 @@ class AsyncIttybit:
     environment : IttybitEnvironment
         The environment to use for requests from the client. from .environment import IttybitEnvironment
 
+
+
         Defaults to IttybitEnvironment.DEFAULT
 
 
 
+    version : typing.Optional[str]
     token : typing.Union[str, typing.Callable[[], str]]
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
@@ -107,7 +115,11 @@ class AsyncIttybit:
     Examples
     --------
     from ittybit import AsyncIttybit
-    client = AsyncIttybit(token="YOUR_TOKEN", )
+
+    client = AsyncIttybit(
+        version="YOUR_VERSION",
+        token="YOUR_TOKEN",
+    )
     """
 
     def __init__(
@@ -115,6 +127,7 @@ class AsyncIttybit:
         *,
         base_url: typing.Optional[str] = None,
         environment: IttybitEnvironment = IttybitEnvironment.DEFAULT,
+        version: typing.Optional[str] = None,
         token: typing.Union[str, typing.Callable[[], str]],
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
@@ -125,6 +138,7 @@ class AsyncIttybit:
         )
         self._client_wrapper = AsyncClientWrapper(
             base_url=_get_base_url(base_url=base_url, environment=environment),
+            version=version,
             token=token,
             httpx_client=httpx_client
             if httpx_client is not None
@@ -134,10 +148,8 @@ class AsyncIttybit:
             timeout=_defaulted_timeout,
         )
         self.automations = AsyncAutomationsClient(client_wrapper=self._client_wrapper)
-        self.billing = AsyncBillingClient(client_wrapper=self._client_wrapper)
         self.files = AsyncFilesClient(client_wrapper=self._client_wrapper)
         self.media = AsyncMediaClient(client_wrapper=self._client_wrapper)
-        self.example = AsyncExampleClient(client_wrapper=self._client_wrapper)
         self.tasks = AsyncTasksClient(client_wrapper=self._client_wrapper)
         self.signatures = AsyncSignaturesClient(client_wrapper=self._client_wrapper)
 

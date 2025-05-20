@@ -5,15 +5,15 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
-from .signature_response_data import SignatureResponseData
-from .signature_response_links import SignatureResponseLinks
-from .signature_response_meta import SignatureResponseMeta
+from .links import Links
+from .meta import Meta
+from .signature import Signature
 
 
 class SignatureResponse(UncheckedBaseModel):
-    meta: typing.Optional[SignatureResponseMeta] = None
-    data: typing.Optional[SignatureResponseData] = None
-    links: typing.Optional[SignatureResponseLinks] = None
+    meta: typing.Optional[Meta] = None
+    data: typing.Optional[Signature] = None
+    links: typing.Optional[Links] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

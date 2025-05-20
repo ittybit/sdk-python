@@ -4,4 +4,11 @@ import typing_extensions
 
 
 class FilesDeleteResponseDataParams(typing_extensions.TypedDict):
-    message: str
+    """
+    Contains a confirmation message
+    """
+
+    message: typing_extensions.NotRequired[str]
+    """
+    Confirmation message
+    """

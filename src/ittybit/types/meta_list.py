@@ -13,7 +13,7 @@ class MetaList(UncheckedBaseModel):
     Request ID
     """
 
-    type: typing.Optional[str] = pydantic.Field(default=None)
+    type: typing.Optional[typing.Literal["list"]] = pydantic.Field(default=None)
     """
     Type of the primary data value in the response
     """

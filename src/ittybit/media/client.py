@@ -4,11 +4,10 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.confirmation_response import ConfirmationResponse
 from ..types.media_list_response import MediaListResponse
+from ..types.media_response import MediaResponse
 from .raw_client import AsyncRawMediaClient, RawMediaClient
-from .types.media_create_response import MediaCreateResponse
-from .types.media_delete_response import MediaDeleteResponse
-from .types.media_get_response import MediaGetResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -30,20 +29,13 @@ class MediaClient:
         return self._raw_client
 
     def list(
-        self,
-        *,
-        page: typing.Optional[int] = None,
-        limit: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> MediaListResponse:
         """
         Retrieves a list of all media for the current project
 
         Parameters
         ----------
-        page : typing.Optional[int]
-            Page number for pagination.
-
         limit : typing.Optional[int]
             Number of media items to return per page.
 
@@ -58,10 +50,14 @@ class MediaClient:
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(token="YOUR_TOKEN", )
+
+        client = Ittybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
         client.media.list()
         """
-        _response = self._raw_client.list(page=page, limit=limit, request_options=request_options)
+        _response = self._raw_client.list(limit=limit, request_options=request_options)
         return _response.data
 
     def create(
@@ -76,7 +72,7 @@ class MediaClient:
         async_: typing.Optional[bool] = OMIT,
         empty: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> MediaCreateResponse:
+    ) -> MediaResponse:
         """
         Creates a new media item from a URL or as an empty placeholder
 
@@ -111,16 +107,23 @@ class MediaClient:
 
         Returns
         -------
-        MediaCreateResponse
+        MediaResponse
             Media created successfully
 
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(token="YOUR_TOKEN", )
-        client.media.create(url='https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4', folder='examples/movies', filename='escapes.mp4', metadata={'genre': 'Animation'
-        , 'rating': 'G'
-        }, )
+
+        client = Ittybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+        client.media.create(
+            url="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+            folder="examples/cartoons",
+            filename="bunny.mp4",
+            metadata={"credit": "gtv-videos-bucket"},
+        )
         """
         _response = self._raw_client.create(
             url=url,
@@ -135,56 +138,110 @@ class MediaClient:
         )
         return _response.data
 
-    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> MediaGetResponse:
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> MediaResponse:
         """
         Retrieves a specific media item by its ID
 
         Parameters
         ----------
         id : str
-            The media ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        MediaGetResponse
+        MediaResponse
             Media item details
 
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(token="YOUR_TOKEN", )
-        client.media.get(id='id', )
+
+        client = Ittybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+        client.media.get(
+            id="id",
+        )
         """
         _response = self._raw_client.get(id, request_options=request_options)
         return _response.data
 
-    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> MediaDeleteResponse:
+    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> ConfirmationResponse:
         """
         Deletes a specific media item by its ID
 
         Parameters
         ----------
         id : str
-            The media ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        MediaDeleteResponse
+        ConfirmationResponse
             Media deleted successfully
 
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(token="YOUR_TOKEN", )
-        client.media.delete(id='id', )
+
+        client = Ittybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+        client.media.delete(
+            id="id",
+        )
         """
         _response = self._raw_client.delete(id, request_options=request_options)
+        return _response.data
+
+    def update(
+        self,
+        id: str,
+        *,
+        title: typing.Optional[str] = OMIT,
+        metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> MediaResponse:
+        """
+        Updates specific fields of a media item by its ID. Only the fields provided in the request body will be updated.
+
+        Parameters
+        ----------
+        id : str
+
+        title : typing.Optional[str]
+            New title for the media item.
+
+        metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            New metadata object for the media item. This will replace the existing metadata.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        MediaResponse
+            Media updated successfully
+
+        Examples
+        --------
+        from ittybit import Ittybit
+
+        client = Ittybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+        client.media.update(
+            id="id",
+        )
+        """
+        _response = self._raw_client.update(id, title=title, metadata=metadata, request_options=request_options)
         return _response.data
 
 
@@ -204,20 +261,13 @@ class AsyncMediaClient:
         return self._raw_client
 
     async def list(
-        self,
-        *,
-        page: typing.Optional[int] = None,
-        limit: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> MediaListResponse:
         """
         Retrieves a list of all media for the current project
 
         Parameters
         ----------
-        page : typing.Optional[int]
-            Page number for pagination.
-
         limit : typing.Optional[int]
             Number of media items to return per page.
 
@@ -231,14 +281,23 @@ class AsyncMediaClient:
 
         Examples
         --------
-        from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(token="YOUR_TOKEN", )
+
+        from ittybit import AsyncIttybit
+
+        client = AsyncIttybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.media.list()
+
+
         asyncio.run(main())
         """
-        _response = await self._raw_client.list(page=page, limit=limit, request_options=request_options)
+        _response = await self._raw_client.list(limit=limit, request_options=request_options)
         return _response.data
 
     async def create(
@@ -253,7 +312,7 @@ class AsyncMediaClient:
         async_: typing.Optional[bool] = OMIT,
         empty: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> MediaCreateResponse:
+    ) -> MediaResponse:
         """
         Creates a new media item from a URL or as an empty placeholder
 
@@ -288,18 +347,30 @@ class AsyncMediaClient:
 
         Returns
         -------
-        MediaCreateResponse
+        MediaResponse
             Media created successfully
 
         Examples
         --------
-        from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(token="YOUR_TOKEN", )
+
+        from ittybit import AsyncIttybit
+
+        client = AsyncIttybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.media.create(url='https://storage.googleapis.com/gtv-videos-bucket/sample/ForBiggerEscapes.mp4', folder='examples/movies', filename='escapes.mp4', metadata={'genre': 'Animation'
-            , 'rating': 'G'
-            }, )
+            await client.media.create(
+                url="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+                folder="examples/cartoons",
+                filename="bunny.mp4",
+                metadata={"credit": "gtv-videos-bucket"},
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
@@ -315,60 +386,132 @@ class AsyncMediaClient:
         )
         return _response.data
 
-    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> MediaGetResponse:
+    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> MediaResponse:
         """
         Retrieves a specific media item by its ID
 
         Parameters
         ----------
         id : str
-            The media ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        MediaGetResponse
+        MediaResponse
             Media item details
 
         Examples
         --------
-        from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(token="YOUR_TOKEN", )
+
+        from ittybit import AsyncIttybit
+
+        client = AsyncIttybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.media.get(id='id', )
+            await client.media.get(
+                id="id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(id, request_options=request_options)
         return _response.data
 
-    async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> MediaDeleteResponse:
+    async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> ConfirmationResponse:
         """
         Deletes a specific media item by its ID
 
         Parameters
         ----------
         id : str
-            The media ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        MediaDeleteResponse
+        ConfirmationResponse
             Media deleted successfully
 
         Examples
         --------
-        from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(token="YOUR_TOKEN", )
+
+        from ittybit import AsyncIttybit
+
+        client = AsyncIttybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.media.delete(id='id', )
+            await client.media.delete(
+                id="id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete(id, request_options=request_options)
+        return _response.data
+
+    async def update(
+        self,
+        id: str,
+        *,
+        title: typing.Optional[str] = OMIT,
+        metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> MediaResponse:
+        """
+        Updates specific fields of a media item by its ID. Only the fields provided in the request body will be updated.
+
+        Parameters
+        ----------
+        id : str
+
+        title : typing.Optional[str]
+            New title for the media item.
+
+        metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            New metadata object for the media item. This will replace the existing metadata.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        MediaResponse
+            Media updated successfully
+
+        Examples
+        --------
+        import asyncio
+
+        from ittybit import AsyncIttybit
+
+        client = AsyncIttybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+
+
+        async def main() -> None:
+            await client.media.update(
+                id="id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.update(id, title=title, metadata=metadata, request_options=request_options)
         return _response.data

@@ -3,12 +3,12 @@
 import typing
 
 import typing_extensions
-from .task_list_response_data_item import TaskListResponseDataItemParams
-from .task_list_response_links import TaskListResponseLinksParams
-from .task_list_response_meta import TaskListResponseMetaParams
+from .links_list import LinksListParams
+from .meta_list import MetaListParams
+from .task import TaskParams
 
 
 class TaskListResponseParams(typing_extensions.TypedDict):
-    meta: typing_extensions.NotRequired[TaskListResponseMetaParams]
-    data: typing_extensions.NotRequired[typing.Sequence[TaskListResponseDataItemParams]]
-    links: typing_extensions.NotRequired[TaskListResponseLinksParams]
+    meta: typing_extensions.NotRequired[MetaListParams]
+    data: typing_extensions.NotRequired[typing.Sequence[TaskParams]]
+    links: typing_extensions.NotRequired[LinksListParams]

@@ -4,13 +4,11 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..requests.workflow_task_step import WorkflowTaskStepParams
+from ..types.automation_list_response import AutomationListResponse
+from ..types.automation_response import AutomationResponse
 from .raw_client import AsyncRawAutomationsClient, RawAutomationsClient
 from .requests.automations_update_request_trigger import AutomationsUpdateRequestTriggerParams
-from .requests.automations_update_request_workflow_item import AutomationsUpdateRequestWorkflowItemParams
-from .types.automations_create_response import AutomationsCreateResponse
-from .types.automations_get_response import AutomationsGetResponse
-from .types.automations_list_response import AutomationsListResponse
-from .types.automations_update_response import AutomationsUpdateResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -31,7 +29,7 @@ class AutomationsClient:
         """
         return self._raw_client
 
-    def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationsListResponse:
+    def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationListResponse:
         """
         Retrieves a list of all automations for the current project
 
@@ -42,19 +40,23 @@ class AutomationsClient:
 
         Returns
         -------
-        AutomationsListResponse
+        AutomationListResponse
             A list of automations
 
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(token="YOUR_TOKEN", )
+
+        client = Ittybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
         client.automations.list()
         """
         _response = self._raw_client.list(request_options=request_options)
         return _response.data
 
-    def create(self, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationsCreateResponse:
+    def create(self, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationResponse:
         """
         Creates a new automation for the current project
 
@@ -65,40 +67,49 @@ class AutomationsClient:
 
         Returns
         -------
-        AutomationsCreateResponse
+        AutomationResponse
             Automation created successfully
 
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(token="YOUR_TOKEN", )
+
+        client = Ittybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
         client.automations.create()
         """
         _response = self._raw_client.create(request_options=request_options)
         return _response.data
 
-    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationsGetResponse:
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationResponse:
         """
         Retrieves a specific automation by its ID
 
         Parameters
         ----------
         id : str
-            The automation ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AutomationsGetResponse
+        AutomationResponse
             Automation details
 
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(token="YOUR_TOKEN", )
-        client.automations.get(id='id', )
+
+        client = Ittybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+        client.automations.get(
+            id="id",
+        )
         """
         _response = self._raw_client.get(id, request_options=request_options)
         return _response.data
@@ -110,16 +121,15 @@ class AutomationsClient:
         name: str,
         description: typing.Optional[str] = OMIT,
         trigger: typing.Optional[AutomationsUpdateRequestTriggerParams] = OMIT,
-        workflow: typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]] = OMIT,
+        workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AutomationsUpdateResponse:
+    ) -> AutomationResponse:
         """
         Updates an existing automation by its ID
 
         Parameters
         ----------
         id : str
-            The ID of the automation to update.
 
         name : str
 
@@ -128,7 +138,7 @@ class AutomationsClient:
         trigger : typing.Optional[AutomationsUpdateRequestTriggerParams]
             Defines the trigger event and conditions. To clear/remove a trigger, provide null. To update, provide the new trigger object.
 
-        workflow : typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]]
+        workflow : typing.Optional[typing.Sequence[WorkflowTaskStepParams]]
             The updated sequence of tasks for the automation.
 
         request_options : typing.Optional[RequestOptions]
@@ -136,14 +146,26 @@ class AutomationsClient:
 
         Returns
         -------
-        AutomationsUpdateResponse
+        AutomationResponse
             Automation updated successfully
 
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(token="YOUR_TOKEN", )
-        client.automations.update(id='id', name='Updated Transcoder Example', trigger={'event': 'upload.completed', 'conditions': [{'prop': 'file.type', 'value': 'image/*'}]}, workflow=[{'kind': "image", 'label': 'archive_image', 'format': 'webp'}], )
+
+        client = Ittybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+        client.automations.update(
+            id="id",
+            name="Updated Transcoder Example",
+            trigger={
+                "event": "upload.completed",
+                "conditions": [{"prop": "file.type", "value": "image/*"}],
+            },
+            workflow=[{"kind": "image", "label": "archive_image", "format": "webp"}],
+        )
         """
         _response = self._raw_client.update(
             id, name=name, description=description, trigger=trigger, workflow=workflow, request_options=request_options
@@ -157,7 +179,6 @@ class AutomationsClient:
         Parameters
         ----------
         id : str
-            The automation ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -169,8 +190,14 @@ class AutomationsClient:
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(token="YOUR_TOKEN", )
-        client.automations.delete(id='id', )
+
+        client = Ittybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+        client.automations.delete(
+            id="id",
+        )
         """
         _response = self._raw_client.delete(id, request_options=request_options)
         return _response.data
@@ -191,7 +218,7 @@ class AsyncAutomationsClient:
         """
         return self._raw_client
 
-    async def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationsListResponse:
+    async def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationListResponse:
         """
         Retrieves a list of all automations for the current project
 
@@ -202,22 +229,31 @@ class AsyncAutomationsClient:
 
         Returns
         -------
-        AutomationsListResponse
+        AutomationListResponse
             A list of automations
 
         Examples
         --------
-        from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(token="YOUR_TOKEN", )
+
+        from ittybit import AsyncIttybit
+
+        client = AsyncIttybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.automations.list()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.list(request_options=request_options)
         return _response.data
 
-    async def create(self, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationsCreateResponse:
+    async def create(self, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationResponse:
         """
         Creates a new automation for the current project
 
@@ -228,45 +264,64 @@ class AsyncAutomationsClient:
 
         Returns
         -------
-        AutomationsCreateResponse
+        AutomationResponse
             Automation created successfully
 
         Examples
         --------
-        from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(token="YOUR_TOKEN", )
+
+        from ittybit import AsyncIttybit
+
+        client = AsyncIttybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
             await client.automations.create()
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(request_options=request_options)
         return _response.data
 
-    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationsGetResponse:
+    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationResponse:
         """
         Retrieves a specific automation by its ID
 
         Parameters
         ----------
         id : str
-            The automation ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AutomationsGetResponse
+        AutomationResponse
             Automation details
 
         Examples
         --------
-        from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(token="YOUR_TOKEN", )
+
+        from ittybit import AsyncIttybit
+
+        client = AsyncIttybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.automations.get(id='id', )
+            await client.automations.get(
+                id="id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.get(id, request_options=request_options)
@@ -279,16 +334,15 @@ class AsyncAutomationsClient:
         name: str,
         description: typing.Optional[str] = OMIT,
         trigger: typing.Optional[AutomationsUpdateRequestTriggerParams] = OMIT,
-        workflow: typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]] = OMIT,
+        workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AutomationsUpdateResponse:
+    ) -> AutomationResponse:
         """
         Updates an existing automation by its ID
 
         Parameters
         ----------
         id : str
-            The ID of the automation to update.
 
         name : str
 
@@ -297,7 +351,7 @@ class AsyncAutomationsClient:
         trigger : typing.Optional[AutomationsUpdateRequestTriggerParams]
             Defines the trigger event and conditions. To clear/remove a trigger, provide null. To update, provide the new trigger object.
 
-        workflow : typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]]
+        workflow : typing.Optional[typing.Sequence[WorkflowTaskStepParams]]
             The updated sequence of tasks for the automation.
 
         request_options : typing.Optional[RequestOptions]
@@ -305,16 +359,35 @@ class AsyncAutomationsClient:
 
         Returns
         -------
-        AutomationsUpdateResponse
+        AutomationResponse
             Automation updated successfully
 
         Examples
         --------
-        from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(token="YOUR_TOKEN", )
+
+        from ittybit import AsyncIttybit
+
+        client = AsyncIttybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.automations.update(id='id', name='Updated Transcoder Example', trigger={'event': 'upload.completed', 'conditions': [{'prop': 'file.type', 'value': 'image/*'}]}, workflow=[{'kind': "image", 'label': 'archive_image', 'format': 'webp'}], )
+            await client.automations.update(
+                id="id",
+                name="Updated Transcoder Example",
+                trigger={
+                    "event": "upload.completed",
+                    "conditions": [{"prop": "file.type", "value": "image/*"}],
+                },
+                workflow=[
+                    {"kind": "image", "label": "archive_image", "format": "webp"}
+                ],
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.update(
@@ -329,7 +402,6 @@ class AsyncAutomationsClient:
         Parameters
         ----------
         id : str
-            The automation ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -340,11 +412,22 @@ class AsyncAutomationsClient:
 
         Examples
         --------
-        from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(token="YOUR_TOKEN", )
+
+        from ittybit import AsyncIttybit
+
+        client = AsyncIttybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.automations.delete(id='id', )
+            await client.automations.delete(
+                id="id",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.delete(id, request_options=request_options)

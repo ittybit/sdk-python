@@ -13,12 +13,12 @@ from ..errors.bad_request_error import BadRequestError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
+from ..types.error_response import ErrorResponse
+from ..types.task_list_response import TaskListResponse
+from ..types.task_response import TaskResponse
 from .types.tasks_create_request_kind import TasksCreateRequestKind
-from .types.tasks_create_response import TasksCreateResponse
-from .types.tasks_get_response import TasksGetResponse
-from .types.tasks_list_filtered_request_kind import TasksListFilteredRequestKind
-from .types.tasks_list_filtered_request_status import TasksListFilteredRequestStatus
-from .types.tasks_list_filtered_response import TasksListFilteredResponse
+from .types.tasks_list_request_kind import TasksListRequestKind
+from .types.tasks_list_request_status import TasksListRequestStatus
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -28,30 +28,26 @@ class RawTasksClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def list_filtered(
+    def list(
         self,
         *,
-        page: typing.Optional[int] = None,
         limit: typing.Optional[int] = None,
-        status: typing.Optional[TasksListFilteredRequestStatus] = None,
-        kind: typing.Optional[TasksListFilteredRequestKind] = None,
+        status: typing.Optional[TasksListRequestStatus] = None,
+        kind: typing.Optional[TasksListRequestKind] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[TasksListFilteredResponse]:
+    ) -> HttpResponse[TaskListResponse]:
         """
         Retrieves a list of tasks for the project, optionally filtered by status or kind.
 
         Parameters
         ----------
-        page : typing.Optional[int]
-            Page number.
-
         limit : typing.Optional[int]
             Items per page.
 
-        status : typing.Optional[TasksListFilteredRequestStatus]
+        status : typing.Optional[TasksListRequestStatus]
             Filter by task status.
 
-        kind : typing.Optional[TasksListFilteredRequestKind]
+        kind : typing.Optional[TasksListRequestKind]
             Filter by task kind.
 
         request_options : typing.Optional[RequestOptions]
@@ -59,14 +55,13 @@ class RawTasksClient:
 
         Returns
         -------
-        HttpResponse[TasksListFilteredResponse]
+        HttpResponse[TaskListResponse]
             A list of tasks.
         """
         _response = self._client_wrapper.httpx_client.request(
             "tasks",
             method="GET",
             params={
-                "page": page,
                 "limit": limit,
                 "status": status,
                 "kind": kind,
@@ -76,9 +71,9 @@ class RawTasksClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TasksListFilteredResponse,
+                    TaskListResponse,
                     construct_type(
-                        type_=TasksListFilteredResponse,  # type: ignore
+                        type_=TaskListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -87,9 +82,9 @@ class RawTasksClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -98,9 +93,9 @@ class RawTasksClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -126,7 +121,7 @@ class RawTasksClient:
         height: typing.Optional[int] = OMIT,
         quality: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[TasksCreateResponse]:
+    ) -> HttpResponse[TaskResponse]:
         """
         Creates a new processing task (e.g., ingest, video transcode, speech analysis) or a workflow task.
 
@@ -173,7 +168,7 @@ class RawTasksClient:
 
         Returns
         -------
-        HttpResponse[TasksCreateResponse]
+        HttpResponse[TaskResponse]
             Created task (Deprecated endpoint)
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -202,9 +197,9 @@ class RawTasksClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TasksCreateResponse,
+                    TaskResponse,
                     construct_type(
-                        type_=TasksCreateResponse,  # type: ignore
+                        type_=TaskResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -213,9 +208,9 @@ class RawTasksClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -224,9 +219,9 @@ class RawTasksClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -235,9 +230,9 @@ class RawTasksClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -246,9 +241,9 @@ class RawTasksClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -275,7 +270,7 @@ class RawTasksClient:
             Task configuration details.
         """
         _response = self._client_wrapper.httpx_client.request(
-            "tasks/config",
+            "tasks-config",
             method="GET",
             request_options=request_options,
         )
@@ -293,9 +288,9 @@ class RawTasksClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -304,9 +299,9 @@ class RawTasksClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -316,23 +311,20 @@ class RawTasksClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def get(
-        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[TasksGetResponse]:
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[TaskResponse]:
         """
         Retrieves the details of a specific task by its ID.
 
         Parameters
         ----------
         id : str
-            The ID of the task to retrieve.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[TasksGetResponse]
+        HttpResponse[TaskResponse]
             Task details.
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -343,9 +335,9 @@ class RawTasksClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TasksGetResponse,
+                    TaskResponse,
                     construct_type(
-                        type_=TasksGetResponse,  # type: ignore
+                        type_=TaskResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -354,9 +346,9 @@ class RawTasksClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -365,9 +357,9 @@ class RawTasksClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -376,9 +368,9 @@ class RawTasksClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -393,30 +385,26 @@ class AsyncRawTasksClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    async def list_filtered(
+    async def list(
         self,
         *,
-        page: typing.Optional[int] = None,
         limit: typing.Optional[int] = None,
-        status: typing.Optional[TasksListFilteredRequestStatus] = None,
-        kind: typing.Optional[TasksListFilteredRequestKind] = None,
+        status: typing.Optional[TasksListRequestStatus] = None,
+        kind: typing.Optional[TasksListRequestKind] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[TasksListFilteredResponse]:
+    ) -> AsyncHttpResponse[TaskListResponse]:
         """
         Retrieves a list of tasks for the project, optionally filtered by status or kind.
 
         Parameters
         ----------
-        page : typing.Optional[int]
-            Page number.
-
         limit : typing.Optional[int]
             Items per page.
 
-        status : typing.Optional[TasksListFilteredRequestStatus]
+        status : typing.Optional[TasksListRequestStatus]
             Filter by task status.
 
-        kind : typing.Optional[TasksListFilteredRequestKind]
+        kind : typing.Optional[TasksListRequestKind]
             Filter by task kind.
 
         request_options : typing.Optional[RequestOptions]
@@ -424,14 +412,13 @@ class AsyncRawTasksClient:
 
         Returns
         -------
-        AsyncHttpResponse[TasksListFilteredResponse]
+        AsyncHttpResponse[TaskListResponse]
             A list of tasks.
         """
         _response = await self._client_wrapper.httpx_client.request(
             "tasks",
             method="GET",
             params={
-                "page": page,
                 "limit": limit,
                 "status": status,
                 "kind": kind,
@@ -441,9 +428,9 @@ class AsyncRawTasksClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TasksListFilteredResponse,
+                    TaskListResponse,
                     construct_type(
-                        type_=TasksListFilteredResponse,  # type: ignore
+                        type_=TaskListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -452,9 +439,9 @@ class AsyncRawTasksClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -463,9 +450,9 @@ class AsyncRawTasksClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -491,7 +478,7 @@ class AsyncRawTasksClient:
         height: typing.Optional[int] = OMIT,
         quality: typing.Optional[int] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[TasksCreateResponse]:
+    ) -> AsyncHttpResponse[TaskResponse]:
         """
         Creates a new processing task (e.g., ingest, video transcode, speech analysis) or a workflow task.
 
@@ -538,7 +525,7 @@ class AsyncRawTasksClient:
 
         Returns
         -------
-        AsyncHttpResponse[TasksCreateResponse]
+        AsyncHttpResponse[TaskResponse]
             Created task (Deprecated endpoint)
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -567,9 +554,9 @@ class AsyncRawTasksClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TasksCreateResponse,
+                    TaskResponse,
                     construct_type(
-                        type_=TasksCreateResponse,  # type: ignore
+                        type_=TaskResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -578,9 +565,9 @@ class AsyncRawTasksClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -589,9 +576,9 @@ class AsyncRawTasksClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -600,9 +587,9 @@ class AsyncRawTasksClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -611,9 +598,9 @@ class AsyncRawTasksClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -640,7 +627,7 @@ class AsyncRawTasksClient:
             Task configuration details.
         """
         _response = await self._client_wrapper.httpx_client.request(
-            "tasks/config",
+            "tasks-config",
             method="GET",
             request_options=request_options,
         )
@@ -658,9 +645,9 @@ class AsyncRawTasksClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -669,9 +656,9 @@ class AsyncRawTasksClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -683,21 +670,20 @@ class AsyncRawTasksClient:
 
     async def get(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[TasksGetResponse]:
+    ) -> AsyncHttpResponse[TaskResponse]:
         """
         Retrieves the details of a specific task by its ID.
 
         Parameters
         ----------
         id : str
-            The ID of the task to retrieve.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[TasksGetResponse]
+        AsyncHttpResponse[TaskResponse]
             Task details.
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -708,9 +694,9 @@ class AsyncRawTasksClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TasksGetResponse,
+                    TaskResponse,
                     construct_type(
-                        type_=TasksGetResponse,  # type: ignore
+                        type_=TaskResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -719,9 +705,9 @@ class AsyncRawTasksClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -730,9 +716,9 @@ class AsyncRawTasksClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -741,9 +727,9 @@ class AsyncRawTasksClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),

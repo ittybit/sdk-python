@@ -7,7 +7,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
 from .media_kind import MediaKind
-from .media_sources_item import MediaSourcesItem
+from .media_source import MediaSource
 from .media_status import MediaStatus
 
 
@@ -67,7 +67,7 @@ class Media(UncheckedBaseModel):
     Combined file size of all sources in bytes.
     """
 
-    sources: typing.List[MediaSourcesItem] = pydantic.Field()
+    sources: typing.List[MediaSource] = pydantic.Field()
     """
     Array of source files associated with this media item.
     """

@@ -10,8 +10,9 @@ from ..core.request_options import RequestOptions
 from ..core.unchecked_base_model import construct_type
 from ..errors.bad_request_error import BadRequestError
 from ..errors.unauthorized_error import UnauthorizedError
+from ..types.error_response import ErrorResponse
+from ..types.signature_response import SignatureResponse
 from .types.signatures_create_request_method import SignaturesCreateRequestMethod
-from .types.signatures_create_response import SignaturesCreateResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -29,7 +30,7 @@ class RawSignaturesClient:
         expiry: typing.Optional[int] = OMIT,
         method: typing.Optional[SignaturesCreateRequestMethod] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[SignaturesCreateResponse]:
+    ) -> HttpResponse[SignatureResponse]:
         """
         Creates a cryptographically signed URL that provides temporary and restricted access to a file. The URL can expire after a specified time and be limited to specific HTTP methods.
 
@@ -52,7 +53,7 @@ class RawSignaturesClient:
 
         Returns
         -------
-        HttpResponse[SignaturesCreateResponse]
+        HttpResponse[SignatureResponse]
             Signed URL generated successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -73,9 +74,9 @@ class RawSignaturesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SignaturesCreateResponse,
+                    SignatureResponse,
                     construct_type(
-                        type_=SignaturesCreateResponse,  # type: ignore
+                        type_=SignatureResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -84,9 +85,9 @@ class RawSignaturesClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -95,9 +96,9 @@ class RawSignaturesClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -120,7 +121,7 @@ class AsyncRawSignaturesClient:
         expiry: typing.Optional[int] = OMIT,
         method: typing.Optional[SignaturesCreateRequestMethod] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[SignaturesCreateResponse]:
+    ) -> AsyncHttpResponse[SignatureResponse]:
         """
         Creates a cryptographically signed URL that provides temporary and restricted access to a file. The URL can expire after a specified time and be limited to specific HTTP methods.
 
@@ -143,7 +144,7 @@ class AsyncRawSignaturesClient:
 
         Returns
         -------
-        AsyncHttpResponse[SignaturesCreateResponse]
+        AsyncHttpResponse[SignatureResponse]
             Signed URL generated successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -164,9 +165,9 @@ class AsyncRawSignaturesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SignaturesCreateResponse,
+                    SignatureResponse,
                     construct_type(
-                        type_=SignaturesCreateResponse,  # type: ignore
+                        type_=SignatureResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -175,9 +176,9 @@ class AsyncRawSignaturesClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -186,9 +187,9 @@ class AsyncRawSignaturesClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),

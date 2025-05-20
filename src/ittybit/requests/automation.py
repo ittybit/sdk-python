@@ -6,7 +6,7 @@ import typing
 import typing_extensions
 from ..types.automation_status import AutomationStatus
 from .automation_trigger import AutomationTriggerParams
-from .automation_workflow_item import AutomationWorkflowItemParams
+from .workflow_task_step import WorkflowTaskStepParams
 
 
 class AutomationParams(typing_extensions.TypedDict):
@@ -35,7 +35,7 @@ class AutomationParams(typing_extensions.TypedDict):
     The event and conditions that trigger this automation.
     """
 
-    workflow: typing.Sequence[AutomationWorkflowItemParams]
+    workflow: typing.Sequence[WorkflowTaskStepParams]
     """
     The sequence of tasks to be executed when the automation is triggered. The structure of each task object varies depending on its 'kind'.
     """

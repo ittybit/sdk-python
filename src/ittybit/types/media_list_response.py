@@ -5,15 +5,15 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
-from .media_list_response_data_item import MediaListResponseDataItem
-from .media_list_response_links import MediaListResponseLinks
-from .media_list_response_meta import MediaListResponseMeta
+from .links_list import LinksList
+from .media import Media
+from .meta_list import MetaList
 
 
 class MediaListResponse(UncheckedBaseModel):
-    meta: typing.Optional[MediaListResponseMeta] = None
-    data: typing.Optional[typing.List[MediaListResponseDataItem]] = None
-    links: typing.Optional[MediaListResponseLinks] = None
+    meta: typing.Optional[MetaList] = None
+    data: typing.Optional[typing.List[Media]] = None
+    links: typing.Optional[LinksList] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

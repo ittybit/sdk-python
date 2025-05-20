@@ -8,7 +8,14 @@ from ...core.unchecked_base_model import UncheckedBaseModel
 
 
 class FilesDeleteResponseData(UncheckedBaseModel):
-    message: str
+    """
+    Contains a confirmation message
+    """
+
+    message: typing.Optional[str] = pydantic.Field(default=None)
+    """
+    Confirmation message
+    """
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

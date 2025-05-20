@@ -21,7 +21,11 @@ Instantiate and use the client with the following:
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(token="YOUR_TOKEN", )
+
+client = Ittybit(
+    version="YOUR_VERSION",
+    token="YOUR_TOKEN",
+)
 client.automations.create()
 ```
 
@@ -30,11 +34,20 @@ client.automations.create()
 The SDK also exports an `async` client so that you can make non-blocking calls to our API.
 
 ```python
-from ittybit import AsyncIttybit
 import asyncio
-client = AsyncIttybit(token="YOUR_TOKEN", )
+
+from ittybit import AsyncIttybit
+
+client = AsyncIttybit(
+    version="YOUR_VERSION",
+    token="YOUR_TOKEN",
+)
+
+
 async def main() -> None:
     await client.automations.create()
+
+
 asyncio.run(main())
 ```
 
@@ -45,6 +58,7 @@ will be thrown.
 
 ```python
 from ittybit.core.api_error import ApiError
+
 try:
     client.automations.create(...)
 except ApiError as e:
@@ -61,7 +75,10 @@ The `.with_raw_response` property returns a "raw" client that can be used to acc
 
 ```python
 from ittybit import Ittybit
-client = Ittybit(..., )
+
+client = Ittybit(
+    ...,
+)
 response = client.automations.with_raw_response.create(...)
 print(response.headers)  # access the response headers
 print(response.data)  # access the underlying object
@@ -94,7 +111,12 @@ The SDK defaults to a 60 second timeout. You can configure this with a timeout o
 ```python
 
 from ittybit import Ittybit
-client = Ittybit(..., timeout=20.0, )
+
+client = Ittybit(
+    ...,
+    timeout=20.0,
+)
+
 
 # Override timeout for a specific method
 client.automations.create(..., request_options={
@@ -108,9 +130,17 @@ You can override the `httpx` client to customize it for your use-case. Some comm
 and transports.
 
 ```python
-from ittybit import Ittybit
 import httpx
-client = Ittybit(..., httpx_client=httpx.Client(proxies="http://my.test.proxy.example.com", transport=httpx.HTTPTransport(local_address="0.0.0.0"), ))```
+from ittybit import Ittybit
+
+client = Ittybit(
+    ...,
+    httpx_client=httpx.Client(
+        proxies="http://my.test.proxy.example.com",
+        transport=httpx.HTTPTransport(local_address="0.0.0.0"),
+    ),
+)
+```
 
 ## Contributing
 

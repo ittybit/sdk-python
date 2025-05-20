@@ -4,9 +4,9 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.signature_response import SignatureResponse
 from .raw_client import AsyncRawSignaturesClient, RawSignaturesClient
 from .types.signatures_create_request_method import SignaturesCreateRequestMethod
-from .types.signatures_create_response import SignaturesCreateResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -35,7 +35,7 @@ class SignaturesClient:
         expiry: typing.Optional[int] = OMIT,
         method: typing.Optional[SignaturesCreateRequestMethod] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SignaturesCreateResponse:
+    ) -> SignatureResponse:
         """
         Creates a cryptographically signed URL that provides temporary and restricted access to a file. The URL can expire after a specified time and be limited to specific HTTP methods.
 
@@ -58,14 +58,23 @@ class SignaturesClient:
 
         Returns
         -------
-        SignaturesCreateResponse
+        SignatureResponse
             Signed URL generated successfully
 
         Examples
         --------
         from ittybit import Ittybit
-        client = Ittybit(token="YOUR_TOKEN", )
-        client.signatures.create(filename='video.mp4', folder='private/user_123', expiry=1735689600, method="get", )
+
+        client = Ittybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+        client.signatures.create(
+            filename="video.mp4",
+            folder="private/user_123",
+            expiry=1735689600,
+            method="get",
+        )
         """
         _response = self._raw_client.create(
             filename=filename, folder=folder, expiry=expiry, method=method, request_options=request_options
@@ -96,7 +105,7 @@ class AsyncSignaturesClient:
         expiry: typing.Optional[int] = OMIT,
         method: typing.Optional[SignaturesCreateRequestMethod] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SignaturesCreateResponse:
+    ) -> SignatureResponse:
         """
         Creates a cryptographically signed URL that provides temporary and restricted access to a file. The URL can expire after a specified time and be limited to specific HTTP methods.
 
@@ -119,16 +128,30 @@ class AsyncSignaturesClient:
 
         Returns
         -------
-        SignaturesCreateResponse
+        SignatureResponse
             Signed URL generated successfully
 
         Examples
         --------
-        from ittybit import AsyncIttybit
         import asyncio
-        client = AsyncIttybit(token="YOUR_TOKEN", )
+
+        from ittybit import AsyncIttybit
+
+        client = AsyncIttybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
+        )
+
+
         async def main() -> None:
-            await client.signatures.create(filename='video.mp4', folder='private/user_123', expiry=1735689600, method="get", )
+            await client.signatures.create(
+                filename="video.mp4",
+                folder="private/user_123",
+                expiry=1735689600,
+                method="get",
+            )
+
+
         asyncio.run(main())
         """
         _response = await self._raw_client.create(

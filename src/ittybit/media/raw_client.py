@@ -13,10 +13,10 @@ from ..errors.bad_request_error import BadRequestError
 from ..errors.forbidden_error import ForbiddenError
 from ..errors.not_found_error import NotFoundError
 from ..errors.unauthorized_error import UnauthorizedError
+from ..types.confirmation_response import ConfirmationResponse
+from ..types.error_response import ErrorResponse
 from ..types.media_list_response import MediaListResponse
-from .types.media_create_response import MediaCreateResponse
-from .types.media_delete_response import MediaDeleteResponse
-from .types.media_get_response import MediaGetResponse
+from ..types.media_response import MediaResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -27,20 +27,13 @@ class RawMediaClient:
         self._client_wrapper = client_wrapper
 
     def list(
-        self,
-        *,
-        page: typing.Optional[int] = None,
-        limit: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[MediaListResponse]:
         """
         Retrieves a list of all media for the current project
 
         Parameters
         ----------
-        page : typing.Optional[int]
-            Page number for pagination.
-
         limit : typing.Optional[int]
             Number of media items to return per page.
 
@@ -56,7 +49,6 @@ class RawMediaClient:
             "media",
             method="GET",
             params={
-                "page": page,
                 "limit": limit,
             },
             request_options=request_options,
@@ -75,9 +67,9 @@ class RawMediaClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -86,9 +78,9 @@ class RawMediaClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -110,7 +102,7 @@ class RawMediaClient:
         async_: typing.Optional[bool] = OMIT,
         empty: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[MediaCreateResponse]:
+    ) -> HttpResponse[MediaResponse]:
         """
         Creates a new media item from a URL or as an empty placeholder
 
@@ -145,7 +137,7 @@ class RawMediaClient:
 
         Returns
         -------
-        HttpResponse[MediaCreateResponse]
+        HttpResponse[MediaResponse]
             Media created successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -170,9 +162,9 @@ class RawMediaClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    MediaCreateResponse,
+                    MediaResponse,
                     construct_type(
-                        type_=MediaCreateResponse,  # type: ignore
+                        type_=MediaResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -181,9 +173,9 @@ class RawMediaClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -192,9 +184,9 @@ class RawMediaClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -203,9 +195,9 @@ class RawMediaClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -215,23 +207,20 @@ class RawMediaClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def get(
-        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[MediaGetResponse]:
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[MediaResponse]:
         """
         Retrieves a specific media item by its ID
 
         Parameters
         ----------
         id : str
-            The media ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[MediaGetResponse]
+        HttpResponse[MediaResponse]
             Media item details
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -242,9 +231,9 @@ class RawMediaClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    MediaGetResponse,
+                    MediaResponse,
                     construct_type(
-                        type_=MediaGetResponse,  # type: ignore
+                        type_=MediaResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -253,9 +242,9 @@ class RawMediaClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -264,9 +253,9 @@ class RawMediaClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -275,9 +264,9 @@ class RawMediaClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -289,21 +278,20 @@ class RawMediaClient:
 
     def delete(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[MediaDeleteResponse]:
+    ) -> HttpResponse[ConfirmationResponse]:
         """
         Deletes a specific media item by its ID
 
         Parameters
         ----------
         id : str
-            The media ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        HttpResponse[MediaDeleteResponse]
+        HttpResponse[ConfirmationResponse]
             Media deleted successfully
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -314,9 +302,9 @@ class RawMediaClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    MediaDeleteResponse,
+                    ConfirmationResponse,
                     construct_type(
-                        type_=MediaDeleteResponse,  # type: ignore
+                        type_=ConfirmationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -325,9 +313,9 @@ class RawMediaClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -336,9 +324,9 @@ class RawMediaClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -347,9 +335,110 @@ class RawMediaClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def update(
+        self,
+        id: str,
+        *,
+        title: typing.Optional[str] = OMIT,
+        metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[MediaResponse]:
+        """
+        Updates specific fields of a media item by its ID. Only the fields provided in the request body will be updated.
+
+        Parameters
+        ----------
+        id : str
+
+        title : typing.Optional[str]
+            New title for the media item.
+
+        metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            New metadata object for the media item. This will replace the existing metadata.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[MediaResponse]
+            Media updated successfully
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"media/{jsonable_encoder(id)}",
+            method="PATCH",
+            json={
+                "title": title,
+                "metadata": metadata,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    MediaResponse,
+                    construct_type(
+                        type_=MediaResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        construct_type(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        construct_type(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        construct_type(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        construct_type(
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -365,20 +454,13 @@ class AsyncRawMediaClient:
         self._client_wrapper = client_wrapper
 
     async def list(
-        self,
-        *,
-        page: typing.Optional[int] = None,
-        limit: typing.Optional[int] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[MediaListResponse]:
         """
         Retrieves a list of all media for the current project
 
         Parameters
         ----------
-        page : typing.Optional[int]
-            Page number for pagination.
-
         limit : typing.Optional[int]
             Number of media items to return per page.
 
@@ -394,7 +476,6 @@ class AsyncRawMediaClient:
             "media",
             method="GET",
             params={
-                "page": page,
                 "limit": limit,
             },
             request_options=request_options,
@@ -413,9 +494,9 @@ class AsyncRawMediaClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -424,9 +505,9 @@ class AsyncRawMediaClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -448,7 +529,7 @@ class AsyncRawMediaClient:
         async_: typing.Optional[bool] = OMIT,
         empty: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[MediaCreateResponse]:
+    ) -> AsyncHttpResponse[MediaResponse]:
         """
         Creates a new media item from a URL or as an empty placeholder
 
@@ -483,7 +564,7 @@ class AsyncRawMediaClient:
 
         Returns
         -------
-        AsyncHttpResponse[MediaCreateResponse]
+        AsyncHttpResponse[MediaResponse]
             Media created successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -508,9 +589,9 @@ class AsyncRawMediaClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    MediaCreateResponse,
+                    MediaResponse,
                     construct_type(
-                        type_=MediaCreateResponse,  # type: ignore
+                        type_=MediaResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -519,9 +600,9 @@ class AsyncRawMediaClient:
                 raise BadRequestError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -530,9 +611,9 @@ class AsyncRawMediaClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -541,9 +622,9 @@ class AsyncRawMediaClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -555,21 +636,20 @@ class AsyncRawMediaClient:
 
     async def get(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[MediaGetResponse]:
+    ) -> AsyncHttpResponse[MediaResponse]:
         """
         Retrieves a specific media item by its ID
 
         Parameters
         ----------
         id : str
-            The media ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[MediaGetResponse]
+        AsyncHttpResponse[MediaResponse]
             Media item details
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -580,9 +660,9 @@ class AsyncRawMediaClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    MediaGetResponse,
+                    MediaResponse,
                     construct_type(
-                        type_=MediaGetResponse,  # type: ignore
+                        type_=MediaResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -591,9 +671,9 @@ class AsyncRawMediaClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -602,9 +682,9 @@ class AsyncRawMediaClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -613,9 +693,9 @@ class AsyncRawMediaClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -627,21 +707,20 @@ class AsyncRawMediaClient:
 
     async def delete(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[MediaDeleteResponse]:
+    ) -> AsyncHttpResponse[ConfirmationResponse]:
         """
         Deletes a specific media item by its ID
 
         Parameters
         ----------
         id : str
-            The media ID
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
-        AsyncHttpResponse[MediaDeleteResponse]
+        AsyncHttpResponse[ConfirmationResponse]
             Media deleted successfully
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -652,9 +731,9 @@ class AsyncRawMediaClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    MediaDeleteResponse,
+                    ConfirmationResponse,
                     construct_type(
-                        type_=MediaDeleteResponse,  # type: ignore
+                        type_=ConfirmationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -663,9 +742,9 @@ class AsyncRawMediaClient:
                 raise UnauthorizedError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -674,9 +753,9 @@ class AsyncRawMediaClient:
                 raise ForbiddenError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
@@ -685,9 +764,110 @@ class AsyncRawMediaClient:
                 raise NotFoundError(
                     headers=dict(_response.headers),
                     body=typing.cast(
-                        typing.Optional[typing.Any],
+                        ErrorResponse,
                         construct_type(
-                            type_=typing.Optional[typing.Any],  # type: ignore
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def update(
+        self,
+        id: str,
+        *,
+        title: typing.Optional[str] = OMIT,
+        metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[MediaResponse]:
+        """
+        Updates specific fields of a media item by its ID. Only the fields provided in the request body will be updated.
+
+        Parameters
+        ----------
+        id : str
+
+        title : typing.Optional[str]
+            New title for the media item.
+
+        metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
+            New metadata object for the media item. This will replace the existing metadata.
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[MediaResponse]
+            Media updated successfully
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"media/{jsonable_encoder(id)}",
+            method="PATCH",
+            json={
+                "title": title,
+                "metadata": metadata,
+            },
+            headers={
+                "content-type": "application/json",
+            },
+            request_options=request_options,
+            omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    MediaResponse,
+                    construct_type(
+                        type_=MediaResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            if _response.status_code == 400:
+                raise BadRequestError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        construct_type(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 401:
+                raise UnauthorizedError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        construct_type(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 403:
+                raise ForbiddenError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        construct_type(
+                            type_=ErrorResponse,  # type: ignore
+                            object_=_response.json(),
+                        ),
+                    ),
+                )
+            if _response.status_code == 404:
+                raise NotFoundError(
+                    headers=dict(_response.headers),
+                    body=typing.cast(
+                        ErrorResponse,
+                        construct_type(
+                            type_=ErrorResponse,  # type: ignore
                             object_=_response.json(),
                         ),
                     ),
