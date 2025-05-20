@@ -22,10 +22,10 @@ class BaseClientWrapper:
 
     def get_headers(self) -> typing.Dict[str, str]:
         headers: typing.Dict[str, str] = {
-            "User-Agent": "ittybit/0.7.3",
+            "User-Agent": "ittybit/0.7.4",
             "X-Fern-Language": "Python",
             "X-Fern-SDK-Name": "ittybit",
-            "X-Fern-SDK-Version": "0.7.3",
+            "X-Fern-SDK-Version": "0.7.4",
         }
         if self._version is not None:
             headers["ACCEPT_VERSION"] = self._version
