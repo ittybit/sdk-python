@@ -6,6 +6,7 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
 from .automation import Automation
+from .error import Error
 from .links import Links
 from .meta import Meta
 
@@ -13,6 +14,7 @@ from .meta import Meta
 class AutomationResponse(UncheckedBaseModel):
     meta: typing.Optional[Meta] = None
     data: typing.Optional[Automation] = None
+    error: typing.Optional[Error] = None
     links: typing.Optional[Links] = None
 
     if IS_PYDANTIC_V2:

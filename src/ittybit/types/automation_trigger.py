@@ -5,23 +5,11 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
-from .automation_trigger_conditions_item import AutomationTriggerConditionsItem
 
 
 class AutomationTrigger(UncheckedBaseModel):
-    """
-    The event and conditions that trigger this automation.
-    """
-
-    event: str = pydantic.Field()
-    """
-    The event that triggers the automation
-    """
-
-    conditions: typing.Optional[typing.List[AutomationTriggerConditionsItem]] = pydantic.Field(default=None)
-    """
-    Conditions that must be met for the trigger to activate.
-    """
+    kind: typing.Optional[typing.Literal["event"]] = None
+    event: str
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

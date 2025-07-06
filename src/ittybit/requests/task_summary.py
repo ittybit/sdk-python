@@ -9,51 +9,12 @@ from ..types.task_summary_status import TaskSummaryStatus
 
 class TaskSummaryParams(typing_extensions.TypedDict):
     id: str
-    """
-    Unique identifier for the task.
-    """
-
     object: str
-    """
-    Object type, always 'task'.
-    """
-
     kind: TaskSummaryKind
-    """
-    The type of operation the task performs.
-    """
-
     status: TaskSummaryStatus
-    """
-    Current status of the task.
-    """
-
     progress: typing_extensions.NotRequired[int]
-    """
-    Task progress percentage.
-    """
-
     error: typing_extensions.NotRequired[str]
-    """
-    Error message if the task failed.
-    """
-
     created_by: typing_extensions.NotRequired[str]
-    """
-    ID of the entity that created the task (e.g., user ID, automation ID).
-    """
-
     created: dt.datetime
-    """
-    Timestamp when the task was created.
-    """
-
     updated: dt.datetime
-    """
-    Timestamp when the task was last updated.
-    """
-
     parent_id: typing_extensions.NotRequired[str]
-    """
-    ID of the parent task if this is part of a workflow.
-    """

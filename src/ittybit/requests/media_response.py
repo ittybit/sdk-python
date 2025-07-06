@@ -2,6 +2,7 @@
 
 import typing_extensions
 from ..types.meta import Meta
+from .error import ErrorParams
 from .links import LinksParams
 from .media import MediaParams
 
@@ -9,4 +10,5 @@ from .media import MediaParams
 class MediaResponseParams(typing_extensions.TypedDict):
     meta: typing_extensions.NotRequired[Meta]
     data: typing_extensions.NotRequired[MediaParams]
+    error: typing_extensions.NotRequired[ErrorParams]
     links: typing_extensions.NotRequired[LinksParams]

@@ -9,14 +9,9 @@ from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.request_options import RequestOptions
 from ..core.unchecked_base_model import construct_type
-from ..errors.bad_request_error import BadRequestError
-from ..errors.forbidden_error import ForbiddenError
-from ..errors.not_found_error import NotFoundError
-from ..errors.unauthorized_error import UnauthorizedError
-from ..types.error_response import ErrorResponse
+from ..types.confirmation_response import ConfirmationResponse
 from ..types.file_list_response import FileListResponse
 from ..types.file_response import FileResponse
-from .types.files_delete_response import FilesDeleteResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -30,12 +25,11 @@ class RawFilesClient:
         self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[FileListResponse]:
         """
-        Retrieves a paginated list of all files associated with the current project. Files can be filtered using query parameters.
+        Retrieves a paginated list of all files associated with the current project.
 
         Parameters
         ----------
         limit : typing.Optional[int]
-            Items per page
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -43,7 +37,7 @@ class RawFilesClient:
         Returns
         -------
         HttpResponse[FileListResponse]
-            A paginated list of files.
+            Success
         """
         _response = self._client_wrapper.httpx_client.request(
             "files",
@@ -63,17 +57,6 @@ class RawFilesClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -83,39 +66,29 @@ class RawFilesClient:
         self,
         *,
         url: str,
-        filename: typing.Optional[str] = OMIT,
-        folder: typing.Optional[str] = OMIT,
         media_id: typing.Optional[str] = OMIT,
-        label: typing.Optional[str] = OMIT,
+        folder: typing.Optional[str] = OMIT,
+        filename: typing.Optional[str] = OMIT,
+        ref: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        async_: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[FileResponse]:
         """
-        Registers a file from a publicly accessible URL. The file will be ingested asynchronously.
+        Creates a new file from a publicly accessible or signed URL.
 
         Parameters
         ----------
         url : str
-            The publicly accessible URL of the file to ingest.
-
-        filename : typing.Optional[str]
-            Optional desired filename. If not provided, it may be derived from the URL.
-
-        folder : typing.Optional[str]
-            Folder path (optional)
 
         media_id : typing.Optional[str]
-            Optional existing media ID to associate the file with.
 
-        label : typing.Optional[str]
-            Optional label for the file.
+        folder : typing.Optional[str]
+
+        filename : typing.Optional[str]
+
+        ref : typing.Optional[str]
 
         metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            Optional user-defined key-value metadata.
-
-        async_ : typing.Optional[bool]
-            Whether to process the ingestion asynchronously.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -123,19 +96,18 @@ class RawFilesClient:
         Returns
         -------
         HttpResponse[FileResponse]
-            File created successfully.
+            Success
         """
         _response = self._client_wrapper.httpx_client.request(
             "files",
             method="POST",
             json={
                 "url": url,
-                "filename": filename,
-                "folder": folder,
                 "media_id": media_id,
-                "label": label,
+                "folder": folder,
+                "filename": filename,
+                "ref": ref,
                 "metadata": metadata,
-                "async": async_,
             },
             headers={
                 "content-type": "application/json",
@@ -153,50 +125,6 @@ class RawFilesClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -204,7 +132,7 @@ class RawFilesClient:
 
     def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[FileResponse]:
         """
-        Retrieves detailed information about a specific file identified by its unique ID, including its metadata, media associations, and technical properties.
+        Retrieve the file object for a file with the given ID.
 
         Parameters
         ----------
@@ -216,7 +144,7 @@ class RawFilesClient:
         Returns
         -------
         HttpResponse[FileResponse]
-            Returns the file details
+            Success
         """
         _response = self._client_wrapper.httpx_client.request(
             f"files/{jsonable_encoder(id)}",
@@ -233,17 +161,6 @@ class RawFilesClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -251,9 +168,9 @@ class RawFilesClient:
 
     def delete(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[FilesDeleteResponse]:
+    ) -> HttpResponse[ConfirmationResponse]:
         """
-        Permanently removes a file from the system. This action cannot be undone. Associated media entries may still reference this file ID.
+        Permanently removes a file from the system. This action cannot be undone.
 
         Parameters
         ----------
@@ -264,8 +181,8 @@ class RawFilesClient:
 
         Returns
         -------
-        HttpResponse[FilesDeleteResponse]
-            Confirmation that the file was deleted successfully.
+        HttpResponse[ConfirmationResponse]
+            Accepted
         """
         _response = self._client_wrapper.httpx_client.request(
             f"files/{jsonable_encoder(id)}",
@@ -275,46 +192,13 @@ class RawFilesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FilesDeleteResponse,
+                    ConfirmationResponse,
                     construct_type(
-                        type_=FilesDeleteResponse,  # type: ignore
+                        type_=ConfirmationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -324,26 +208,26 @@ class RawFilesClient:
         self,
         id: str,
         *,
-        metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        filename: typing.Optional[str] = OMIT,
         folder: typing.Optional[str] = OMIT,
+        filename: typing.Optional[str] = OMIT,
+        ref: typing.Optional[str] = OMIT,
+        metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[FileResponse]:
         """
-        Updates metadata, filename, or folder properties of an existing file. Only the specified fields will be updated.
+        Update a file's `filename`, `folder`, `ref`, or `metadata`. Only the specified fields will be updated.
 
         Parameters
         ----------
         id : str
 
-        metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            An object containing key-value pairs to set or update. Set a key to null to remove it.
+        folder : typing.Optional[str]
 
         filename : typing.Optional[str]
-            New filename for the file.
 
-        folder : typing.Optional[str]
-            New folder path for the file.
+        ref : typing.Optional[str]
+
+        metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -351,15 +235,16 @@ class RawFilesClient:
         Returns
         -------
         HttpResponse[FileResponse]
-            File updated successfully.
+            Success
         """
         _response = self._client_wrapper.httpx_client.request(
             f"files/{jsonable_encoder(id)}",
             method="PATCH",
             json={
-                "metadata": metadata,
-                "filename": filename,
                 "folder": folder,
+                "filename": filename,
+                "ref": ref,
+                "metadata": metadata,
             },
             headers={
                 "content-type": "application/json",
@@ -377,50 +262,6 @@ class RawFilesClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -435,12 +276,11 @@ class AsyncRawFilesClient:
         self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[FileListResponse]:
         """
-        Retrieves a paginated list of all files associated with the current project. Files can be filtered using query parameters.
+        Retrieves a paginated list of all files associated with the current project.
 
         Parameters
         ----------
         limit : typing.Optional[int]
-            Items per page
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -448,7 +288,7 @@ class AsyncRawFilesClient:
         Returns
         -------
         AsyncHttpResponse[FileListResponse]
-            A paginated list of files.
+            Success
         """
         _response = await self._client_wrapper.httpx_client.request(
             "files",
@@ -468,17 +308,6 @@ class AsyncRawFilesClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -488,39 +317,29 @@ class AsyncRawFilesClient:
         self,
         *,
         url: str,
-        filename: typing.Optional[str] = OMIT,
-        folder: typing.Optional[str] = OMIT,
         media_id: typing.Optional[str] = OMIT,
-        label: typing.Optional[str] = OMIT,
+        folder: typing.Optional[str] = OMIT,
+        filename: typing.Optional[str] = OMIT,
+        ref: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        async_: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[FileResponse]:
         """
-        Registers a file from a publicly accessible URL. The file will be ingested asynchronously.
+        Creates a new file from a publicly accessible or signed URL.
 
         Parameters
         ----------
         url : str
-            The publicly accessible URL of the file to ingest.
-
-        filename : typing.Optional[str]
-            Optional desired filename. If not provided, it may be derived from the URL.
-
-        folder : typing.Optional[str]
-            Folder path (optional)
 
         media_id : typing.Optional[str]
-            Optional existing media ID to associate the file with.
 
-        label : typing.Optional[str]
-            Optional label for the file.
+        folder : typing.Optional[str]
+
+        filename : typing.Optional[str]
+
+        ref : typing.Optional[str]
 
         metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            Optional user-defined key-value metadata.
-
-        async_ : typing.Optional[bool]
-            Whether to process the ingestion asynchronously.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -528,19 +347,18 @@ class AsyncRawFilesClient:
         Returns
         -------
         AsyncHttpResponse[FileResponse]
-            File created successfully.
+            Success
         """
         _response = await self._client_wrapper.httpx_client.request(
             "files",
             method="POST",
             json={
                 "url": url,
-                "filename": filename,
-                "folder": folder,
                 "media_id": media_id,
-                "label": label,
+                "folder": folder,
+                "filename": filename,
+                "ref": ref,
                 "metadata": metadata,
-                "async": async_,
             },
             headers={
                 "content-type": "application/json",
@@ -558,50 +376,6 @@ class AsyncRawFilesClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -611,7 +385,7 @@ class AsyncRawFilesClient:
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[FileResponse]:
         """
-        Retrieves detailed information about a specific file identified by its unique ID, including its metadata, media associations, and technical properties.
+        Retrieve the file object for a file with the given ID.
 
         Parameters
         ----------
@@ -623,7 +397,7 @@ class AsyncRawFilesClient:
         Returns
         -------
         AsyncHttpResponse[FileResponse]
-            Returns the file details
+            Success
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"files/{jsonable_encoder(id)}",
@@ -640,17 +414,6 @@ class AsyncRawFilesClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -658,9 +421,9 @@ class AsyncRawFilesClient:
 
     async def delete(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[FilesDeleteResponse]:
+    ) -> AsyncHttpResponse[ConfirmationResponse]:
         """
-        Permanently removes a file from the system. This action cannot be undone. Associated media entries may still reference this file ID.
+        Permanently removes a file from the system. This action cannot be undone.
 
         Parameters
         ----------
@@ -671,8 +434,8 @@ class AsyncRawFilesClient:
 
         Returns
         -------
-        AsyncHttpResponse[FilesDeleteResponse]
-            Confirmation that the file was deleted successfully.
+        AsyncHttpResponse[ConfirmationResponse]
+            Accepted
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"files/{jsonable_encoder(id)}",
@@ -682,46 +445,13 @@ class AsyncRawFilesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FilesDeleteResponse,
+                    ConfirmationResponse,
                     construct_type(
-                        type_=FilesDeleteResponse,  # type: ignore
+                        type_=ConfirmationResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -731,26 +461,26 @@ class AsyncRawFilesClient:
         self,
         id: str,
         *,
-        metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        filename: typing.Optional[str] = OMIT,
         folder: typing.Optional[str] = OMIT,
+        filename: typing.Optional[str] = OMIT,
+        ref: typing.Optional[str] = OMIT,
+        metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[FileResponse]:
         """
-        Updates metadata, filename, or folder properties of an existing file. Only the specified fields will be updated.
+        Update a file's `filename`, `folder`, `ref`, or `metadata`. Only the specified fields will be updated.
 
         Parameters
         ----------
         id : str
 
-        metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            An object containing key-value pairs to set or update. Set a key to null to remove it.
+        folder : typing.Optional[str]
 
         filename : typing.Optional[str]
-            New filename for the file.
 
-        folder : typing.Optional[str]
-            New folder path for the file.
+        ref : typing.Optional[str]
+
+        metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -758,15 +488,16 @@ class AsyncRawFilesClient:
         Returns
         -------
         AsyncHttpResponse[FileResponse]
-            File updated successfully.
+            Success
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"files/{jsonable_encoder(id)}",
             method="PATCH",
             json={
-                "metadata": metadata,
-                "filename": filename,
                 "folder": folder,
+                "filename": filename,
+                "ref": ref,
+                "metadata": metadata,
             },
             headers={
                 "content-type": "application/json",
@@ -784,50 +515,6 @@ class AsyncRawFilesClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 403:
-                raise ForbiddenError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 404:
-                raise NotFoundError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)

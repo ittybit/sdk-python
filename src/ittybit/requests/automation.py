@@ -11,46 +11,10 @@ from .workflow_task_step import WorkflowTaskStepParams
 
 class AutomationParams(typing_extensions.TypedDict):
     id: str
-    """
-    Unique identifier for the automation
-    """
-
     name: str
-    """
-    User-defined name for the automation
-    """
-
     description: typing_extensions.NotRequired[str]
-    """
-    Optional description for the automation
-    """
-
-    metadata: typing_extensions.NotRequired[typing.Dict[str, typing.Optional[typing.Any]]]
-    """
-    User-defined key-value metadata for the automation.
-    """
-
     trigger: AutomationTriggerParams
-    """
-    The event and conditions that trigger this automation.
-    """
-
     workflow: typing.Sequence[WorkflowTaskStepParams]
-    """
-    The sequence of tasks to be executed when the automation is triggered. The structure of each task object varies depending on its 'kind'.
-    """
-
     status: AutomationStatus
-    """
-    Current status of the automation
-    """
-
     created: dt.datetime
-    """
-    Timestamp when the automation was created
-    """
-
     updated: dt.datetime
-    """
-    Timestamp when the automation was last updated
-    """

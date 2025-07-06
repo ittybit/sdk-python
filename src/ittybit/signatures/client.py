@@ -37,21 +37,17 @@ class SignaturesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SignatureResponse:
         """
-        Creates a cryptographically signed URL that provides temporary and restricted access to a file. The URL can expire after a specified time and be limited to specific HTTP methods.
+        You can use signatures to create signed URLs which grant access to your project's resources, without revealing your project's API key. URLs can expire after a specified time and be limited to HTTP `GET` method for read-only access, or HTTP `PUT` method for client-side uploads.
 
         Parameters
         ----------
         filename : str
-            The name of the file to generate a signature for. Special characters will be sanitised.
 
         folder : typing.Optional[str]
-            Optional folder path where the file resides. Special characters will be sanitised.
 
         expiry : typing.Optional[int]
-            Optional expiry time for the signature in seconds since epoch. Defaults to 60 minutes from now. Must be a positive integer and in the future.
 
         method : typing.Optional[SignaturesCreateRequestMethod]
-            Optional HTTP method allowed for the signed URL. Defaults to 'get'.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -59,7 +55,7 @@ class SignaturesClient:
         Returns
         -------
         SignatureResponse
-            Signed URL generated successfully
+            Success
 
         Examples
         --------
@@ -71,9 +67,9 @@ class SignaturesClient:
         )
         client.signatures.create(
             filename="video.mp4",
-            folder="private/user_123",
+            folder="example",
             expiry=1735689600,
-            method="get",
+            method="put",
         )
         """
         _response = self._raw_client.create(
@@ -107,21 +103,17 @@ class AsyncSignaturesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> SignatureResponse:
         """
-        Creates a cryptographically signed URL that provides temporary and restricted access to a file. The URL can expire after a specified time and be limited to specific HTTP methods.
+        You can use signatures to create signed URLs which grant access to your project's resources, without revealing your project's API key. URLs can expire after a specified time and be limited to HTTP `GET` method for read-only access, or HTTP `PUT` method for client-side uploads.
 
         Parameters
         ----------
         filename : str
-            The name of the file to generate a signature for. Special characters will be sanitised.
 
         folder : typing.Optional[str]
-            Optional folder path where the file resides. Special characters will be sanitised.
 
         expiry : typing.Optional[int]
-            Optional expiry time for the signature in seconds since epoch. Defaults to 60 minutes from now. Must be a positive integer and in the future.
 
         method : typing.Optional[SignaturesCreateRequestMethod]
-            Optional HTTP method allowed for the signed URL. Defaults to 'get'.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -129,7 +121,7 @@ class AsyncSignaturesClient:
         Returns
         -------
         SignatureResponse
-            Signed URL generated successfully
+            Success
 
         Examples
         --------
@@ -146,9 +138,9 @@ class AsyncSignaturesClient:
         async def main() -> None:
             await client.signatures.create(
                 filename="video.mp4",
-                folder="private/user_123",
+                folder="example",
                 expiry=1735689600,
-                method="get",
+                method="put",
             )
 
 

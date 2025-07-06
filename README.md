@@ -13,7 +13,7 @@ pip install ittybit
 
 ## Reference
 
-A full reference for this library is available [here](./reference.md).
+A full reference for this library is available [here](https://github.com/ittybit/sdk-python/blob/HEAD/./reference.md).
 
 ## Usage
 

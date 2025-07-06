@@ -6,31 +6,7 @@ from ..core.serialization import FieldMetadata
 
 class LinksListParams(typing_extensions.TypedDict):
     self_: typing_extensions.NotRequired[typing_extensions.Annotated[str, FieldMetadata(alias="self")]]
-    """
-    The absolute URL of the current request, potentially including query parameters.
-    """
-
-    next: typing_extensions.NotRequired[str]
-    """
-    URL for the next page of results.
-    """
-
-    prev: typing_extensions.NotRequired[str]
-    """
-    URL for the previous page of results.
-    """
-
-    parent: typing_extensions.NotRequired[str]
-    """
-    URL for the parent resource.
-    """
-
     first: typing_extensions.NotRequired[str]
-    """
-    URL for the first page of results.
-    """
-
+    next: typing_extensions.NotRequired[str]
+    prev: typing_extensions.NotRequired[str]
     last: typing_extensions.NotRequired[str]
-    """
-    URL for the last page of results.
-    """

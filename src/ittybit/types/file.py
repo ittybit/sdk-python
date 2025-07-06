@@ -7,108 +7,43 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
 from .file_kind import FileKind
+from .file_object import FileObject
+from .file_status import FileStatus
 
 
 class File(UncheckedBaseModel):
-    id: str = pydantic.Field()
-    """
-    Unique identifier for the file.
-    """
-
-    media_id: str = pydantic.Field()
-    """
-    Identifier for the parent media object.
-    """
-
-    object: str = pydantic.Field()
-    """
-    Object type, typically 'source' or 'derivative'.
-    """
-
-    kind: FileKind = pydantic.Field()
-    """
-    The general type of media.
-    """
-
-    format: str = pydantic.Field()
-    """
-    Specific file format/codec.
-    """
-
-    type: str = pydantic.Field()
-    """
-    MIME type.
-    """
-
-    width: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Width in pixels (for image/video).
-    """
-
-    height: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Height in pixels (for image/video).
-    """
-
-    duration: typing.Optional[float] = pydantic.Field(default=None)
-    """
-    Duration in seconds (for audio/video).
-    """
-
-    fps: typing.Optional[float] = pydantic.Field(default=None)
-    """
-    Frames per second (for video).
-    """
-
-    filesize: int = pydantic.Field()
-    """
-    File size in bytes.
-    """
-
-    folder: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The folder path where the file is stored.
-    """
-
-    filename: str = pydantic.Field()
-    """
-    The name of the file.
-    """
-
-    url: str = pydantic.Field()
-    """
-    Publicly accessible URL for the file.
-    """
-
-    created_by: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    ID of the entity (e.g., task, user) that created this file.
-    """
-
-    created: dt.datetime = pydantic.Field()
-    """
-    Timestamp when the file record was created.
-    """
-
-    updated: dt.datetime = pydantic.Field()
-    """
-    Timestamp when the file record was last updated.
-    """
-
-    metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
-    """
-    User-defined key-value metadata.
-    """
-
-    analysis: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
-    """
-    System-generated analysis data.
-    """
-
-    original: typing.Optional[bool] = pydantic.Field(default=None)
-    """
-    Indicates if this is the originally uploaded file.
-    """
+    id: str
+    media_id: str
+    object: FileObject
+    kind: FileKind
+    type: str
+    codec: typing.Optional[str] = None
+    container: typing.Optional[str] = None
+    width: typing.Optional[int] = None
+    height: typing.Optional[int] = None
+    orientation: typing.Optional[str] = None
+    rotation: typing.Optional[float] = None
+    transparency: typing.Optional[bool] = None
+    animated: typing.Optional[bool] = None
+    frames: typing.Optional[int] = None
+    duration: typing.Optional[float] = None
+    fps: typing.Optional[float] = None
+    filesize: int
+    bitrate: typing.Optional[int] = None
+    language: typing.Optional[str] = None
+    label: typing.Optional[str] = None
+    ref: typing.Optional[str] = None
+    folder: typing.Optional[str] = None
+    filename: typing.Optional[str] = None
+    url: str
+    placeholder: typing.Optional[str] = None
+    background: typing.Optional[str] = None
+    metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = None
+    original: typing.Optional[bool] = None
+    created_by: typing.Optional[str] = None
+    created: dt.datetime
+    updated: dt.datetime
+    status: FileStatus
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

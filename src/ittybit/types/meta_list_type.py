@@ -2,4 +2,4 @@
 
 import typing
 
-FileKind = typing.Union[typing.Literal["video", "image", "audio"], typing.Any]
+MetaListType = typing.Union[typing.Literal["object", "list"], typing.Any]

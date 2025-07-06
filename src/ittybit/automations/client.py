@@ -164,7 +164,7 @@ class AutomationsClient:
                 "event": "upload.completed",
                 "conditions": [{"prop": "file.type", "value": "image/*"}],
             },
-            workflow=[{"kind": "image", "label": "archive_image", "format": "webp"}],
+            workflow=[{"kind": "image", "format": "webp"}],
         )
         """
         _response = self._raw_client.update(
@@ -382,9 +382,7 @@ class AsyncAutomationsClient:
                     "event": "upload.completed",
                     "conditions": [{"prop": "file.type", "value": "image/*"}],
                 },
-                workflow=[
-                    {"kind": "image", "label": "archive_image", "format": "webp"}
-                ],
+                workflow=[{"kind": "image", "format": "webp"}],
             )
 
 

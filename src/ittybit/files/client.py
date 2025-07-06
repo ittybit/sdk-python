@@ -4,10 +4,10 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
+from ..types.confirmation_response import ConfirmationResponse
 from ..types.file_list_response import FileListResponse
 from ..types.file_response import FileResponse
 from .raw_client import AsyncRawFilesClient, RawFilesClient
-from .types.files_delete_response import FilesDeleteResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -32,12 +32,11 @@ class FilesClient:
         self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> FileListResponse:
         """
-        Retrieves a paginated list of all files associated with the current project. Files can be filtered using query parameters.
+        Retrieves a paginated list of all files associated with the current project.
 
         Parameters
         ----------
         limit : typing.Optional[int]
-            Items per page
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -45,7 +44,7 @@ class FilesClient:
         Returns
         -------
         FileListResponse
-            A paginated list of files.
+            Success
 
         Examples
         --------
@@ -64,39 +63,29 @@ class FilesClient:
         self,
         *,
         url: str,
-        filename: typing.Optional[str] = OMIT,
-        folder: typing.Optional[str] = OMIT,
         media_id: typing.Optional[str] = OMIT,
-        label: typing.Optional[str] = OMIT,
+        folder: typing.Optional[str] = OMIT,
+        filename: typing.Optional[str] = OMIT,
+        ref: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        async_: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FileResponse:
         """
-        Registers a file from a publicly accessible URL. The file will be ingested asynchronously.
+        Creates a new file from a publicly accessible or signed URL.
 
         Parameters
         ----------
         url : str
-            The publicly accessible URL of the file to ingest.
-
-        filename : typing.Optional[str]
-            Optional desired filename. If not provided, it may be derived from the URL.
-
-        folder : typing.Optional[str]
-            Folder path (optional)
 
         media_id : typing.Optional[str]
-            Optional existing media ID to associate the file with.
 
-        label : typing.Optional[str]
-            Optional label for the file.
+        folder : typing.Optional[str]
+
+        filename : typing.Optional[str]
+
+        ref : typing.Optional[str]
 
         metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            Optional user-defined key-value metadata.
-
-        async_ : typing.Optional[bool]
-            Whether to process the ingestion asynchronously.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -104,7 +93,7 @@ class FilesClient:
         Returns
         -------
         FileResponse
-            File created successfully.
+            Success
 
         Examples
         --------
@@ -115,27 +104,26 @@ class FilesClient:
             token="YOUR_TOKEN",
         )
         client.files.create(
-            url="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-            filename="bunny.mp4",
-            folder="examples/cartoons",
-            metadata={"credit": "gtv-videos-bucket"},
+            url="https://ittyb.it/sample.mp4",
+            folder="ittybit/samples",
+            filename="video.mp4",
+            metadata={"customKey2": "a different custom value"},
         )
         """
         _response = self._raw_client.create(
             url=url,
-            filename=filename,
-            folder=folder,
             media_id=media_id,
-            label=label,
+            folder=folder,
+            filename=filename,
+            ref=ref,
             metadata=metadata,
-            async_=async_,
             request_options=request_options,
         )
         return _response.data
 
     def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> FileResponse:
         """
-        Retrieves detailed information about a specific file identified by its unique ID, including its metadata, media associations, and technical properties.
+        Retrieve the file object for a file with the given ID.
 
         Parameters
         ----------
@@ -147,7 +135,7 @@ class FilesClient:
         Returns
         -------
         FileResponse
-            Returns the file details
+            Success
 
         Examples
         --------
@@ -164,9 +152,9 @@ class FilesClient:
         _response = self._raw_client.get(id, request_options=request_options)
         return _response.data
 
-    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> FilesDeleteResponse:
+    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> ConfirmationResponse:
         """
-        Permanently removes a file from the system. This action cannot be undone. Associated media entries may still reference this file ID.
+        Permanently removes a file from the system. This action cannot be undone.
 
         Parameters
         ----------
@@ -177,8 +165,8 @@ class FilesClient:
 
         Returns
         -------
-        FilesDeleteResponse
-            Confirmation that the file was deleted successfully.
+        ConfirmationResponse
+            Accepted
 
         Examples
         --------
@@ -199,26 +187,26 @@ class FilesClient:
         self,
         id: str,
         *,
-        metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        filename: typing.Optional[str] = OMIT,
         folder: typing.Optional[str] = OMIT,
+        filename: typing.Optional[str] = OMIT,
+        ref: typing.Optional[str] = OMIT,
+        metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FileResponse:
         """
-        Updates metadata, filename, or folder properties of an existing file. Only the specified fields will be updated.
+        Update a file's `filename`, `folder`, `ref`, or `metadata`. Only the specified fields will be updated.
 
         Parameters
         ----------
         id : str
 
-        metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            An object containing key-value pairs to set or update. Set a key to null to remove it.
+        folder : typing.Optional[str]
 
         filename : typing.Optional[str]
-            New filename for the file.
 
-        folder : typing.Optional[str]
-            New folder path for the file.
+        ref : typing.Optional[str]
+
+        metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -226,7 +214,7 @@ class FilesClient:
         Returns
         -------
         FileResponse
-            File updated successfully.
+            Success
 
         Examples
         --------
@@ -238,12 +226,13 @@ class FilesClient:
         )
         client.files.update(
             id="id",
-            filename="final_approved_video.mp4",
-            folder="archive/2024",
+            folder="updated/folder",
+            filename="new_filename.mp4",
+            metadata={"customKey2": "a different custom value"},
         )
         """
         _response = self._raw_client.update(
-            id, metadata=metadata, filename=filename, folder=folder, request_options=request_options
+            id, folder=folder, filename=filename, ref=ref, metadata=metadata, request_options=request_options
         )
         return _response.data
 
@@ -267,12 +256,11 @@ class AsyncFilesClient:
         self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> FileListResponse:
         """
-        Retrieves a paginated list of all files associated with the current project. Files can be filtered using query parameters.
+        Retrieves a paginated list of all files associated with the current project.
 
         Parameters
         ----------
         limit : typing.Optional[int]
-            Items per page
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -280,7 +268,7 @@ class AsyncFilesClient:
         Returns
         -------
         FileListResponse
-            A paginated list of files.
+            Success
 
         Examples
         --------
@@ -307,39 +295,29 @@ class AsyncFilesClient:
         self,
         *,
         url: str,
-        filename: typing.Optional[str] = OMIT,
-        folder: typing.Optional[str] = OMIT,
         media_id: typing.Optional[str] = OMIT,
-        label: typing.Optional[str] = OMIT,
+        folder: typing.Optional[str] = OMIT,
+        filename: typing.Optional[str] = OMIT,
+        ref: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        async_: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FileResponse:
         """
-        Registers a file from a publicly accessible URL. The file will be ingested asynchronously.
+        Creates a new file from a publicly accessible or signed URL.
 
         Parameters
         ----------
         url : str
-            The publicly accessible URL of the file to ingest.
-
-        filename : typing.Optional[str]
-            Optional desired filename. If not provided, it may be derived from the URL.
-
-        folder : typing.Optional[str]
-            Folder path (optional)
 
         media_id : typing.Optional[str]
-            Optional existing media ID to associate the file with.
 
-        label : typing.Optional[str]
-            Optional label for the file.
+        folder : typing.Optional[str]
+
+        filename : typing.Optional[str]
+
+        ref : typing.Optional[str]
 
         metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            Optional user-defined key-value metadata.
-
-        async_ : typing.Optional[bool]
-            Whether to process the ingestion asynchronously.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -347,7 +325,7 @@ class AsyncFilesClient:
         Returns
         -------
         FileResponse
-            File created successfully.
+            Success
 
         Examples
         --------
@@ -363,10 +341,10 @@ class AsyncFilesClient:
 
         async def main() -> None:
             await client.files.create(
-                url="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                filename="bunny.mp4",
-                folder="examples/cartoons",
-                metadata={"credit": "gtv-videos-bucket"},
+                url="https://ittyb.it/sample.mp4",
+                folder="ittybit/samples",
+                filename="video.mp4",
+                metadata={"customKey2": "a different custom value"},
             )
 
 
@@ -374,19 +352,18 @@ class AsyncFilesClient:
         """
         _response = await self._raw_client.create(
             url=url,
-            filename=filename,
-            folder=folder,
             media_id=media_id,
-            label=label,
+            folder=folder,
+            filename=filename,
+            ref=ref,
             metadata=metadata,
-            async_=async_,
             request_options=request_options,
         )
         return _response.data
 
     async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> FileResponse:
         """
-        Retrieves detailed information about a specific file identified by its unique ID, including its metadata, media associations, and technical properties.
+        Retrieve the file object for a file with the given ID.
 
         Parameters
         ----------
@@ -398,7 +375,7 @@ class AsyncFilesClient:
         Returns
         -------
         FileResponse
-            Returns the file details
+            Success
 
         Examples
         --------
@@ -423,9 +400,9 @@ class AsyncFilesClient:
         _response = await self._raw_client.get(id, request_options=request_options)
         return _response.data
 
-    async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> FilesDeleteResponse:
+    async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> ConfirmationResponse:
         """
-        Permanently removes a file from the system. This action cannot be undone. Associated media entries may still reference this file ID.
+        Permanently removes a file from the system. This action cannot be undone.
 
         Parameters
         ----------
@@ -436,8 +413,8 @@ class AsyncFilesClient:
 
         Returns
         -------
-        FilesDeleteResponse
-            Confirmation that the file was deleted successfully.
+        ConfirmationResponse
+            Accepted
 
         Examples
         --------
@@ -466,26 +443,26 @@ class AsyncFilesClient:
         self,
         id: str,
         *,
-        metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        filename: typing.Optional[str] = OMIT,
         folder: typing.Optional[str] = OMIT,
+        filename: typing.Optional[str] = OMIT,
+        ref: typing.Optional[str] = OMIT,
+        metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> FileResponse:
         """
-        Updates metadata, filename, or folder properties of an existing file. Only the specified fields will be updated.
+        Update a file's `filename`, `folder`, `ref`, or `metadata`. Only the specified fields will be updated.
 
         Parameters
         ----------
         id : str
 
-        metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            An object containing key-value pairs to set or update. Set a key to null to remove it.
+        folder : typing.Optional[str]
 
         filename : typing.Optional[str]
-            New filename for the file.
 
-        folder : typing.Optional[str]
-            New folder path for the file.
+        ref : typing.Optional[str]
+
+        metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -493,7 +470,7 @@ class AsyncFilesClient:
         Returns
         -------
         FileResponse
-            File updated successfully.
+            Success
 
         Examples
         --------
@@ -510,14 +487,15 @@ class AsyncFilesClient:
         async def main() -> None:
             await client.files.update(
                 id="id",
-                filename="final_approved_video.mp4",
-                folder="archive/2024",
+                folder="updated/folder",
+                filename="new_filename.mp4",
+                metadata={"customKey2": "a different custom value"},
             )
 
 
         asyncio.run(main())
         """
         _response = await self._raw_client.update(
-            id, metadata=metadata, filename=filename, folder=folder, request_options=request_options
+            id, folder=folder, filename=filename, ref=ref, metadata=metadata, request_options=request_options
         )
         return _response.data

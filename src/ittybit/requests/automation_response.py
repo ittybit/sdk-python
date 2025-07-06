@@ -3,10 +3,12 @@
 import typing_extensions
 from ..types.meta import Meta
 from .automation import AutomationParams
+from .error import ErrorParams
 from .links import LinksParams
 
 
 class AutomationResponseParams(typing_extensions.TypedDict):
     meta: typing_extensions.NotRequired[Meta]
     data: typing_extensions.NotRequired[AutomationParams]
+    error: typing_extensions.NotRequired[ErrorParams]
     links: typing_extensions.NotRequired[LinksParams]

@@ -5,14 +5,16 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
-from .confirmation_response_data import ConfirmationResponseData
+from .confirmation import Confirmation
+from .error import Error
 from .links import Links
 from .meta import Meta
 
 
 class ConfirmationResponse(UncheckedBaseModel):
     meta: typing.Optional[Meta] = None
-    data: typing.Optional[ConfirmationResponseData] = None
+    data: typing.Optional[Confirmation] = None
+    error: typing.Optional[Error] = None
     links: typing.Optional[Links] = None
 
     if IS_PYDANTIC_V2:

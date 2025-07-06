@@ -6,11 +6,4 @@ from ..core.serialization import FieldMetadata
 
 class LinksParams(typing_extensions.TypedDict):
     self_: typing_extensions.NotRequired[typing_extensions.Annotated[str, FieldMetadata(alias="self")]]
-    """
-    The absolute URL of the current request, potentially including query parameters.
-    """
-
     parent: typing_extensions.NotRequired[str]
-    """
-    URL for the parent resource.
-    """

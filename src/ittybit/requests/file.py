@@ -5,105 +5,40 @@ import typing
 
 import typing_extensions
 from ..types.file_kind import FileKind
+from ..types.file_object import FileObject
+from ..types.file_status import FileStatus
 
 
 class FileParams(typing_extensions.TypedDict):
     id: str
-    """
-    Unique identifier for the file.
-    """
-
     media_id: str
-    """
-    Identifier for the parent media object.
-    """
-
-    object: str
-    """
-    Object type, typically 'source' or 'derivative'.
-    """
-
+    object: FileObject
     kind: FileKind
-    """
-    The general type of media.
-    """
-
-    format: str
-    """
-    Specific file format/codec.
-    """
-
     type: str
-    """
-    MIME type.
-    """
-
+    codec: typing_extensions.NotRequired[str]
+    container: typing_extensions.NotRequired[str]
     width: typing_extensions.NotRequired[int]
-    """
-    Width in pixels (for image/video).
-    """
-
     height: typing_extensions.NotRequired[int]
-    """
-    Height in pixels (for image/video).
-    """
-
+    orientation: typing_extensions.NotRequired[str]
+    rotation: typing_extensions.NotRequired[float]
+    transparency: typing_extensions.NotRequired[bool]
+    animated: typing_extensions.NotRequired[bool]
+    frames: typing_extensions.NotRequired[int]
     duration: typing_extensions.NotRequired[float]
-    """
-    Duration in seconds (for audio/video).
-    """
-
     fps: typing_extensions.NotRequired[float]
-    """
-    Frames per second (for video).
-    """
-
     filesize: int
-    """
-    File size in bytes.
-    """
-
+    bitrate: typing_extensions.NotRequired[int]
+    language: typing_extensions.NotRequired[str]
+    label: typing_extensions.NotRequired[str]
+    ref: typing_extensions.NotRequired[str]
     folder: typing_extensions.NotRequired[str]
-    """
-    The folder path where the file is stored.
-    """
-
-    filename: str
-    """
-    The name of the file.
-    """
-
+    filename: typing_extensions.NotRequired[str]
     url: str
-    """
-    Publicly accessible URL for the file.
-    """
-
-    created_by: typing_extensions.NotRequired[str]
-    """
-    ID of the entity (e.g., task, user) that created this file.
-    """
-
-    created: dt.datetime
-    """
-    Timestamp when the file record was created.
-    """
-
-    updated: dt.datetime
-    """
-    Timestamp when the file record was last updated.
-    """
-
+    placeholder: typing_extensions.NotRequired[str]
+    background: typing_extensions.NotRequired[str]
     metadata: typing_extensions.NotRequired[typing.Dict[str, typing.Optional[typing.Any]]]
-    """
-    User-defined key-value metadata.
-    """
-
-    analysis: typing_extensions.NotRequired[typing.Dict[str, typing.Optional[typing.Any]]]
-    """
-    System-generated analysis data.
-    """
-
     original: typing_extensions.NotRequired[bool]
-    """
-    Indicates if this is the originally uploaded file.
-    """
+    created_by: typing_extensions.NotRequired[str]
+    created: dt.datetime
+    updated: dt.datetime
+    status: FileStatus

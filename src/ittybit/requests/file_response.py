@@ -2,6 +2,7 @@
 
 import typing_extensions
 from ..types.meta import Meta
+from .error import ErrorParams
 from .file import FileParams
 from .links import LinksParams
 
@@ -9,4 +10,5 @@ from .links import LinksParams
 class FileResponseParams(typing_extensions.TypedDict):
     meta: typing_extensions.NotRequired[Meta]
     data: typing_extensions.NotRequired[FileParams]
+    error: typing_extensions.NotRequired[ErrorParams]
     links: typing_extensions.NotRequired[LinksParams]

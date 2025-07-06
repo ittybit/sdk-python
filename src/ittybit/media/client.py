@@ -32,12 +32,11 @@ class MediaClient:
         self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> MediaListResponse:
         """
-        Retrieves a list of all media for the current project
+        Retrieves a paginated list of all media for the current project
 
         Parameters
         ----------
         limit : typing.Optional[int]
-            Number of media items to return per page.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -45,7 +44,7 @@ class MediaClient:
         Returns
         -------
         MediaListResponse
-            A list of media items
+            Success
 
         Examples
         --------
@@ -63,44 +62,21 @@ class MediaClient:
     def create(
         self,
         *,
-        url: typing.Optional[str] = OMIT,
-        label: typing.Optional[str] = OMIT,
-        folder: typing.Optional[str] = OMIT,
-        filename: typing.Optional[str] = OMIT,
         title: typing.Optional[str] = OMIT,
+        alt: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        async_: typing.Optional[bool] = OMIT,
-        empty: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> MediaResponse:
         """
-        Creates a new media item from a URL or as an empty placeholder
+        Creates a new media item.
 
         Parameters
         ----------
-        url : typing.Optional[str]
-            URL of the media file to ingest. Required unless 'empty' is true.
-
-        label : typing.Optional[str]
-            Label for the media
-
-        folder : typing.Optional[str]
-            Folder to store the media in
-
-        filename : typing.Optional[str]
-            Filename for the media
-
         title : typing.Optional[str]
-            Title for the media
+
+        alt : typing.Optional[str]
 
         metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            Additional metadata for the media
-
-        async_ : typing.Optional[bool]
-            Whether to process the media asynchronously
-
-        empty : typing.Optional[bool]
-            Create an empty media placeholder
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -108,7 +84,7 @@ class MediaClient:
         Returns
         -------
         MediaResponse
-            Media created successfully
+            Success
 
         Examples
         --------
@@ -119,28 +95,17 @@ class MediaClient:
             token="YOUR_TOKEN",
         )
         client.media.create(
-            url="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-            folder="examples/cartoons",
-            filename="bunny.mp4",
-            metadata={"credit": "gtv-videos-bucket"},
+            title="My Video Example",
+            alt="An example video used to demonstrate the ittybit API",
+            metadata={"customKey2": "a different custom value"},
         )
         """
-        _response = self._raw_client.create(
-            url=url,
-            label=label,
-            folder=folder,
-            filename=filename,
-            title=title,
-            metadata=metadata,
-            async_=async_,
-            empty=empty,
-            request_options=request_options,
-        )
+        _response = self._raw_client.create(title=title, alt=alt, metadata=metadata, request_options=request_options)
         return _response.data
 
     def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> MediaResponse:
         """
-        Retrieves a specific media item by its ID
+        Retrieves the media object for a media with the given ID.
 
         Parameters
         ----------
@@ -152,7 +117,7 @@ class MediaClient:
         Returns
         -------
         MediaResponse
-            Media item details
+            Success
 
         Examples
         --------
@@ -171,7 +136,7 @@ class MediaClient:
 
     def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> ConfirmationResponse:
         """
-        Deletes a specific media item by its ID
+        Permanently removes a media object from the system. This action cannot be undone.
 
         Parameters
         ----------
@@ -183,7 +148,7 @@ class MediaClient:
         Returns
         -------
         ConfirmationResponse
-            Media deleted successfully
+            Success
 
         Examples
         --------
@@ -205,21 +170,22 @@ class MediaClient:
         id: str,
         *,
         title: typing.Optional[str] = OMIT,
+        alt: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> MediaResponse:
         """
-        Updates specific fields of a media item by its ID. Only the fields provided in the request body will be updated.
+        Updates a media object's `title`, `alt`, or `metadata`. Only the specified fields will be updated.
 
         Parameters
         ----------
         id : str
 
         title : typing.Optional[str]
-            New title for the media item.
+
+        alt : typing.Optional[str]
 
         metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            New metadata object for the media item. This will replace the existing metadata.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -227,7 +193,7 @@ class MediaClient:
         Returns
         -------
         MediaResponse
-            Media updated successfully
+            Success
 
         Examples
         --------
@@ -239,9 +205,14 @@ class MediaClient:
         )
         client.media.update(
             id="id",
+            title="Updated Video Example",
+            alt="An updated example video used to demonstrate the ittybit API",
+            metadata={"customKey2": "a different custom value"},
         )
         """
-        _response = self._raw_client.update(id, title=title, metadata=metadata, request_options=request_options)
+        _response = self._raw_client.update(
+            id, title=title, alt=alt, metadata=metadata, request_options=request_options
+        )
         return _response.data
 
 
@@ -264,12 +235,11 @@ class AsyncMediaClient:
         self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> MediaListResponse:
         """
-        Retrieves a list of all media for the current project
+        Retrieves a paginated list of all media for the current project
 
         Parameters
         ----------
         limit : typing.Optional[int]
-            Number of media items to return per page.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -277,7 +247,7 @@ class AsyncMediaClient:
         Returns
         -------
         MediaListResponse
-            A list of media items
+            Success
 
         Examples
         --------
@@ -303,44 +273,21 @@ class AsyncMediaClient:
     async def create(
         self,
         *,
-        url: typing.Optional[str] = OMIT,
-        label: typing.Optional[str] = OMIT,
-        folder: typing.Optional[str] = OMIT,
-        filename: typing.Optional[str] = OMIT,
         title: typing.Optional[str] = OMIT,
+        alt: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        async_: typing.Optional[bool] = OMIT,
-        empty: typing.Optional[bool] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> MediaResponse:
         """
-        Creates a new media item from a URL or as an empty placeholder
+        Creates a new media item.
 
         Parameters
         ----------
-        url : typing.Optional[str]
-            URL of the media file to ingest. Required unless 'empty' is true.
-
-        label : typing.Optional[str]
-            Label for the media
-
-        folder : typing.Optional[str]
-            Folder to store the media in
-
-        filename : typing.Optional[str]
-            Filename for the media
-
         title : typing.Optional[str]
-            Title for the media
+
+        alt : typing.Optional[str]
 
         metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            Additional metadata for the media
-
-        async_ : typing.Optional[bool]
-            Whether to process the media asynchronously
-
-        empty : typing.Optional[bool]
-            Create an empty media placeholder
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -348,7 +295,7 @@ class AsyncMediaClient:
         Returns
         -------
         MediaResponse
-            Media created successfully
+            Success
 
         Examples
         --------
@@ -364,31 +311,22 @@ class AsyncMediaClient:
 
         async def main() -> None:
             await client.media.create(
-                url="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-                folder="examples/cartoons",
-                filename="bunny.mp4",
-                metadata={"credit": "gtv-videos-bucket"},
+                title="My Video Example",
+                alt="An example video used to demonstrate the ittybit API",
+                metadata={"customKey2": "a different custom value"},
             )
 
 
         asyncio.run(main())
         """
         _response = await self._raw_client.create(
-            url=url,
-            label=label,
-            folder=folder,
-            filename=filename,
-            title=title,
-            metadata=metadata,
-            async_=async_,
-            empty=empty,
-            request_options=request_options,
+            title=title, alt=alt, metadata=metadata, request_options=request_options
         )
         return _response.data
 
     async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> MediaResponse:
         """
-        Retrieves a specific media item by its ID
+        Retrieves the media object for a media with the given ID.
 
         Parameters
         ----------
@@ -400,7 +338,7 @@ class AsyncMediaClient:
         Returns
         -------
         MediaResponse
-            Media item details
+            Success
 
         Examples
         --------
@@ -427,7 +365,7 @@ class AsyncMediaClient:
 
     async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> ConfirmationResponse:
         """
-        Deletes a specific media item by its ID
+        Permanently removes a media object from the system. This action cannot be undone.
 
         Parameters
         ----------
@@ -439,7 +377,7 @@ class AsyncMediaClient:
         Returns
         -------
         ConfirmationResponse
-            Media deleted successfully
+            Success
 
         Examples
         --------
@@ -469,21 +407,22 @@ class AsyncMediaClient:
         id: str,
         *,
         title: typing.Optional[str] = OMIT,
+        alt: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> MediaResponse:
         """
-        Updates specific fields of a media item by its ID. Only the fields provided in the request body will be updated.
+        Updates a media object's `title`, `alt`, or `metadata`. Only the specified fields will be updated.
 
         Parameters
         ----------
         id : str
 
         title : typing.Optional[str]
-            New title for the media item.
+
+        alt : typing.Optional[str]
 
         metadata : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            New metadata object for the media item. This will replace the existing metadata.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -491,7 +430,7 @@ class AsyncMediaClient:
         Returns
         -------
         MediaResponse
-            Media updated successfully
+            Success
 
         Examples
         --------
@@ -508,10 +447,15 @@ class AsyncMediaClient:
         async def main() -> None:
             await client.media.update(
                 id="id",
+                title="Updated Video Example",
+                alt="An updated example video used to demonstrate the ittybit API",
+                metadata={"customKey2": "a different custom value"},
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.update(id, title=title, metadata=metadata, request_options=request_options)
+        _response = await self._raw_client.update(
+            id, title=title, alt=alt, metadata=metadata, request_options=request_options
+        )
         return _response.data

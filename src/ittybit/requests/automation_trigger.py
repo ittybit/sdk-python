@@ -3,20 +3,8 @@
 import typing
 
 import typing_extensions
-from .automation_trigger_conditions_item import AutomationTriggerConditionsItemParams
 
 
 class AutomationTriggerParams(typing_extensions.TypedDict):
-    """
-    The event and conditions that trigger this automation.
-    """
-
+    kind: typing_extensions.NotRequired[typing.Literal["event"]]
     event: str
-    """
-    The event that triggers the automation
-    """
-
-    conditions: typing_extensions.NotRequired[typing.Sequence[AutomationTriggerConditionsItemParams]]
-    """
-    Conditions that must be met for the trigger to activate.
-    """

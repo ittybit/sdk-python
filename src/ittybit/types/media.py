@@ -8,126 +8,23 @@ from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
 from .media_kind import MediaKind
 from .media_source import MediaSource
-from .media_status import MediaStatus
 
 
 class Media(UncheckedBaseModel):
-    id: str = pydantic.Field()
-    """
-    Unique identifier for the media item.
-    """
-
-    object: str = pydantic.Field()
-    """
-    Object type, always 'media'.
-    """
-
-    org_id: str = pydantic.Field()
-    """
-    Organisation ID associated with the request.
-    """
-
-    project_id: str = pydantic.Field()
-    """
-    Project ID associated with the request.
-    """
-
-    live_mode: bool = pydantic.Field()
-    """
-    Indicates if the item is in live mode.
-    """
-
-    kind: MediaKind = pydantic.Field()
-    """
-    The primary kind of the media item, derived from its sources.
-    """
-
-    type: str = pydantic.Field()
-    """
-    The primary MIME type of the media item.
-    """
-
-    width: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Width of the primary source in pixels.
-    """
-
-    height: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Height of the primary source in pixels.
-    """
-
-    duration: typing.Optional[float] = pydantic.Field(default=None)
-    """
-    Duration of the primary source in seconds.
-    """
-
-    filesize: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Combined file size of all sources in bytes.
-    """
-
-    sources: typing.List[MediaSource] = pydantic.Field()
-    """
-    Array of source files associated with this media item.
-    """
-
-    tracks: typing.Optional[typing.List[typing.Dict[str, typing.Optional[typing.Any]]]] = pydantic.Field(default=None)
-    """
-    Text tracks (e.g., subtitles, captions).
-    """
-
-    intelligence: typing.Optional[typing.List[typing.Dict[str, typing.Optional[typing.Any]]]] = pydantic.Field(
-        default=None
-    )
-    """
-    AI-generated analysis data.
-    """
-
-    original: str = pydantic.Field()
-    """
-    URL of the primary original source file.
-    """
-
-    placeholder: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Low-quality image placeholder (data URI).
-    """
-
-    background: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Dominant background color hex code.
-    """
-
-    folder: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The folder path containing the primary source file.
-    """
-
-    filename: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The filename of the primary source file.
-    """
-
-    metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
-    """
-    User-defined key-value metadata for the media item.
-    """
-
-    created: dt.datetime = pydantic.Field()
-    """
-    Timestamp when the media record was created.
-    """
-
-    updated: dt.datetime = pydantic.Field()
-    """
-    Timestamp when the media item was last updated.
-    """
-
-    status: MediaStatus = pydantic.Field()
-    """
-    Processing status.
-    """
+    id: str
+    object: str
+    kind: typing.Optional[MediaKind] = None
+    title: typing.Optional[str] = None
+    alt: typing.Optional[str] = None
+    width: typing.Optional[int] = None
+    height: typing.Optional[int] = None
+    duration: typing.Optional[float] = None
+    files: typing.List[MediaSource]
+    urls: typing.Dict[str, typing.Optional[typing.Any]]
+    background: typing.Optional[str] = None
+    metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = None
+    created: dt.datetime
+    updated: dt.datetime
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

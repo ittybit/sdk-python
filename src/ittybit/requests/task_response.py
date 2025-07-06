@@ -2,6 +2,7 @@
 
 import typing_extensions
 from ..types.meta import Meta
+from .error import ErrorParams
 from .links import LinksParams
 from .task import TaskParams
 
@@ -9,4 +10,5 @@ from .task import TaskParams
 class TaskResponseParams(typing_extensions.TypedDict):
     meta: typing_extensions.NotRequired[Meta]
     data: typing_extensions.NotRequired[TaskParams]
+    error: typing_extensions.NotRequired[ErrorParams]
     links: typing_extensions.NotRequired[LinksParams]

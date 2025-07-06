@@ -9,40 +9,17 @@ from .workflow_task_step_kind import WorkflowTaskStepKind
 
 
 class WorkflowTaskStep(UncheckedBaseModel):
-    kind: WorkflowTaskStepKind = pydantic.Field()
-    """
-    The type of operation the task performs.
-    """
-
-    label: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Optional label for the output of this step.
-    """
-
-    format: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Output format (e.g., mp4, jpg)
-    """
-
-    width: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Output width
-    """
-
-    height: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Output height
-    """
-
-    resize: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Resize mode
-    """
-
-    quality: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Quality setting
-    """
+    kind: WorkflowTaskStepKind
+    ref: typing.Optional[str] = None
+    format: typing.Optional[str] = None
+    start: typing.Optional[float] = None
+    end: typing.Optional[float] = None
+    width: typing.Optional[int] = None
+    height: typing.Optional[int] = None
+    fit: typing.Optional[str] = None
+    background: typing.Optional[str] = None
+    quality: typing.Optional[int] = None
+    next: typing.Optional[typing.List[typing.Optional[typing.Any]]] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

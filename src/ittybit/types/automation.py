@@ -12,50 +12,14 @@ from .workflow_task_step import WorkflowTaskStep
 
 
 class Automation(UncheckedBaseModel):
-    id: str = pydantic.Field()
-    """
-    Unique identifier for the automation
-    """
-
-    name: str = pydantic.Field()
-    """
-    User-defined name for the automation
-    """
-
-    description: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Optional description for the automation
-    """
-
-    metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = pydantic.Field(default=None)
-    """
-    User-defined key-value metadata for the automation.
-    """
-
-    trigger: AutomationTrigger = pydantic.Field()
-    """
-    The event and conditions that trigger this automation.
-    """
-
-    workflow: typing.List[WorkflowTaskStep] = pydantic.Field()
-    """
-    The sequence of tasks to be executed when the automation is triggered. The structure of each task object varies depending on its 'kind'.
-    """
-
-    status: AutomationStatus = pydantic.Field()
-    """
-    Current status of the automation
-    """
-
-    created: dt.datetime = pydantic.Field()
-    """
-    Timestamp when the automation was created
-    """
-
-    updated: dt.datetime = pydantic.Field()
-    """
-    Timestamp when the automation was last updated
-    """
+    id: str
+    name: str
+    description: typing.Optional[str] = None
+    trigger: AutomationTrigger
+    workflow: typing.List[WorkflowTaskStep]
+    status: AutomationStatus
+    created: dt.datetime
+    updated: dt.datetime
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

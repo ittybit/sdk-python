@@ -233,7 +233,7 @@ client.automations.update(
         "event": "upload.completed",
         "conditions": [{"prop": "file.type", "value": "image/*"}],
     },
-    workflow=[{"kind": "image", "label": "archive_image", "format": "webp"}],
+    workflow=[{"kind": "image", "format": "webp"}],
 )
 
 ```
@@ -386,7 +386,7 @@ client.automations.delete(
 <dl>
 <dd>
 
-Retrieves a paginated list of all files associated with the current project. Files can be filtered using query parameters.
+Retrieves a paginated list of all files associated with the current project.
 </dd>
 </dl>
 </dd>
@@ -423,7 +423,7 @@ client.files.list()
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Items per page
+**limit:** `typing.Optional[int]` 
     
 </dd>
 </dl>
@@ -455,7 +455,7 @@ client.files.list()
 <dl>
 <dd>
 
-Registers a file from a publicly accessible URL. The file will be ingested asynchronously.
+Creates a new file from a publicly accessible or signed URL.
 </dd>
 </dl>
 </dd>
@@ -477,10 +477,10 @@ client = Ittybit(
     token="YOUR_TOKEN",
 )
 client.files.create(
-    url="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-    filename="bunny.mp4",
-    folder="examples/cartoons",
-    metadata={"credit": "gtv-videos-bucket"},
+    url="https://ittyb.it/sample.mp4",
+    folder="ittybit/samples",
+    filename="video.mp4",
+    metadata={"customKey2": "a different custom value"},
 )
 
 ```
@@ -497,7 +497,7 @@ client.files.create(
 <dl>
 <dd>
 
-**url:** `str` — The publicly accessible URL of the file to ingest.
+**url:** `str` 
     
 </dd>
 </dl>
@@ -505,7 +505,7 @@ client.files.create(
 <dl>
 <dd>
 
-**filename:** `typing.Optional[str]` — Optional desired filename. If not provided, it may be derived from the URL.
+**media_id:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -513,7 +513,7 @@ client.files.create(
 <dl>
 <dd>
 
-**folder:** `typing.Optional[str]` — Folder path (optional)
+**folder:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -521,7 +521,7 @@ client.files.create(
 <dl>
 <dd>
 
-**media_id:** `typing.Optional[str]` — Optional existing media ID to associate the file with.
+**filename:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -529,7 +529,7 @@ client.files.create(
 <dl>
 <dd>
 
-**label:** `typing.Optional[str]` — Optional label for the file.
+**ref:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -537,15 +537,7 @@ client.files.create(
 <dl>
 <dd>
 
-**metadata:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — Optional user-defined key-value metadata.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**async_:** `typing.Optional[bool]` — Whether to process the ingestion asynchronously.
+**metadata:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` 
     
 </dd>
 </dl>
@@ -577,7 +569,7 @@ client.files.create(
 <dl>
 <dd>
 
-Retrieves detailed information about a specific file identified by its unique ID, including its metadata, media associations, and technical properties.
+Retrieve the file object for a file with the given ID.
 </dd>
 </dl>
 </dd>
@@ -648,7 +640,7 @@ client.files.get(
 <dl>
 <dd>
 
-Permanently removes a file from the system. This action cannot be undone. Associated media entries may still reference this file ID.
+Permanently removes a file from the system. This action cannot be undone.
 </dd>
 </dl>
 </dd>
@@ -719,7 +711,7 @@ client.files.delete(
 <dl>
 <dd>
 
-Updates metadata, filename, or folder properties of an existing file. Only the specified fields will be updated.
+Update a file's `filename`, `folder`, `ref`, or `metadata`. Only the specified fields will be updated.
 </dd>
 </dl>
 </dd>
@@ -742,8 +734,9 @@ client = Ittybit(
 )
 client.files.update(
     id="id",
-    filename="final_approved_video.mp4",
-    folder="archive/2024",
+    folder="updated/folder",
+    filename="new_filename.mp4",
+    metadata={"customKey2": "a different custom value"},
 )
 
 ```
@@ -768,7 +761,7 @@ client.files.update(
 <dl>
 <dd>
 
-**metadata:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — An object containing key-value pairs to set or update. Set a key to null to remove it.
+**folder:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -776,7 +769,7 @@ client.files.update(
 <dl>
 <dd>
 
-**filename:** `typing.Optional[str]` — New filename for the file.
+**filename:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -784,7 +777,15 @@ client.files.update(
 <dl>
 <dd>
 
-**folder:** `typing.Optional[str]` — New folder path for the file.
+**ref:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metadata:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` 
     
 </dd>
 </dl>
@@ -817,7 +818,7 @@ client.files.update(
 <dl>
 <dd>
 
-Retrieves a list of all media for the current project
+Retrieves a paginated list of all media for the current project
 </dd>
 </dl>
 </dd>
@@ -854,7 +855,7 @@ client.media.list()
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Number of media items to return per page.
+**limit:** `typing.Optional[int]` 
     
 </dd>
 </dl>
@@ -886,7 +887,7 @@ client.media.list()
 <dl>
 <dd>
 
-Creates a new media item from a URL or as an empty placeholder
+Creates a new media item.
 </dd>
 </dl>
 </dd>
@@ -908,10 +909,9 @@ client = Ittybit(
     token="YOUR_TOKEN",
 )
 client.media.create(
-    url="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
-    folder="examples/cartoons",
-    filename="bunny.mp4",
-    metadata={"credit": "gtv-videos-bucket"},
+    title="My Video Example",
+    alt="An example video used to demonstrate the ittybit API",
+    metadata={"customKey2": "a different custom value"},
 )
 
 ```
@@ -928,7 +928,7 @@ client.media.create(
 <dl>
 <dd>
 
-**url:** `typing.Optional[str]` — URL of the media file to ingest. Required unless 'empty' is true.
+**title:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -936,7 +936,7 @@ client.media.create(
 <dl>
 <dd>
 
-**label:** `typing.Optional[str]` — Label for the media
+**alt:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -944,47 +944,7 @@ client.media.create(
 <dl>
 <dd>
 
-**folder:** `typing.Optional[str]` — Folder to store the media in
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**filename:** `typing.Optional[str]` — Filename for the media
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**title:** `typing.Optional[str]` — Title for the media
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**metadata:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — Additional metadata for the media
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**async_:** `typing.Optional[bool]` — Whether to process the media asynchronously
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**empty:** `typing.Optional[bool]` — Create an empty media placeholder
+**metadata:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` 
     
 </dd>
 </dl>
@@ -1016,7 +976,7 @@ client.media.create(
 <dl>
 <dd>
 
-Retrieves a specific media item by its ID
+Retrieves the media object for a media with the given ID.
 </dd>
 </dl>
 </dd>
@@ -1087,7 +1047,7 @@ client.media.get(
 <dl>
 <dd>
 
-Deletes a specific media item by its ID
+Permanently removes a media object from the system. This action cannot be undone.
 </dd>
 </dl>
 </dd>
@@ -1158,7 +1118,7 @@ client.media.delete(
 <dl>
 <dd>
 
-Updates specific fields of a media item by its ID. Only the fields provided in the request body will be updated.
+Updates a media object's `title`, `alt`, or `metadata`. Only the specified fields will be updated.
 </dd>
 </dl>
 </dd>
@@ -1181,6 +1141,9 @@ client = Ittybit(
 )
 client.media.update(
     id="id",
+    title="Updated Video Example",
+    alt="An updated example video used to demonstrate the ittybit API",
+    metadata={"customKey2": "a different custom value"},
 )
 
 ```
@@ -1205,7 +1168,7 @@ client.media.update(
 <dl>
 <dd>
 
-**title:** `typing.Optional[str]` — New title for the media item.
+**title:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -1213,7 +1176,15 @@ client.media.update(
 <dl>
 <dd>
 
-**metadata:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — New metadata object for the media item. This will replace the existing metadata.
+**alt:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**metadata:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` 
     
 </dd>
 </dl>
@@ -1354,7 +1325,7 @@ client = Ittybit(
 )
 client.tasks.create(
     kind="ingest",
-    url="https://storage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
+    url="https://ittyb.it/sample.mp4",
     filename="bunny-1280x720.mp4",
     folder="examples/cartoons",
     width=1280,
@@ -1628,7 +1599,7 @@ client.tasks.get(
 <dl>
 <dd>
 
-Creates a cryptographically signed URL that provides temporary and restricted access to a file. The URL can expire after a specified time and be limited to specific HTTP methods.
+You can use signatures to create signed URLs which grant access to your project's resources, without revealing your project's API key. URLs can expire after a specified time and be limited to HTTP `GET` method for read-only access, or HTTP `PUT` method for client-side uploads.
 </dd>
 </dl>
 </dd>
@@ -1651,9 +1622,9 @@ client = Ittybit(
 )
 client.signatures.create(
     filename="video.mp4",
-    folder="private/user_123",
+    folder="example",
     expiry=1735689600,
-    method="get",
+    method="put",
 )
 
 ```
@@ -1670,7 +1641,7 @@ client.signatures.create(
 <dl>
 <dd>
 
-**filename:** `str` — The name of the file to generate a signature for. Special characters will be sanitised.
+**filename:** `str` 
     
 </dd>
 </dl>
@@ -1678,7 +1649,7 @@ client.signatures.create(
 <dl>
 <dd>
 
-**folder:** `typing.Optional[str]` — Optional folder path where the file resides. Special characters will be sanitised.
+**folder:** `typing.Optional[str]` 
     
 </dd>
 </dl>
@@ -1686,7 +1657,7 @@ client.signatures.create(
 <dl>
 <dd>
 
-**expiry:** `typing.Optional[int]` — Optional expiry time for the signature in seconds since epoch. Defaults to 60 minutes from now. Must be a positive integer and in the future.
+**expiry:** `typing.Optional[int]` 
     
 </dd>
 </dl>
@@ -1694,7 +1665,7 @@ client.signatures.create(
 <dl>
 <dd>
 
-**method:** `typing.Optional[SignaturesCreateRequestMethod]` — Optional HTTP method allowed for the signed URL. Defaults to 'get'.
+**method:** `typing.Optional[SignaturesCreateRequestMethod]` 
     
 </dd>
 </dl>

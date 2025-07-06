@@ -5,6 +5,7 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
+from .error import Error
 from .links_list import LinksList
 from .media import Media
 from .meta_list import MetaList
@@ -13,6 +14,7 @@ from .meta_list import MetaList
 class MediaListResponse(UncheckedBaseModel):
     meta: typing.Optional[MetaList] = None
     data: typing.Optional[typing.List[Media]] = None
+    error: typing.Optional[Error] = None
     links: typing.Optional[LinksList] = None
 
     if IS_PYDANTIC_V2:

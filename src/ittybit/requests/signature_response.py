@@ -2,6 +2,7 @@
 
 import typing_extensions
 from ..types.meta import Meta
+from .error import ErrorParams
 from .links import LinksParams
 from .signature import SignatureParams
 
@@ -9,4 +10,5 @@ from .signature import SignatureParams
 class SignatureResponseParams(typing_extensions.TypedDict):
     meta: typing_extensions.NotRequired[Meta]
     data: typing_extensions.NotRequired[SignatureParams]
+    error: typing_extensions.NotRequired[ErrorParams]
     links: typing_extensions.NotRequired[LinksParams]

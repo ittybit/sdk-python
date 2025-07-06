@@ -8,9 +8,6 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.request_options import RequestOptions
 from ..core.unchecked_base_model import construct_type
-from ..errors.bad_request_error import BadRequestError
-from ..errors.unauthorized_error import UnauthorizedError
-from ..types.error_response import ErrorResponse
 from ..types.signature_response import SignatureResponse
 from .types.signatures_create_request_method import SignaturesCreateRequestMethod
 
@@ -32,21 +29,17 @@ class RawSignaturesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[SignatureResponse]:
         """
-        Creates a cryptographically signed URL that provides temporary and restricted access to a file. The URL can expire after a specified time and be limited to specific HTTP methods.
+        You can use signatures to create signed URLs which grant access to your project's resources, without revealing your project's API key. URLs can expire after a specified time and be limited to HTTP `GET` method for read-only access, or HTTP `PUT` method for client-side uploads.
 
         Parameters
         ----------
         filename : str
-            The name of the file to generate a signature for. Special characters will be sanitised.
 
         folder : typing.Optional[str]
-            Optional folder path where the file resides. Special characters will be sanitised.
 
         expiry : typing.Optional[int]
-            Optional expiry time for the signature in seconds since epoch. Defaults to 60 minutes from now. Must be a positive integer and in the future.
 
         method : typing.Optional[SignaturesCreateRequestMethod]
-            Optional HTTP method allowed for the signed URL. Defaults to 'get'.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -54,7 +47,7 @@ class RawSignaturesClient:
         Returns
         -------
         HttpResponse[SignatureResponse]
-            Signed URL generated successfully
+            Success
         """
         _response = self._client_wrapper.httpx_client.request(
             "signatures",
@@ -81,28 +74,6 @@ class RawSignaturesClient:
                     ),
                 )
                 return HttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
@@ -123,21 +94,17 @@ class AsyncRawSignaturesClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[SignatureResponse]:
         """
-        Creates a cryptographically signed URL that provides temporary and restricted access to a file. The URL can expire after a specified time and be limited to specific HTTP methods.
+        You can use signatures to create signed URLs which grant access to your project's resources, without revealing your project's API key. URLs can expire after a specified time and be limited to HTTP `GET` method for read-only access, or HTTP `PUT` method for client-side uploads.
 
         Parameters
         ----------
         filename : str
-            The name of the file to generate a signature for. Special characters will be sanitised.
 
         folder : typing.Optional[str]
-            Optional folder path where the file resides. Special characters will be sanitised.
 
         expiry : typing.Optional[int]
-            Optional expiry time for the signature in seconds since epoch. Defaults to 60 minutes from now. Must be a positive integer and in the future.
 
         method : typing.Optional[SignaturesCreateRequestMethod]
-            Optional HTTP method allowed for the signed URL. Defaults to 'get'.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -145,7 +112,7 @@ class AsyncRawSignaturesClient:
         Returns
         -------
         AsyncHttpResponse[SignatureResponse]
-            Signed URL generated successfully
+            Success
         """
         _response = await self._client_wrapper.httpx_client.request(
             "signatures",
@@ -172,28 +139,6 @@ class AsyncRawSignaturesClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            if _response.status_code == 400:
-                raise BadRequestError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
-            if _response.status_code == 401:
-                raise UnauthorizedError(
-                    headers=dict(_response.headers),
-                    body=typing.cast(
-                        ErrorResponse,
-                        construct_type(
-                            type_=ErrorResponse,  # type: ignore
-                            object_=_response.json(),
-                        ),
-                    ),
-                )
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)

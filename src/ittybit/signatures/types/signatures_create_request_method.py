@@ -2,4 +2,4 @@
 
 import typing
 
-SignaturesCreateRequestMethod = typing.Union[typing.Literal["get", "put", "post", "delete"], typing.Any]
+SignaturesCreateRequestMethod = typing.Union[typing.Literal["get", "put"], typing.Any]

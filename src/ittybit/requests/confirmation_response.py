@@ -2,11 +2,13 @@
 
 import typing_extensions
 from ..types.meta import Meta
-from .confirmation_response_data import ConfirmationResponseDataParams
+from .confirmation import ConfirmationParams
+from .error import ErrorParams
 from .links import LinksParams
 
 
 class ConfirmationResponseParams(typing_extensions.TypedDict):
     meta: typing_extensions.NotRequired[Meta]
-    data: typing_extensions.NotRequired[ConfirmationResponseDataParams]
+    data: typing_extensions.NotRequired[ConfirmationParams]
+    error: typing_extensions.NotRequired[ErrorParams]
     links: typing_extensions.NotRequired[LinksParams]

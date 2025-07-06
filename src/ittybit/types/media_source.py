@@ -7,118 +7,37 @@ import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
 from .media_source_kind import MediaSourceKind
+from .media_source_object import MediaSourceObject
 from .media_source_orientation import MediaSourceOrientation
+from .media_source_status import MediaSourceStatus
 
 
 class MediaSource(UncheckedBaseModel):
-    """
-    Represents a source file associated with a media item.
-    """
-
-    id: str = pydantic.Field()
-    """
-    Unique identifier for the source file.
-    """
-
-    object: str = pydantic.Field()
-    """
-    Object type, always 'source' for media sources.
-    """
-
-    kind: MediaSourceKind = pydantic.Field()
-    """
-    The general type of media (e.g., video, image).
-    """
-
-    format: str = pydantic.Field()
-    """
-    Specific file format (e.g., mp4, webm, jpg).
-    """
-
-    type: str = pydantic.Field()
-    """
-    MIME type, potentially including codec info.
-    """
-
-    container: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    File container format.
-    """
-
-    codec: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    Primary codec.
-    """
-
-    width: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Width in pixels.
-    """
-
-    height: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Height in pixels.
-    """
-
-    orientation: typing.Optional[MediaSourceOrientation] = pydantic.Field(default=None)
-    """
-    Visual orientation.
-    """
-
-    duration: typing.Optional[float] = pydantic.Field(default=None)
-    """
-    Duration in seconds.
-    """
-
-    fps: typing.Optional[float] = pydantic.Field(default=None)
-    """
-    Frames per second.
-    """
-
-    filesize: int = pydantic.Field()
-    """
-    Source file size in bytes.
-    """
-
-    bitrate: typing.Optional[int] = pydantic.Field(default=None)
-    """
-    Average bitrate in bits per second.
-    """
-
-    original: bool = pydantic.Field()
-    """
-    Is this the originally ingested file?
-    """
-
-    label: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    User-defined label for this source.
-    """
-
-    src: str = pydantic.Field()
-    """
-    URL of the source file.
-    """
-
-    folder: typing.Optional[str] = pydantic.Field(default=None)
-    """
-    The folder path.
-    """
-
-    filename: str = pydantic.Field()
-    """
-    The filename of the source file.
-    """
-
-    created: dt.datetime = pydantic.Field()
-    """
-    Timestamp created.
-    """
-
-    updated: dt.datetime = pydantic.Field()
-    """
-    Timestamp updated.
-    """
+    id: str
+    object: MediaSourceObject
+    kind: MediaSourceKind
+    type: str
+    codec: typing.Optional[str] = None
+    container: typing.Optional[str] = None
+    width: typing.Optional[int] = None
+    height: typing.Optional[int] = None
+    orientation: typing.Optional[MediaSourceOrientation] = None
+    rotation: typing.Optional[float] = None
+    transparency: typing.Optional[bool] = None
+    frames: typing.Optional[int] = None
+    duration: typing.Optional[float] = None
+    fps: typing.Optional[float] = None
+    filesize: int
+    bitrate: typing.Optional[int] = None
+    ref: typing.Optional[str] = None
+    folder: typing.Optional[str] = None
+    filename: typing.Optional[str] = None
+    url: str
+    metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = None
+    original: typing.Optional[bool] = None
+    created: dt.datetime
+    updated: dt.datetime
+    status: MediaSourceStatus
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

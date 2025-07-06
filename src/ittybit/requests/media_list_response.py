@@ -3,6 +3,7 @@
 import typing
 
 import typing_extensions
+from .error import ErrorParams
 from .links_list import LinksListParams
 from .media import MediaParams
 from .meta_list import MetaListParams
@@ -11,4 +12,5 @@ from .meta_list import MetaListParams
 class MediaListResponseParams(typing_extensions.TypedDict):
     meta: typing_extensions.NotRequired[MetaListParams]
     data: typing_extensions.NotRequired[typing.Sequence[MediaParams]]
+    error: typing_extensions.NotRequired[ErrorParams]
     links: typing_extensions.NotRequired[LinksListParams]
