@@ -28,11 +28,17 @@ class TasksClient:
         return self._raw_client
 
     def list(
-        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        page: typing.Optional[int] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> TaskListResponse:
         """
         Parameters
         ----------
+        page : typing.Optional[int]
+
         limit : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
@@ -53,7 +59,7 @@ class TasksClient:
         )
         client.tasks.list()
         """
-        _response = self._raw_client.list(limit=limit, request_options=request_options)
+        _response = self._raw_client.list(page=page, limit=limit, request_options=request_options)
         return _response.data
 
     def create(
@@ -120,7 +126,7 @@ class TasksClient:
             token="YOUR_TOKEN",
         )
         client.tasks.get(
-            id="id",
+            id="task_abcdefgh1234",
         )
         """
         _response = self._raw_client.get(id, request_options=request_options)
@@ -172,11 +178,17 @@ class AsyncTasksClient:
         return self._raw_client
 
     async def list(
-        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        page: typing.Optional[int] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> TaskListResponse:
         """
         Parameters
         ----------
+        page : typing.Optional[int]
+
         limit : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
@@ -205,7 +217,7 @@ class AsyncTasksClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.list(limit=limit, request_options=request_options)
+        _response = await self._raw_client.list(page=page, limit=limit, request_options=request_options)
         return _response.data
 
     async def create(
@@ -285,7 +297,7 @@ class AsyncTasksClient:
 
         async def main() -> None:
             await client.tasks.get(
-                id="id",
+                id="task_abcdefgh1234",
             )
 
 

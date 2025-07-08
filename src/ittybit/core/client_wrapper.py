@@ -10,7 +10,7 @@ class BaseClientWrapper:
     def __init__(
         self,
         *,
-        version: typing.Optional[int] = None,
+        version: typing.Optional[str] = None,
         token: typing.Union[str, typing.Callable[[], str]],
         base_url: str,
         timeout: typing.Optional[float] = None,
@@ -22,10 +22,10 @@ class BaseClientWrapper:
 
     def get_headers(self) -> typing.Dict[str, str]:
         headers: typing.Dict[str, str] = {
-            "User-Agent": "ittybit/0.8.6",
+            "User-Agent": "ittybit/0.8.7",
             "X-Fern-Language": "Python",
             "X-Fern-SDK-Name": "ittybit",
-            "X-Fern-SDK-Version": "0.8.6",
+            "X-Fern-SDK-Version": "0.8.7",
         }
         if self._version is not None:
             headers["ACCEPT_VERSION"] = self._version
@@ -49,7 +49,7 @@ class SyncClientWrapper(BaseClientWrapper):
     def __init__(
         self,
         *,
-        version: typing.Optional[int] = None,
+        version: typing.Optional[str] = None,
         token: typing.Union[str, typing.Callable[[], str]],
         base_url: str,
         timeout: typing.Optional[float] = None,
@@ -68,7 +68,7 @@ class AsyncClientWrapper(BaseClientWrapper):
     def __init__(
         self,
         *,
-        version: typing.Optional[int] = None,
+        version: typing.Optional[str] = None,
         token: typing.Union[str, typing.Callable[[], str]],
         base_url: str,
         timeout: typing.Optional[float] = None,

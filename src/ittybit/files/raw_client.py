@@ -22,13 +22,19 @@ class RawFilesClient:
         self._client_wrapper = client_wrapper
 
     def list(
-        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        page: typing.Optional[int] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[FileListResponse]:
         """
         Retrieves a paginated list of all files associated with the current project.
 
         Parameters
         ----------
+        page : typing.Optional[int]
+
         limit : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
@@ -43,6 +49,7 @@ class RawFilesClient:
             "files",
             method="GET",
             params={
+                "page": page,
                 "limit": limit,
             },
             request_options=request_options,
@@ -273,13 +280,19 @@ class AsyncRawFilesClient:
         self._client_wrapper = client_wrapper
 
     async def list(
-        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        page: typing.Optional[int] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[FileListResponse]:
         """
         Retrieves a paginated list of all files associated with the current project.
 
         Parameters
         ----------
+        page : typing.Optional[int]
+
         limit : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
@@ -294,6 +307,7 @@ class AsyncRawFilesClient:
             "files",
             method="GET",
             params={
+                "page": page,
                 "limit": limit,
             },
             request_options=request_options,

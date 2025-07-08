@@ -34,13 +34,19 @@ class AutomationsClient:
         return self._raw_client
 
     def list(
-        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        page: typing.Optional[int] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> AutomationListResponse:
         """
         Retrieves a paginated list of all automations for the current project
 
         Parameters
         ----------
+        page : typing.Optional[int]
+
         limit : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
@@ -61,7 +67,7 @@ class AutomationsClient:
         )
         client.automations.list()
         """
-        _response = self._raw_client.list(limit=limit, request_options=request_options)
+        _response = self._raw_client.list(page=page, limit=limit, request_options=request_options)
         return _response.data
 
     def create(
@@ -152,7 +158,7 @@ class AutomationsClient:
             token="YOUR_TOKEN",
         )
         client.automations.get(
-            id="id",
+            id="auto_abcdefgh1234",
         )
         """
         _response = self._raw_client.get(id, request_options=request_options)
@@ -183,7 +189,7 @@ class AutomationsClient:
             token="YOUR_TOKEN",
         )
         client.automations.delete(
-            id="id",
+            id="auto_abcdefgh1234",
         )
         """
         _response = self._raw_client.delete(id, request_options=request_options)
@@ -234,7 +240,7 @@ class AutomationsClient:
             token="YOUR_TOKEN",
         )
         client.automations.update(
-            id="id",
+            id="auto_abcdefgh1234",
             name="My Updated Automation",
             workflow=[
                 {"kind": "nsfw"},
@@ -273,13 +279,19 @@ class AsyncAutomationsClient:
         return self._raw_client
 
     async def list(
-        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        page: typing.Optional[int] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> AutomationListResponse:
         """
         Retrieves a paginated list of all automations for the current project
 
         Parameters
         ----------
+        page : typing.Optional[int]
+
         limit : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
@@ -308,7 +320,7 @@ class AsyncAutomationsClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.list(limit=limit, request_options=request_options)
+        _response = await self._raw_client.list(page=page, limit=limit, request_options=request_options)
         return _response.data
 
     async def create(
@@ -415,7 +427,7 @@ class AsyncAutomationsClient:
 
         async def main() -> None:
             await client.automations.get(
-                id="id",
+                id="auto_abcdefgh1234",
             )
 
 
@@ -454,7 +466,7 @@ class AsyncAutomationsClient:
 
         async def main() -> None:
             await client.automations.delete(
-                id="id",
+                id="auto_abcdefgh1234",
             )
 
 
@@ -513,7 +525,7 @@ class AsyncAutomationsClient:
 
         async def main() -> None:
             await client.automations.update(
-                id="id",
+                id="auto_abcdefgh1234",
                 name="My Updated Automation",
                 workflow=[
                     {"kind": "nsfw"},

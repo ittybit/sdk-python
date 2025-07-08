@@ -49,6 +49,14 @@ client.automations.list()
 <dl>
 <dd>
 
+**page:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **limit:** `typing.Optional[int]` 
     
 </dd>
@@ -214,7 +222,7 @@ client = Ittybit(
     token="YOUR_TOKEN",
 )
 client.automations.get(
-    id="id",
+    id="auto_abcdefgh1234",
 )
 
 ```
@@ -285,7 +293,7 @@ client = Ittybit(
     token="YOUR_TOKEN",
 )
 client.automations.delete(
-    id="id",
+    id="auto_abcdefgh1234",
 )
 
 ```
@@ -356,7 +364,7 @@ client = Ittybit(
     token="YOUR_TOKEN",
 )
 client.automations.update(
-    id="id",
+    id="auto_abcdefgh1234",
     name="My Updated Automation",
     workflow=[
         {"kind": "nsfw"},
@@ -487,6 +495,14 @@ client.files.list()
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**page:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -659,7 +675,7 @@ client = Ittybit(
     token="YOUR_TOKEN",
 )
 client.files.get(
-    id="id",
+    id="file_abcdefgh1234",
 )
 
 ```
@@ -730,7 +746,7 @@ client = Ittybit(
     token="YOUR_TOKEN",
 )
 client.files.delete(
-    id="id",
+    id="file_abcdefgh1234",
 )
 
 ```
@@ -801,7 +817,7 @@ client = Ittybit(
     token="YOUR_TOKEN",
 )
 client.files.update(
-    id="id",
+    id="file_abcdefgh1234",
     folder="updated/folder",
     filename="new_filename.mp4",
     metadata={"customKey2": "a different custom value"},
@@ -919,6 +935,14 @@ client.media.list()
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**page:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -1066,7 +1090,7 @@ client = Ittybit(
     token="YOUR_TOKEN",
 )
 client.media.get(
-    id="id",
+    id="med_abcdefgh1234",
 )
 
 ```
@@ -1137,7 +1161,7 @@ client = Ittybit(
     token="YOUR_TOKEN",
 )
 client.media.delete(
-    id="id",
+    id="med_abcdefgh1234",
 )
 
 ```
@@ -1208,7 +1232,7 @@ client = Ittybit(
     token="YOUR_TOKEN",
 )
 client.media.update(
-    id="id",
+    id="med_abcdefgh1234",
     title="Updated Video Example",
     alt="An updated example video used to demonstrate the ittybit API",
     metadata={"customKey2": "a different custom value"},
@@ -1304,6 +1328,14 @@ client.tasks.list()
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**page:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -1439,7 +1471,7 @@ client = Ittybit(
     token="YOUR_TOKEN",
 )
 client.tasks.get(
-    id="id",
+    id="task_abcdefgh1234",
 )
 
 ```

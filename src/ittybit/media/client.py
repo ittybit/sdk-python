@@ -29,13 +29,19 @@ class MediaClient:
         return self._raw_client
 
     def list(
-        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        page: typing.Optional[int] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> MediaListResponse:
         """
         Retrieves a paginated list of all media for the current project
 
         Parameters
         ----------
+        page : typing.Optional[int]
+
         limit : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
@@ -56,7 +62,7 @@ class MediaClient:
         )
         client.media.list()
         """
-        _response = self._raw_client.list(limit=limit, request_options=request_options)
+        _response = self._raw_client.list(page=page, limit=limit, request_options=request_options)
         return _response.data
 
     def create(
@@ -128,7 +134,7 @@ class MediaClient:
             token="YOUR_TOKEN",
         )
         client.media.get(
-            id="id",
+            id="med_abcdefgh1234",
         )
         """
         _response = self._raw_client.get(id, request_options=request_options)
@@ -159,7 +165,7 @@ class MediaClient:
             token="YOUR_TOKEN",
         )
         client.media.delete(
-            id="id",
+            id="med_abcdefgh1234",
         )
         """
         _response = self._raw_client.delete(id, request_options=request_options)
@@ -204,7 +210,7 @@ class MediaClient:
             token="YOUR_TOKEN",
         )
         client.media.update(
-            id="id",
+            id="med_abcdefgh1234",
             title="Updated Video Example",
             alt="An updated example video used to demonstrate the ittybit API",
             metadata={"customKey2": "a different custom value"},
@@ -232,13 +238,19 @@ class AsyncMediaClient:
         return self._raw_client
 
     async def list(
-        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        page: typing.Optional[int] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> MediaListResponse:
         """
         Retrieves a paginated list of all media for the current project
 
         Parameters
         ----------
+        page : typing.Optional[int]
+
         limit : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
@@ -267,7 +279,7 @@ class AsyncMediaClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.list(limit=limit, request_options=request_options)
+        _response = await self._raw_client.list(page=page, limit=limit, request_options=request_options)
         return _response.data
 
     async def create(
@@ -354,7 +366,7 @@ class AsyncMediaClient:
 
         async def main() -> None:
             await client.media.get(
-                id="id",
+                id="med_abcdefgh1234",
             )
 
 
@@ -393,7 +405,7 @@ class AsyncMediaClient:
 
         async def main() -> None:
             await client.media.delete(
-                id="id",
+                id="med_abcdefgh1234",
             )
 
 
@@ -446,7 +458,7 @@ class AsyncMediaClient:
 
         async def main() -> None:
             await client.media.update(
-                id="id",
+                id="med_abcdefgh1234",
                 title="Updated Video Example",
                 alt="An updated example video used to demonstrate the ittybit API",
                 metadata={"customKey2": "a different custom value"},

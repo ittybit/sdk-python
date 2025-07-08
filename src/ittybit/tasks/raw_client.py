@@ -21,11 +21,17 @@ class RawTasksClient:
         self._client_wrapper = client_wrapper
 
     def list(
-        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        page: typing.Optional[int] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[TaskListResponse]:
         """
         Parameters
         ----------
+        page : typing.Optional[int]
+
         limit : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
@@ -40,6 +46,7 @@ class RawTasksClient:
             "tasks",
             method="GET",
             params={
+                "page": page,
                 "limit": limit,
             },
             request_options=request_options,
@@ -180,11 +187,17 @@ class AsyncRawTasksClient:
         self._client_wrapper = client_wrapper
 
     async def list(
-        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        page: typing.Optional[int] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[TaskListResponse]:
         """
         Parameters
         ----------
+        page : typing.Optional[int]
+
         limit : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
@@ -199,6 +212,7 @@ class AsyncRawTasksClient:
             "tasks",
             method="GET",
             params={
+                "page": page,
                 "limit": limit,
             },
             request_options=request_options,

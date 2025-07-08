@@ -29,13 +29,19 @@ class FilesClient:
         return self._raw_client
 
     def list(
-        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        page: typing.Optional[int] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> FileListResponse:
         """
         Retrieves a paginated list of all files associated with the current project.
 
         Parameters
         ----------
+        page : typing.Optional[int]
+
         limit : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
@@ -56,7 +62,7 @@ class FilesClient:
         )
         client.files.list()
         """
-        _response = self._raw_client.list(limit=limit, request_options=request_options)
+        _response = self._raw_client.list(page=page, limit=limit, request_options=request_options)
         return _response.data
 
     def create(
@@ -146,7 +152,7 @@ class FilesClient:
             token="YOUR_TOKEN",
         )
         client.files.get(
-            id="id",
+            id="file_abcdefgh1234",
         )
         """
         _response = self._raw_client.get(id, request_options=request_options)
@@ -177,7 +183,7 @@ class FilesClient:
             token="YOUR_TOKEN",
         )
         client.files.delete(
-            id="id",
+            id="file_abcdefgh1234",
         )
         """
         _response = self._raw_client.delete(id, request_options=request_options)
@@ -225,7 +231,7 @@ class FilesClient:
             token="YOUR_TOKEN",
         )
         client.files.update(
-            id="id",
+            id="file_abcdefgh1234",
             folder="updated/folder",
             filename="new_filename.mp4",
             metadata={"customKey2": "a different custom value"},
@@ -253,13 +259,19 @@ class AsyncFilesClient:
         return self._raw_client
 
     async def list(
-        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        page: typing.Optional[int] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> FileListResponse:
         """
         Retrieves a paginated list of all files associated with the current project.
 
         Parameters
         ----------
+        page : typing.Optional[int]
+
         limit : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
@@ -288,7 +300,7 @@ class AsyncFilesClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.list(limit=limit, request_options=request_options)
+        _response = await self._raw_client.list(page=page, limit=limit, request_options=request_options)
         return _response.data
 
     async def create(
@@ -391,7 +403,7 @@ class AsyncFilesClient:
 
         async def main() -> None:
             await client.files.get(
-                id="id",
+                id="file_abcdefgh1234",
             )
 
 
@@ -430,7 +442,7 @@ class AsyncFilesClient:
 
         async def main() -> None:
             await client.files.delete(
-                id="id",
+                id="file_abcdefgh1234",
             )
 
 
@@ -486,7 +498,7 @@ class AsyncFilesClient:
 
         async def main() -> None:
             await client.files.update(
-                id="id",
+                id="file_abcdefgh1234",
                 folder="updated/folder",
                 filename="new_filename.mp4",
                 metadata={"customKey2": "a different custom value"},

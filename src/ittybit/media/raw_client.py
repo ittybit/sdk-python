@@ -22,13 +22,19 @@ class RawMediaClient:
         self._client_wrapper = client_wrapper
 
     def list(
-        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        page: typing.Optional[int] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[MediaListResponse]:
         """
         Retrieves a paginated list of all media for the current project
 
         Parameters
         ----------
+        page : typing.Optional[int]
+
         limit : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
@@ -43,6 +49,7 @@ class RawMediaClient:
             "media",
             method="GET",
             params={
+                "page": page,
                 "limit": limit,
             },
             request_options=request_options,
@@ -257,13 +264,19 @@ class AsyncRawMediaClient:
         self._client_wrapper = client_wrapper
 
     async def list(
-        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        page: typing.Optional[int] = None,
+        limit: typing.Optional[int] = None,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[MediaListResponse]:
         """
         Retrieves a paginated list of all media for the current project
 
         Parameters
         ----------
+        page : typing.Optional[int]
+
         limit : typing.Optional[int]
 
         request_options : typing.Optional[RequestOptions]
@@ -278,6 +291,7 @@ class AsyncRawMediaClient:
             "media",
             method="GET",
             params={
+                "page": page,
                 "limit": limit,
             },
             request_options=request_options,
