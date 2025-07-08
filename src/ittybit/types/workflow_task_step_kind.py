@@ -15,7 +15,6 @@ WorkflowTaskStepKind = typing.Union[
         "description",
         "outline",
         "prompt",
-        "conditions",
         "http",
     ],
     typing.Any,

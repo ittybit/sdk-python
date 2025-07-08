@@ -6,7 +6,7 @@ import typing
 import typing_extensions
 from ..types.automation_status import AutomationStatus
 from .automation_trigger import AutomationTriggerParams
-from .workflow_task_step import WorkflowTaskStepParams
+from .automation_workflow_item import AutomationWorkflowItemParams
 
 
 class AutomationParams(typing_extensions.TypedDict):
@@ -14,7 +14,7 @@ class AutomationParams(typing_extensions.TypedDict):
     name: typing_extensions.NotRequired[str]
     description: typing_extensions.NotRequired[str]
     trigger: AutomationTriggerParams
-    workflow: typing.Sequence[WorkflowTaskStepParams]
+    workflow: typing.Sequence[AutomationWorkflowItemParams]
     status: AutomationStatus
     created: dt.datetime
     updated: dt.datetime

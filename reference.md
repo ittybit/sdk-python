@@ -109,10 +109,7 @@ client.automations.create(
     workflow=[
         {"kind": "description"},
         {"kind": "image", "ref": "thumbnail"},
-        {
-            "kind": "conditions",
-            "next": [{"kind": "subtitle", "ref": "subtitle"}],
-        },
+        {"kind": "video", "next": [{"kind": "subtitles", "ref": "subtitles"}]},
     ],
     status="active",
 )
@@ -365,10 +362,7 @@ client.automations.update(
         {"kind": "nsfw"},
         {"kind": "description"},
         {"kind": "image", "ref": "big_thumbnail"},
-        {
-            "kind": "conditions",
-            "next": [{"kind": "subtitle", "ref": "subtitle"}],
-        },
+        {"kind": "video", "next": [{"kind": "subtitle", "ref": "subtitle"}]},
     ],
     status="active",
 )

@@ -33,10 +33,7 @@ client.automations.create(
     workflow=[
         {"kind": "description"},
         {"kind": "image", "ref": "thumbnail"},
-        {
-            "kind": "conditions",
-            "next": [{"kind": "subtitle", "ref": "subtitle"}],
-        },
+        {"kind": "video", "next": [{"kind": "subtitles", "ref": "subtitles"}]},
     ],
     status="active",
 )
@@ -66,8 +63,8 @@ async def main() -> None:
             {"kind": "description"},
             {"kind": "image", "ref": "thumbnail"},
             {
-                "kind": "conditions",
-                "next": [{"kind": "subtitle", "ref": "subtitle"}],
+                "kind": "video",
+                "next": [{"kind": "subtitles", "ref": "subtitles"}],
             },
         ],
         status="active",

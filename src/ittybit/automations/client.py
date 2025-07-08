@@ -112,10 +112,7 @@ class AutomationsClient:
             workflow=[
                 {"kind": "description"},
                 {"kind": "image", "ref": "thumbnail"},
-                {
-                    "kind": "conditions",
-                    "next": [{"kind": "subtitle", "ref": "subtitle"}],
-                },
+                {"kind": "video", "next": [{"kind": "subtitles", "ref": "subtitles"}]},
             ],
             status="active",
         )
@@ -243,10 +240,7 @@ class AutomationsClient:
                 {"kind": "nsfw"},
                 {"kind": "description"},
                 {"kind": "image", "ref": "big_thumbnail"},
-                {
-                    "kind": "conditions",
-                    "next": [{"kind": "subtitle", "ref": "subtitle"}],
-                },
+                {"kind": "video", "next": [{"kind": "subtitle", "ref": "subtitle"}]},
             ],
             status="active",
         )
@@ -371,8 +365,8 @@ class AsyncAutomationsClient:
                     {"kind": "description"},
                     {"kind": "image", "ref": "thumbnail"},
                     {
-                        "kind": "conditions",
-                        "next": [{"kind": "subtitle", "ref": "subtitle"}],
+                        "kind": "video",
+                        "next": [{"kind": "subtitles", "ref": "subtitles"}],
                     },
                 ],
                 status="active",
@@ -526,7 +520,7 @@ class AsyncAutomationsClient:
                     {"kind": "description"},
                     {"kind": "image", "ref": "big_thumbnail"},
                     {
-                        "kind": "conditions",
+                        "kind": "video",
                         "next": [{"kind": "subtitle", "ref": "subtitle"}],
                     },
                 ],
