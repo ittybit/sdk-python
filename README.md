@@ -26,7 +26,20 @@ client = Ittybit(
     version="YOUR_VERSION",
     token="YOUR_TOKEN",
 )
-client.automations.create()
+client.automations.create(
+    name="My Example Automation",
+    description="This workflow will run whenever new media is created.",
+    trigger={"kind": "event", "event": "media.created"},
+    workflow=[
+        {"kind": "description"},
+        {"kind": "image", "ref": "thumbnail"},
+        {
+            "kind": "conditions",
+            "next": [{"kind": "subtitle", "ref": "subtitle"}],
+        },
+    ],
+    status="active",
+)
 ```
 
 ## Async Client
@@ -45,7 +58,20 @@ client = AsyncIttybit(
 
 
 async def main() -> None:
-    await client.automations.create()
+    await client.automations.create(
+        name="My Example Automation",
+        description="This workflow will run whenever new media is created.",
+        trigger={"kind": "event", "event": "media.created"},
+        workflow=[
+            {"kind": "description"},
+            {"kind": "image", "ref": "thumbnail"},
+            {
+                "kind": "conditions",
+                "next": [{"kind": "subtitle", "ref": "subtitle"}],
+            },
+        ],
+        status="active",
+    )
 
 
 asyncio.run(main())

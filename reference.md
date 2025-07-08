@@ -69,7 +69,7 @@ client.automations.list()
 </dl>
 </details>
 
-<details><summary><code>client.automations.<a href="src/ittybit/automations/client.py">create</a>()</code></summary>
+<details><summary><code>client.automations.<a href="src/ittybit/automations/client.py">create</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -102,7 +102,20 @@ client = Ittybit(
     version="YOUR_VERSION",
     token="YOUR_TOKEN",
 )
-client.automations.create()
+client.automations.create(
+    name="My Example Automation",
+    description="This workflow will run whenever new media is created.",
+    trigger={"kind": "event", "event": "media.created"},
+    workflow=[
+        {"kind": "description"},
+        {"kind": "image", "ref": "thumbnail"},
+        {
+            "kind": "conditions",
+            "next": [{"kind": "subtitle", "ref": "subtitle"}],
+        },
+    ],
+    status="active",
+)
 
 ```
 </dd>
@@ -114,6 +127,46 @@ client.automations.create()
 
 <dl>
 <dd>
+
+<dl>
+<dd>
+
+**trigger:** `AutomationsCreateRequestTriggerParams` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workflow:** `typing.Sequence[WorkflowTaskStepParams]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[AutomationsCreateRequestStatus]` 
+    
+</dd>
+</dl>
 
 <dl>
 <dd>
@@ -164,63 +217,6 @@ client = Ittybit(
     token="YOUR_TOKEN",
 )
 client.automations.get(
-    id="id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.automations.<a href="src/ittybit/automations/client.py">update</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from ittybit import Ittybit
-
-client = Ittybit(
-    version="YOUR_VERSION",
-    token="YOUR_TOKEN",
-)
-client.automations.update(
     id="id",
 )
 
@@ -329,7 +325,7 @@ client.automations.delete(
 </dl>
 </details>
 
-<details><summary><code>client.automations.<a href="src/ittybit/automations/client.py">update_automation</a>(...)</code></summary>
+<details><summary><code>client.automations.<a href="src/ittybit/automations/client.py">update</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -362,8 +358,8 @@ client = Ittybit(
     version="YOUR_VERSION",
     token="YOUR_TOKEN",
 )
-client.automations.update_automation(
-    id="auto_abcdefgh1234",
+client.automations.update(
+    id="id",
     name="My Updated Automation",
     workflow=[
         {"kind": "nsfw"},
@@ -415,7 +411,7 @@ client.automations.update_automation(
 <dl>
 <dd>
 
-**trigger:** `typing.Optional[UpdateAutomationRequestTriggerParams]` 
+**trigger:** `typing.Optional[AutomationsUpdateRequestTriggerParams]` 
     
 </dd>
 </dl>
@@ -431,7 +427,7 @@ client.automations.update_automation(
 <dl>
 <dd>
 
-**status:** `typing.Optional[UpdateAutomationRequestStatus]` 
+**status:** `typing.Optional[AutomationsUpdateRequestStatus]` 
     
 </dd>
 </dl>

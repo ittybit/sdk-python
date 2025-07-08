@@ -31,7 +31,7 @@ class Ittybit:
 
 
     version : typing.Optional[int]
-    token : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
+    token : typing.Union[str, typing.Callable[[], str]]
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
@@ -57,7 +57,7 @@ class Ittybit:
         base_url: typing.Optional[str] = None,
         environment: IttybitEnvironment = IttybitEnvironment.DEFAULT,
         version: typing.Optional[int] = None,
-        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        token: typing.Union[str, typing.Callable[[], str]],
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.Client] = None,
@@ -102,7 +102,7 @@ class AsyncIttybit:
 
 
     version : typing.Optional[int]
-    token : typing.Optional[typing.Union[str, typing.Callable[[], str]]]
+    token : typing.Union[str, typing.Callable[[], str]]
     timeout : typing.Optional[float]
         The timeout to be used, in seconds, for requests. By default the timeout is 60 seconds, unless a custom httpx client is used, in which case this default is not enforced.
 
@@ -128,7 +128,7 @@ class AsyncIttybit:
         base_url: typing.Optional[str] = None,
         environment: IttybitEnvironment = IttybitEnvironment.DEFAULT,
         version: typing.Optional[int] = None,
-        token: typing.Optional[typing.Union[str, typing.Callable[[], str]]] = None,
+        token: typing.Union[str, typing.Callable[[], str]],
         timeout: typing.Optional[float] = None,
         follow_redirects: typing.Optional[bool] = True,
         httpx_client: typing.Optional[httpx.AsyncClient] = None,

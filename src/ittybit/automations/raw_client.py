@@ -14,8 +14,10 @@ from ..requests.workflow_task_step import WorkflowTaskStepParams
 from ..types.automation_list_response import AutomationListResponse
 from ..types.automation_response import AutomationResponse
 from ..types.confirmation_response import ConfirmationResponse
-from .requests.update_automation_request_trigger import UpdateAutomationRequestTriggerParams
-from .types.update_automation_request_status import UpdateAutomationRequestStatus
+from .requests.automations_create_request_trigger import AutomationsCreateRequestTriggerParams
+from .requests.automations_update_request_trigger import AutomationsUpdateRequestTriggerParams
+from .types.automations_create_request_status import AutomationsCreateRequestStatus
+from .types.automations_update_request_status import AutomationsUpdateRequestStatus
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -66,12 +68,31 @@ class RawAutomationsClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def create(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[AutomationResponse]:
+    def create(
+        self,
+        *,
+        trigger: AutomationsCreateRequestTriggerParams,
+        workflow: typing.Sequence[WorkflowTaskStepParams],
+        name: typing.Optional[str] = OMIT,
+        description: typing.Optional[str] = OMIT,
+        status: typing.Optional[AutomationsCreateRequestStatus] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[AutomationResponse]:
         """
         Creates a new automation.
 
         Parameters
         ----------
+        trigger : AutomationsCreateRequestTriggerParams
+
+        workflow : typing.Sequence[WorkflowTaskStepParams]
+
+        name : typing.Optional[str]
+
+        description : typing.Optional[str]
+
+        status : typing.Optional[AutomationsCreateRequestStatus]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -83,7 +104,22 @@ class RawAutomationsClient:
         _response = self._client_wrapper.httpx_client.request(
             "automations",
             method="POST",
+            json={
+                "name": name,
+                "description": description,
+                "trigger": convert_and_respect_annotation_metadata(
+                    object_=trigger, annotation=AutomationsCreateRequestTriggerParams, direction="write"
+                ),
+                "workflow": convert_and_respect_annotation_metadata(
+                    object_=workflow, annotation=typing.Sequence[WorkflowTaskStepParams], direction="write"
+                ),
+                "status": status,
+            },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
+            omit=OMIT,
         )
         try:
             if 200 <= _response.status_code < 300:
@@ -138,32 +174,6 @@ class RawAutomationsClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def update(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[None]:
-        """
-        Parameters
-        ----------
-        id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[None]
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"automations/{jsonable_encoder(id)}",
-            method="PUT",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return HttpResponse(response=_response, data=None)
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
     def delete(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[ConfirmationResponse]:
@@ -202,15 +212,15 @@ class RawAutomationsClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def update_automation(
+    def update(
         self,
         id: str,
         *,
         name: typing.Optional[str] = OMIT,
         description: typing.Optional[str] = OMIT,
-        trigger: typing.Optional[UpdateAutomationRequestTriggerParams] = OMIT,
+        trigger: typing.Optional[AutomationsUpdateRequestTriggerParams] = OMIT,
         workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
-        status: typing.Optional[UpdateAutomationRequestStatus] = OMIT,
+        status: typing.Optional[AutomationsUpdateRequestStatus] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[AutomationResponse]:
         """
@@ -224,11 +234,11 @@ class RawAutomationsClient:
 
         description : typing.Optional[str]
 
-        trigger : typing.Optional[UpdateAutomationRequestTriggerParams]
+        trigger : typing.Optional[AutomationsUpdateRequestTriggerParams]
 
         workflow : typing.Optional[typing.Sequence[WorkflowTaskStepParams]]
 
-        status : typing.Optional[UpdateAutomationRequestStatus]
+        status : typing.Optional[AutomationsUpdateRequestStatus]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -245,7 +255,7 @@ class RawAutomationsClient:
                 "name": name,
                 "description": description,
                 "trigger": convert_and_respect_annotation_metadata(
-                    object_=trigger, annotation=UpdateAutomationRequestTriggerParams, direction="write"
+                    object_=trigger, annotation=AutomationsUpdateRequestTriggerParams, direction="write"
                 ),
                 "workflow": convert_and_respect_annotation_metadata(
                     object_=workflow, annotation=typing.Sequence[WorkflowTaskStepParams], direction="write"
@@ -320,13 +330,30 @@ class AsyncRawAutomationsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def create(
-        self, *, request_options: typing.Optional[RequestOptions] = None
+        self,
+        *,
+        trigger: AutomationsCreateRequestTriggerParams,
+        workflow: typing.Sequence[WorkflowTaskStepParams],
+        name: typing.Optional[str] = OMIT,
+        description: typing.Optional[str] = OMIT,
+        status: typing.Optional[AutomationsCreateRequestStatus] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[AutomationResponse]:
         """
         Creates a new automation.
 
         Parameters
         ----------
+        trigger : AutomationsCreateRequestTriggerParams
+
+        workflow : typing.Sequence[WorkflowTaskStepParams]
+
+        name : typing.Optional[str]
+
+        description : typing.Optional[str]
+
+        status : typing.Optional[AutomationsCreateRequestStatus]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
@@ -338,7 +365,22 @@ class AsyncRawAutomationsClient:
         _response = await self._client_wrapper.httpx_client.request(
             "automations",
             method="POST",
+            json={
+                "name": name,
+                "description": description,
+                "trigger": convert_and_respect_annotation_metadata(
+                    object_=trigger, annotation=AutomationsCreateRequestTriggerParams, direction="write"
+                ),
+                "workflow": convert_and_respect_annotation_metadata(
+                    object_=workflow, annotation=typing.Sequence[WorkflowTaskStepParams], direction="write"
+                ),
+                "status": status,
+            },
+            headers={
+                "content-type": "application/json",
+            },
             request_options=request_options,
+            omit=OMIT,
         )
         try:
             if 200 <= _response.status_code < 300:
@@ -393,34 +435,6 @@ class AsyncRawAutomationsClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def update(
-        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[None]:
-        """
-        Parameters
-        ----------
-        id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[None]
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"automations/{jsonable_encoder(id)}",
-            method="PUT",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return AsyncHttpResponse(response=_response, data=None)
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
     async def delete(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[ConfirmationResponse]:
@@ -459,15 +473,15 @@ class AsyncRawAutomationsClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    async def update_automation(
+    async def update(
         self,
         id: str,
         *,
         name: typing.Optional[str] = OMIT,
         description: typing.Optional[str] = OMIT,
-        trigger: typing.Optional[UpdateAutomationRequestTriggerParams] = OMIT,
+        trigger: typing.Optional[AutomationsUpdateRequestTriggerParams] = OMIT,
         workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
-        status: typing.Optional[UpdateAutomationRequestStatus] = OMIT,
+        status: typing.Optional[AutomationsUpdateRequestStatus] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[AutomationResponse]:
         """
@@ -481,11 +495,11 @@ class AsyncRawAutomationsClient:
 
         description : typing.Optional[str]
 
-        trigger : typing.Optional[UpdateAutomationRequestTriggerParams]
+        trigger : typing.Optional[AutomationsUpdateRequestTriggerParams]
 
         workflow : typing.Optional[typing.Sequence[WorkflowTaskStepParams]]
 
-        status : typing.Optional[UpdateAutomationRequestStatus]
+        status : typing.Optional[AutomationsUpdateRequestStatus]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -502,7 +516,7 @@ class AsyncRawAutomationsClient:
                 "name": name,
                 "description": description,
                 "trigger": convert_and_respect_annotation_metadata(
-                    object_=trigger, annotation=UpdateAutomationRequestTriggerParams, direction="write"
+                    object_=trigger, annotation=AutomationsUpdateRequestTriggerParams, direction="write"
                 ),
                 "workflow": convert_and_respect_annotation_metadata(
                     object_=workflow, annotation=typing.Sequence[WorkflowTaskStepParams], direction="write"

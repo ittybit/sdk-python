@@ -7,7 +7,7 @@ from ...core.pydantic_utilities import IS_PYDANTIC_V2
 from ...core.unchecked_base_model import UncheckedBaseModel
 
 
-class UpdateAutomationRequestTrigger(UncheckedBaseModel):
+class AutomationsUpdateRequestTrigger(UncheckedBaseModel):
     kind: typing.Literal["event"] = "event"
     event: typing.Literal["media.created"] = "media.created"
 
