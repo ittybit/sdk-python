@@ -68,7 +68,7 @@ class MediaClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> MediaResponse:
         """
-        Creates a new media item.
+        Creates a new media item. See [Media Object](/docs/media) for more details.
 
         Parameters
         ----------
@@ -148,7 +148,7 @@ class MediaClient:
         Returns
         -------
         ConfirmationResponse
-            Success
+            Accepted
 
         Examples
         --------
@@ -279,7 +279,7 @@ class AsyncMediaClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> MediaResponse:
         """
-        Creates a new media item.
+        Creates a new media item. See [Media Object](/docs/media) for more details.
 
         Parameters
         ----------
@@ -377,7 +377,7 @@ class AsyncMediaClient:
         Returns
         -------
         ConfirmationResponse
-            Success
+            Accepted
 
         Examples
         --------

@@ -11,7 +11,7 @@ from .workflow_task_step import WorkflowTaskStepParams
 
 class AutomationParams(typing_extensions.TypedDict):
     id: str
-    name: str
+    name: typing_extensions.NotRequired[str]
     description: typing_extensions.NotRequired[str]
     trigger: AutomationTriggerParams
     workflow: typing.Sequence[WorkflowTaskStepParams]

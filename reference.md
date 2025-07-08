@@ -1,6 +1,6 @@
 # Reference
 ## Automations
-<details><summary><code>client.automations.<a href="src/ittybit/automations/client.py">list</a>()</code></summary>
+<details><summary><code>client.automations.<a href="src/ittybit/automations/client.py">list</a>(...)</code></summary>
 <dl>
 <dd>
 
@@ -12,7 +12,7 @@
 <dl>
 <dd>
 
-Retrieves a list of all automations for the current project
+Retrieves a paginated list of all automations for the current project
 </dd>
 </dl>
 </dd>
@@ -49,6 +49,14 @@ client.automations.list()
 <dl>
 <dd>
 
+**limit:** `typing.Optional[int]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
 **request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
@@ -73,7 +81,7 @@ client.automations.list()
 <dl>
 <dd>
 
-Creates a new automation for the current project
+Creates a new automation.
 </dd>
 </dl>
 </dd>
@@ -134,7 +142,7 @@ client.automations.create()
 <dl>
 <dd>
 
-Retrieves a specific automation by its ID
+Retrieve the automation object for a automation with the given ID.
 </dd>
 </dl>
 </dd>
@@ -197,20 +205,6 @@ client.automations.get(
 <dl>
 <dd>
 
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Updates an existing automation by its ID
-</dd>
-</dl>
-</dd>
-</dl>
-
 #### 🔌 Usage
 
 <dl>
@@ -228,12 +222,6 @@ client = Ittybit(
 )
 client.automations.update(
     id="id",
-    name="Updated Transcoder Example",
-    trigger={
-        "event": "upload.completed",
-        "conditions": [{"prop": "file.type", "value": "image/*"}],
-    },
-    workflow=[{"kind": "image", "format": "webp"}],
 )
 
 ```
@@ -251,38 +239,6 @@ client.automations.update(
 <dd>
 
 **id:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**name:** `str` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**description:** `typing.Optional[str]` 
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**trigger:** `typing.Optional[AutomationsUpdateRequestTriggerParams]` — Defines the trigger event and conditions. To clear/remove a trigger, provide null. To update, provide the new trigger object.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**workflow:** `typing.Optional[typing.Sequence[WorkflowTaskStepParams]]` — The updated sequence of tasks for the automation.
     
 </dd>
 </dl>
@@ -314,7 +270,7 @@ client.automations.update(
 <dl>
 <dd>
 
-Deletes an automation by its ID
+Permanently removes an automation from the system. This action cannot be undone.
 </dd>
 </dl>
 </dd>
@@ -354,6 +310,128 @@ client.automations.delete(
 <dd>
 
 **id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
+    
+</dd>
+</dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.automations.<a href="src/ittybit/automations/client.py">update_automation</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Updates an automation's `name`, `description`, `trigger`, `workflow`, or `status`. Only the specified fields will be updated.
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```python
+from ittybit import Ittybit
+
+client = Ittybit(
+    version="YOUR_VERSION",
+    token="YOUR_TOKEN",
+)
+client.automations.update_automation(
+    id="auto_abcdefgh1234",
+    name="My Updated Automation",
+    workflow=[
+        {"kind": "nsfw"},
+        {"kind": "description"},
+        {"kind": "image", "ref": "big_thumbnail"},
+        {
+            "kind": "conditions",
+            "next": [{"kind": "subtitle", "ref": "subtitle"}],
+        },
+    ],
+    status="active",
+)
+
+```
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**id:** `str` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**name:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**description:** `typing.Optional[str]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**trigger:** `typing.Optional[UpdateAutomationRequestTriggerParams]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**workflow:** `typing.Optional[typing.Sequence[WorkflowTaskStepParams]]` 
+    
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**status:** `typing.Optional[UpdateAutomationRequestStatus]` 
     
 </dd>
 </dl>
@@ -887,7 +965,7 @@ client.media.list()
 <dl>
 <dd>
 
-Creates a new media item.
+Creates a new media item. See [Media Object](/docs/media) for more details.
 </dd>
 </dl>
 </dd>
@@ -1209,20 +1287,6 @@ client.media.update(
 <dl>
 <dd>
 
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves a list of tasks for the project, optionally filtered by status or kind.
-</dd>
-</dl>
-</dd>
-</dl>
-
 #### 🔌 Usage
 
 <dl>
@@ -1254,23 +1318,7 @@ client.tasks.list()
 <dl>
 <dd>
 
-**limit:** `typing.Optional[int]` — Items per page.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**status:** `typing.Optional[TasksListRequestStatus]` — Filter by task status.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**kind:** `typing.Optional[TasksListRequestKind]` — Filter by task kind.
+**limit:** `typing.Optional[int]` 
     
 </dd>
 </dl>
@@ -1302,7 +1350,7 @@ client.tasks.list()
 <dl>
 <dd>
 
-Creates a new processing task (e.g., ingest, video transcode, speech analysis) or a workflow task.
+Creates a new task item. See [Tasks](/docs/tasks) for detailed coverage of all available props and values.
 </dd>
 </dl>
 </dd>
@@ -1324,12 +1372,13 @@ client = Ittybit(
     token="YOUR_TOKEN",
 )
 client.tasks.create(
-    kind="ingest",
-    url="https://ittyb.it/sample.mp4",
-    filename="bunny-1280x720.mp4",
-    folder="examples/cartoons",
-    width=1280,
-    height=720,
+    request={
+        "file_id": "file_abcdefgh1234",
+        "kind": "image",
+        "width": 320,
+        "format": "png",
+        "ref": "thumbnail",
+    },
 )
 
 ```
@@ -1346,7 +1395,7 @@ client.tasks.create(
 <dl>
 <dd>
 
-**kind:** `TasksCreateRequestKind` — The type of task to create.
+**request:** `typing.Optional[typing.Any]` 
     
 </dd>
 </dl>
@@ -1354,87 +1403,70 @@ client.tasks.create(
 <dl>
 <dd>
 
-**url:** `typing.Optional[str]` — URL of the source file (required for 'ingest' kind unless file_id is used, can be used for others).
+**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
     
 </dd>
 </dl>
+</dd>
+</dl>
+
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.tasks.<a href="src/ittybit/tasks/client.py">get</a>(...)</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
 
 <dl>
 <dd>
 
-**input:** `typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]` — Task-specific input parameters depending on the kind of task.
-    
+<dl>
+<dd>
+
+Retrieves the task object for a task with the given ID.
 </dd>
 </dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
 
 <dl>
 <dd>
 
-**file_id:** `typing.Optional[str]` — ID of an existing file to use as input (alternative to url).
-    
+<dl>
+<dd>
+
+```python
+from ittybit import Ittybit
+
+client = Ittybit(
+    version="YOUR_VERSION",
+    token="YOUR_TOKEN",
+)
+client.tasks.get(
+    id="id",
+)
+
+```
 </dd>
 </dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
 
 <dl>
 <dd>
 
-**workflow:** `typing.Optional[typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]]]` — An array of task definition objects for a workflow.
-    
-</dd>
-</dl>
-
 <dl>
 <dd>
 
-**webhook_url:** `typing.Optional[str]` — An optional HTTPS URL to send a webhook notification to upon task completion or failure.
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**filename:** `typing.Optional[str]` — Desired filename for the output (if applicable).
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**folder:** `typing.Optional[str]` — Desired output folder (if applicable).
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**format:** `typing.Optional[str]` — Output format (e.g., for video/image tasks).
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**width:** `typing.Optional[int]` — Output width (for video/image tasks).
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**height:** `typing.Optional[int]` — Output height (for video/image tasks).
-    
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**quality:** `typing.Optional[int]` — Output quality setting (e.g., for video/image tasks, 0-100).
+**id:** `str` 
     
 </dd>
 </dl>
@@ -1499,77 +1531,6 @@ client.tasks.get_task_config()
 
 <dl>
 <dd>
-
-<dl>
-<dd>
-
-**request_options:** `typing.Optional[RequestOptions]` — Request-specific configuration.
-    
-</dd>
-</dl>
-</dd>
-</dl>
-
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.tasks.<a href="src/ittybit/tasks/client.py">get</a>(...)</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieves the details of a specific task by its ID.
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```python
-from ittybit import Ittybit
-
-client = Ittybit(
-    version="YOUR_VERSION",
-    token="YOUR_TOKEN",
-)
-client.tasks.get(
-    id="id",
-)
-
-```
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**id:** `str` 
-    
-</dd>
-</dl>
 
 <dl>
 <dd>

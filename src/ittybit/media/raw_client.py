@@ -71,7 +71,7 @@ class RawMediaClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[MediaResponse]:
         """
-        Creates a new media item.
+        Creates a new media item. See [Media Object](/docs/media) for more details.
 
         Parameters
         ----------
@@ -170,7 +170,7 @@ class RawMediaClient:
         Returns
         -------
         HttpResponse[ConfirmationResponse]
-            Success
+            Accepted
         """
         _response = self._client_wrapper.httpx_client.request(
             f"media/{jsonable_encoder(id)}",
@@ -306,7 +306,7 @@ class AsyncRawMediaClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[MediaResponse]:
         """
-        Creates a new media item.
+        Creates a new media item. See [Media Object](/docs/media) for more details.
 
         Parameters
         ----------
@@ -407,7 +407,7 @@ class AsyncRawMediaClient:
         Returns
         -------
         AsyncHttpResponse[ConfirmationResponse]
-            Success
+            Accepted
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"media/{jsonable_encoder(id)}",

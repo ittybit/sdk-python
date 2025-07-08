@@ -7,9 +7,6 @@ from ..core.request_options import RequestOptions
 from ..types.task_list_response import TaskListResponse
 from ..types.task_response import TaskResponse
 from .raw_client import AsyncRawTasksClient, RawTasksClient
-from .types.tasks_create_request_kind import TasksCreateRequestKind
-from .types.tasks_list_request_kind import TasksListRequestKind
-from .types.tasks_list_request_status import TasksListRequestStatus
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -31,26 +28,12 @@ class TasksClient:
         return self._raw_client
 
     def list(
-        self,
-        *,
-        limit: typing.Optional[int] = None,
-        status: typing.Optional[TasksListRequestStatus] = None,
-        kind: typing.Optional[TasksListRequestKind] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> TaskListResponse:
         """
-        Retrieves a list of tasks for the project, optionally filtered by status or kind.
-
         Parameters
         ----------
         limit : typing.Optional[int]
-            Items per page.
-
-        status : typing.Optional[TasksListRequestStatus]
-            Filter by task status.
-
-        kind : typing.Optional[TasksListRequestKind]
-            Filter by task kind.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -58,7 +41,7 @@ class TasksClient:
         Returns
         -------
         TaskListResponse
-            A list of tasks.
+            Success
 
         Examples
         --------
@@ -70,66 +53,18 @@ class TasksClient:
         )
         client.tasks.list()
         """
-        _response = self._raw_client.list(limit=limit, status=status, kind=kind, request_options=request_options)
+        _response = self._raw_client.list(limit=limit, request_options=request_options)
         return _response.data
 
     def create(
-        self,
-        *,
-        kind: TasksCreateRequestKind,
-        url: typing.Optional[str] = OMIT,
-        input: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        file_id: typing.Optional[str] = OMIT,
-        workflow: typing.Optional[typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]]] = OMIT,
-        webhook_url: typing.Optional[str] = OMIT,
-        filename: typing.Optional[str] = OMIT,
-        folder: typing.Optional[str] = OMIT,
-        format: typing.Optional[str] = OMIT,
-        width: typing.Optional[int] = OMIT,
-        height: typing.Optional[int] = OMIT,
-        quality: typing.Optional[int] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, request: typing.Optional[typing.Any] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> TaskResponse:
         """
-        Creates a new processing task (e.g., ingest, video transcode, speech analysis) or a workflow task.
+        Creates a new task item. See [Tasks](/docs/tasks) for detailed coverage of all available props and values.
 
         Parameters
         ----------
-        kind : TasksCreateRequestKind
-            The type of task to create.
-
-        url : typing.Optional[str]
-            URL of the source file (required for 'ingest' kind unless file_id is used, can be used for others).
-
-        input : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            Task-specific input parameters depending on the kind of task.
-
-        file_id : typing.Optional[str]
-            ID of an existing file to use as input (alternative to url).
-
-        workflow : typing.Optional[typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]]]
-            An array of task definition objects for a workflow.
-
-        webhook_url : typing.Optional[str]
-            An optional HTTPS URL to send a webhook notification to upon task completion or failure.
-
-        filename : typing.Optional[str]
-            Desired filename for the output (if applicable).
-
-        folder : typing.Optional[str]
-            Desired output folder (if applicable).
-
-        format : typing.Optional[str]
-            Output format (e.g., for video/image tasks).
-
-        width : typing.Optional[int]
-            Output width (for video/image tasks).
-
-        height : typing.Optional[int]
-            Output height (for video/image tasks).
-
-        quality : typing.Optional[int]
-            Output quality setting (e.g., for video/image tasks, 0-100).
+        request : typing.Optional[typing.Any]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -137,7 +72,7 @@ class TasksClient:
         Returns
         -------
         TaskResponse
-            Created task (Deprecated endpoint)
+            Success
 
         Examples
         --------
@@ -148,26 +83,47 @@ class TasksClient:
             token="YOUR_TOKEN",
         )
         client.tasks.create(
-            kind="ingest",
-            url="https://example.com/some_video.mov",
-            input={"options": {"filename": "custom_name.mov"}},
+            request={
+                "file_id": "file_abcdefgh1234",
+                "kind": "image",
+                "width": 320,
+                "format": "png",
+                "ref": "thumbnail",
+            },
         )
         """
-        _response = self._raw_client.create(
-            kind=kind,
-            url=url,
-            input=input,
-            file_id=file_id,
-            workflow=workflow,
-            webhook_url=webhook_url,
-            filename=filename,
-            folder=folder,
-            format=format,
-            width=width,
-            height=height,
-            quality=quality,
-            request_options=request_options,
+        _response = self._raw_client.create(request=request, request_options=request_options)
+        return _response.data
+
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> TaskResponse:
+        """
+        Retrieves the task object for a task with the given ID.
+
+        Parameters
+        ----------
+        id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        TaskResponse
+            Success
+
+        Examples
+        --------
+        from ittybit import Ittybit
+
+        client = Ittybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
         )
+        client.tasks.get(
+            id="id",
+        )
+        """
+        _response = self._raw_client.get(id, request_options=request_options)
         return _response.data
 
     def get_task_config(
@@ -199,37 +155,6 @@ class TasksClient:
         _response = self._raw_client.get_task_config(request_options=request_options)
         return _response.data
 
-    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> TaskResponse:
-        """
-        Retrieves the details of a specific task by its ID.
-
-        Parameters
-        ----------
-        id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        TaskResponse
-            Task details.
-
-        Examples
-        --------
-        from ittybit import Ittybit
-
-        client = Ittybit(
-            version="YOUR_VERSION",
-            token="YOUR_TOKEN",
-        )
-        client.tasks.get(
-            id="id",
-        )
-        """
-        _response = self._raw_client.get(id, request_options=request_options)
-        return _response.data
-
 
 class AsyncTasksClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
@@ -247,26 +172,12 @@ class AsyncTasksClient:
         return self._raw_client
 
     async def list(
-        self,
-        *,
-        limit: typing.Optional[int] = None,
-        status: typing.Optional[TasksListRequestStatus] = None,
-        kind: typing.Optional[TasksListRequestKind] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> TaskListResponse:
         """
-        Retrieves a list of tasks for the project, optionally filtered by status or kind.
-
         Parameters
         ----------
         limit : typing.Optional[int]
-            Items per page.
-
-        status : typing.Optional[TasksListRequestStatus]
-            Filter by task status.
-
-        kind : typing.Optional[TasksListRequestKind]
-            Filter by task kind.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -274,7 +185,7 @@ class AsyncTasksClient:
         Returns
         -------
         TaskListResponse
-            A list of tasks.
+            Success
 
         Examples
         --------
@@ -294,66 +205,18 @@ class AsyncTasksClient:
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.list(limit=limit, status=status, kind=kind, request_options=request_options)
+        _response = await self._raw_client.list(limit=limit, request_options=request_options)
         return _response.data
 
     async def create(
-        self,
-        *,
-        kind: TasksCreateRequestKind,
-        url: typing.Optional[str] = OMIT,
-        input: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        file_id: typing.Optional[str] = OMIT,
-        workflow: typing.Optional[typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]]] = OMIT,
-        webhook_url: typing.Optional[str] = OMIT,
-        filename: typing.Optional[str] = OMIT,
-        folder: typing.Optional[str] = OMIT,
-        format: typing.Optional[str] = OMIT,
-        width: typing.Optional[int] = OMIT,
-        height: typing.Optional[int] = OMIT,
-        quality: typing.Optional[int] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, request: typing.Optional[typing.Any] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> TaskResponse:
         """
-        Creates a new processing task (e.g., ingest, video transcode, speech analysis) or a workflow task.
+        Creates a new task item. See [Tasks](/docs/tasks) for detailed coverage of all available props and values.
 
         Parameters
         ----------
-        kind : TasksCreateRequestKind
-            The type of task to create.
-
-        url : typing.Optional[str]
-            URL of the source file (required for 'ingest' kind unless file_id is used, can be used for others).
-
-        input : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            Task-specific input parameters depending on the kind of task.
-
-        file_id : typing.Optional[str]
-            ID of an existing file to use as input (alternative to url).
-
-        workflow : typing.Optional[typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]]]
-            An array of task definition objects for a workflow.
-
-        webhook_url : typing.Optional[str]
-            An optional HTTPS URL to send a webhook notification to upon task completion or failure.
-
-        filename : typing.Optional[str]
-            Desired filename for the output (if applicable).
-
-        folder : typing.Optional[str]
-            Desired output folder (if applicable).
-
-        format : typing.Optional[str]
-            Output format (e.g., for video/image tasks).
-
-        width : typing.Optional[int]
-            Output width (for video/image tasks).
-
-        height : typing.Optional[int]
-            Output height (for video/image tasks).
-
-        quality : typing.Optional[int]
-            Output quality setting (e.g., for video/image tasks, 0-100).
+        request : typing.Optional[typing.Any]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -361,7 +224,7 @@ class AsyncTasksClient:
         Returns
         -------
         TaskResponse
-            Created task (Deprecated endpoint)
+            Success
 
         Examples
         --------
@@ -377,29 +240,58 @@ class AsyncTasksClient:
 
         async def main() -> None:
             await client.tasks.create(
-                kind="ingest",
-                url="https://example.com/some_video.mov",
-                input={"options": {"filename": "custom_name.mov"}},
+                request={
+                    "file_id": "file_abcdefgh1234",
+                    "kind": "image",
+                    "width": 320,
+                    "format": "png",
+                    "ref": "thumbnail",
+                },
             )
 
 
         asyncio.run(main())
         """
-        _response = await self._raw_client.create(
-            kind=kind,
-            url=url,
-            input=input,
-            file_id=file_id,
-            workflow=workflow,
-            webhook_url=webhook_url,
-            filename=filename,
-            folder=folder,
-            format=format,
-            width=width,
-            height=height,
-            quality=quality,
-            request_options=request_options,
+        _response = await self._raw_client.create(request=request, request_options=request_options)
+        return _response.data
+
+    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> TaskResponse:
+        """
+        Retrieves the task object for a task with the given ID.
+
+        Parameters
+        ----------
+        id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        TaskResponse
+            Success
+
+        Examples
+        --------
+        import asyncio
+
+        from ittybit import AsyncIttybit
+
+        client = AsyncIttybit(
+            version="YOUR_VERSION",
+            token="YOUR_TOKEN",
         )
+
+
+        async def main() -> None:
+            await client.tasks.get(
+                id="id",
+            )
+
+
+        asyncio.run(main())
+        """
+        _response = await self._raw_client.get(id, request_options=request_options)
         return _response.data
 
     async def get_task_config(
@@ -437,43 +329,4 @@ class AsyncTasksClient:
         asyncio.run(main())
         """
         _response = await self._raw_client.get_task_config(request_options=request_options)
-        return _response.data
-
-    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> TaskResponse:
-        """
-        Retrieves the details of a specific task by its ID.
-
-        Parameters
-        ----------
-        id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        TaskResponse
-            Task details.
-
-        Examples
-        --------
-        import asyncio
-
-        from ittybit import AsyncIttybit
-
-        client = AsyncIttybit(
-            version="YOUR_VERSION",
-            token="YOUR_TOKEN",
-        )
-
-
-        async def main() -> None:
-            await client.tasks.get(
-                id="id",
-            )
-
-
-        asyncio.run(main())
-        """
-        _response = await self._raw_client.get(id, request_options=request_options)
         return _response.data

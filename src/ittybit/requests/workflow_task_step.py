@@ -4,17 +4,10 @@ import typing
 
 import typing_extensions
 from ..types.workflow_task_step_kind import WorkflowTaskStepKind
+from .workflow_task_step_next_item import WorkflowTaskStepNextItemParams
 
 
 class WorkflowTaskStepParams(typing_extensions.TypedDict):
     kind: WorkflowTaskStepKind
     ref: typing_extensions.NotRequired[str]
-    format: typing_extensions.NotRequired[str]
-    start: typing_extensions.NotRequired[float]
-    end: typing_extensions.NotRequired[float]
-    width: typing_extensions.NotRequired[int]
-    height: typing_extensions.NotRequired[int]
-    fit: typing_extensions.NotRequired[str]
-    background: typing_extensions.NotRequired[str]
-    quality: typing_extensions.NotRequired[int]
-    next: typing_extensions.NotRequired[typing.Sequence[typing.Optional[typing.Any]]]
+    next: typing_extensions.NotRequired[typing.Sequence[WorkflowTaskStepNextItemParams]]

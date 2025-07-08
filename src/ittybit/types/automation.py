@@ -13,7 +13,7 @@ from .workflow_task_step import WorkflowTaskStep
 
 class Automation(UncheckedBaseModel):
     id: str
-    name: str
+    name: typing.Optional[str] = None
     description: typing.Optional[str] = None
     trigger: AutomationTrigger
     workflow: typing.List[WorkflowTaskStep]

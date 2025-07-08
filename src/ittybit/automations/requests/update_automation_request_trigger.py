@@ -5,6 +5,6 @@ import typing
 import typing_extensions
 
 
-class AutomationTriggerParams(typing_extensions.TypedDict):
+class UpdateAutomationRequestTriggerParams(typing_extensions.TypedDict):
     kind: typing.Literal["event"]
     event: typing.Literal["media.created"]

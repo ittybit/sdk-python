@@ -4,21 +4,21 @@ import typing
 
 TaskSummaryKind = typing.Union[
     typing.Literal[
+        "ingest",
         "video",
         "image",
         "audio",
         "chapters",
         "subtitles",
         "thumbnails",
+        "nsfw",
         "speech",
         "description",
-        "nsfw",
-        "prompt",
         "outline",
-        "http",
-        "ingest",
+        "prompt",
         "workflow",
         "conditions",
+        "http",
     ],
     typing.Any,
 ]

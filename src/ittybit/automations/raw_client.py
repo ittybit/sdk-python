@@ -13,7 +13,9 @@ from ..core.unchecked_base_model import construct_type
 from ..requests.workflow_task_step import WorkflowTaskStepParams
 from ..types.automation_list_response import AutomationListResponse
 from ..types.automation_response import AutomationResponse
-from .requests.automations_update_request_trigger import AutomationsUpdateRequestTriggerParams
+from ..types.confirmation_response import ConfirmationResponse
+from .requests.update_automation_request_trigger import UpdateAutomationRequestTriggerParams
+from .types.update_automation_request_status import UpdateAutomationRequestStatus
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -23,23 +25,30 @@ class RawAutomationsClient:
     def __init__(self, *, client_wrapper: SyncClientWrapper):
         self._client_wrapper = client_wrapper
 
-    def list(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[AutomationListResponse]:
+    def list(
+        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[AutomationListResponse]:
         """
-        Retrieves a list of all automations for the current project
+        Retrieves a paginated list of all automations for the current project
 
         Parameters
         ----------
+        limit : typing.Optional[int]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
         HttpResponse[AutomationListResponse]
-            A list of automations
+            Success
         """
         _response = self._client_wrapper.httpx_client.request(
             "automations",
             method="GET",
+            params={
+                "limit": limit,
+            },
             request_options=request_options,
         )
         try:
@@ -59,7 +68,7 @@ class RawAutomationsClient:
 
     def create(self, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[AutomationResponse]:
         """
-        Creates a new automation for the current project
+        Creates a new automation.
 
         Parameters
         ----------
@@ -69,7 +78,7 @@ class RawAutomationsClient:
         Returns
         -------
         HttpResponse[AutomationResponse]
-            Automation created successfully
+            Success
         """
         _response = self._client_wrapper.httpx_client.request(
             "automations",
@@ -95,7 +104,7 @@ class RawAutomationsClient:
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[AutomationResponse]:
         """
-        Retrieves a specific automation by its ID
+        Retrieve the automation object for a automation with the given ID.
 
         Parameters
         ----------
@@ -107,7 +116,7 @@ class RawAutomationsClient:
         Returns
         -------
         HttpResponse[AutomationResponse]
-            Automation details
+            Success
         """
         _response = self._client_wrapper.httpx_client.request(
             f"automations/{jsonable_encoder(id)}",
@@ -129,32 +138,97 @@ class RawAutomationsClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def update(
-        self,
-        id: str,
-        *,
-        name: str,
-        description: typing.Optional[str] = OMIT,
-        trigger: typing.Optional[AutomationsUpdateRequestTriggerParams] = OMIT,
-        workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[AutomationResponse]:
+    def update(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[None]:
         """
-        Updates an existing automation by its ID
+        Parameters
+        ----------
+        id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[None]
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"automations/{jsonable_encoder(id)}",
+            method="PUT",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return HttpResponse(response=_response, data=None)
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def delete(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[ConfirmationResponse]:
+        """
+        Permanently removes an automation from the system. This action cannot be undone.
 
         Parameters
         ----------
         id : str
 
-        name : str
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[ConfirmationResponse]
+            Accepted
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"automations/{jsonable_encoder(id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ConfirmationResponse,
+                    construct_type(
+                        type_=ConfirmationResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def update_automation(
+        self,
+        id: str,
+        *,
+        name: typing.Optional[str] = OMIT,
+        description: typing.Optional[str] = OMIT,
+        trigger: typing.Optional[UpdateAutomationRequestTriggerParams] = OMIT,
+        workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
+        status: typing.Optional[UpdateAutomationRequestStatus] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> HttpResponse[AutomationResponse]:
+        """
+        Updates an automation's `name`, `description`, `trigger`, `workflow`, or `status`. Only the specified fields will be updated.
+
+        Parameters
+        ----------
+        id : str
+
+        name : typing.Optional[str]
 
         description : typing.Optional[str]
 
-        trigger : typing.Optional[AutomationsUpdateRequestTriggerParams]
-            Defines the trigger event and conditions. To clear/remove a trigger, provide null. To update, provide the new trigger object.
+        trigger : typing.Optional[UpdateAutomationRequestTriggerParams]
 
         workflow : typing.Optional[typing.Sequence[WorkflowTaskStepParams]]
-            The updated sequence of tasks for the automation.
+
+        status : typing.Optional[UpdateAutomationRequestStatus]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -162,20 +236,21 @@ class RawAutomationsClient:
         Returns
         -------
         HttpResponse[AutomationResponse]
-            Automation updated successfully
+            Success
         """
         _response = self._client_wrapper.httpx_client.request(
             f"automations/{jsonable_encoder(id)}",
-            method="PUT",
+            method="PATCH",
             json={
                 "name": name,
                 "description": description,
                 "trigger": convert_and_respect_annotation_metadata(
-                    object_=trigger, annotation=AutomationsUpdateRequestTriggerParams, direction="write"
+                    object_=trigger, annotation=UpdateAutomationRequestTriggerParams, direction="write"
                 ),
                 "workflow": convert_and_respect_annotation_metadata(
                     object_=workflow, annotation=typing.Sequence[WorkflowTaskStepParams], direction="write"
                 ),
+                "status": status,
             },
             headers={
                 "content-type": "application/json",
@@ -198,58 +273,35 @@ class RawAutomationsClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[None]:
-        """
-        Deletes an automation by its ID
-
-        Parameters
-        ----------
-        id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[None]
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"automations/{jsonable_encoder(id)}",
-            method="DELETE",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return HttpResponse(response=_response, data=None)
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
 
 class AsyncRawAutomationsClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
     async def list(
-        self, *, request_options: typing.Optional[RequestOptions] = None
+        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[AutomationListResponse]:
         """
-        Retrieves a list of all automations for the current project
+        Retrieves a paginated list of all automations for the current project
 
         Parameters
         ----------
+        limit : typing.Optional[int]
+
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
 
         Returns
         -------
         AsyncHttpResponse[AutomationListResponse]
-            A list of automations
+            Success
         """
         _response = await self._client_wrapper.httpx_client.request(
             "automations",
             method="GET",
+            params={
+                "limit": limit,
+            },
             request_options=request_options,
         )
         try:
@@ -271,7 +323,7 @@ class AsyncRawAutomationsClient:
         self, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[AutomationResponse]:
         """
-        Creates a new automation for the current project
+        Creates a new automation.
 
         Parameters
         ----------
@@ -281,7 +333,7 @@ class AsyncRawAutomationsClient:
         Returns
         -------
         AsyncHttpResponse[AutomationResponse]
-            Automation created successfully
+            Success
         """
         _response = await self._client_wrapper.httpx_client.request(
             "automations",
@@ -307,7 +359,7 @@ class AsyncRawAutomationsClient:
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[AutomationResponse]:
         """
-        Retrieves a specific automation by its ID
+        Retrieve the automation object for a automation with the given ID.
 
         Parameters
         ----------
@@ -319,7 +371,7 @@ class AsyncRawAutomationsClient:
         Returns
         -------
         AsyncHttpResponse[AutomationResponse]
-            Automation details
+            Success
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"automations/{jsonable_encoder(id)}",
@@ -342,31 +394,98 @@ class AsyncRawAutomationsClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def update(
-        self,
-        id: str,
-        *,
-        name: str,
-        description: typing.Optional[str] = OMIT,
-        trigger: typing.Optional[AutomationsUpdateRequestTriggerParams] = OMIT,
-        workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[AutomationResponse]:
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[None]:
         """
-        Updates an existing automation by its ID
+        Parameters
+        ----------
+        id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[None]
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"automations/{jsonable_encoder(id)}",
+            method="PUT",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                return AsyncHttpResponse(response=_response, data=None)
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def delete(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[ConfirmationResponse]:
+        """
+        Permanently removes an automation from the system. This action cannot be undone.
 
         Parameters
         ----------
         id : str
 
-        name : str
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[ConfirmationResponse]
+            Accepted
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"automations/{jsonable_encoder(id)}",
+            method="DELETE",
+            request_options=request_options,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    ConfirmationResponse,
+                    construct_type(
+                        type_=ConfirmationResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def update_automation(
+        self,
+        id: str,
+        *,
+        name: typing.Optional[str] = OMIT,
+        description: typing.Optional[str] = OMIT,
+        trigger: typing.Optional[UpdateAutomationRequestTriggerParams] = OMIT,
+        workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
+        status: typing.Optional[UpdateAutomationRequestStatus] = OMIT,
+        request_options: typing.Optional[RequestOptions] = None,
+    ) -> AsyncHttpResponse[AutomationResponse]:
+        """
+        Updates an automation's `name`, `description`, `trigger`, `workflow`, or `status`. Only the specified fields will be updated.
+
+        Parameters
+        ----------
+        id : str
+
+        name : typing.Optional[str]
 
         description : typing.Optional[str]
 
-        trigger : typing.Optional[AutomationsUpdateRequestTriggerParams]
-            Defines the trigger event and conditions. To clear/remove a trigger, provide null. To update, provide the new trigger object.
+        trigger : typing.Optional[UpdateAutomationRequestTriggerParams]
 
         workflow : typing.Optional[typing.Sequence[WorkflowTaskStepParams]]
-            The updated sequence of tasks for the automation.
+
+        status : typing.Optional[UpdateAutomationRequestStatus]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -374,20 +493,21 @@ class AsyncRawAutomationsClient:
         Returns
         -------
         AsyncHttpResponse[AutomationResponse]
-            Automation updated successfully
+            Success
         """
         _response = await self._client_wrapper.httpx_client.request(
             f"automations/{jsonable_encoder(id)}",
-            method="PUT",
+            method="PATCH",
             json={
                 "name": name,
                 "description": description,
                 "trigger": convert_and_respect_annotation_metadata(
-                    object_=trigger, annotation=AutomationsUpdateRequestTriggerParams, direction="write"
+                    object_=trigger, annotation=UpdateAutomationRequestTriggerParams, direction="write"
                 ),
                 "workflow": convert_and_respect_annotation_metadata(
                     object_=workflow, annotation=typing.Sequence[WorkflowTaskStepParams], direction="write"
                 ),
+                "status": status,
             },
             headers={
                 "content-type": "application/json",
@@ -405,36 +525,6 @@ class AsyncRawAutomationsClient:
                     ),
                 )
                 return AsyncHttpResponse(response=_response, data=_data)
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def delete(
-        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[None]:
-        """
-        Deletes an automation by its ID
-
-        Parameters
-        ----------
-        id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[None]
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"automations/{jsonable_encoder(id)}",
-            method="DELETE",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                return AsyncHttpResponse(response=_response, data=None)
             _response_json = _response.json()
         except JSONDecodeError:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)

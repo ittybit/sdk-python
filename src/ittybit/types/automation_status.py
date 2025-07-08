@@ -2,4 +2,4 @@
 
 import typing
 
-AutomationStatus = typing.Union[typing.Literal["active", "inactive", "draft"], typing.Any]
+AutomationStatus = typing.Union[typing.Literal["active", "paused"], typing.Any]

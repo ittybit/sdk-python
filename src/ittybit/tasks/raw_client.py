@@ -11,9 +11,6 @@ from ..core.request_options import RequestOptions
 from ..core.unchecked_base_model import construct_type
 from ..types.task_list_response import TaskListResponse
 from ..types.task_response import TaskResponse
-from .types.tasks_create_request_kind import TasksCreateRequestKind
-from .types.tasks_list_request_kind import TasksListRequestKind
-from .types.tasks_list_request_status import TasksListRequestStatus
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -24,26 +21,12 @@ class RawTasksClient:
         self._client_wrapper = client_wrapper
 
     def list(
-        self,
-        *,
-        limit: typing.Optional[int] = None,
-        status: typing.Optional[TasksListRequestStatus] = None,
-        kind: typing.Optional[TasksListRequestKind] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[TaskListResponse]:
         """
-        Retrieves a list of tasks for the project, optionally filtered by status or kind.
-
         Parameters
         ----------
         limit : typing.Optional[int]
-            Items per page.
-
-        status : typing.Optional[TasksListRequestStatus]
-            Filter by task status.
-
-        kind : typing.Optional[TasksListRequestKind]
-            Filter by task kind.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -51,15 +34,13 @@ class RawTasksClient:
         Returns
         -------
         HttpResponse[TaskListResponse]
-            A list of tasks.
+            Success
         """
         _response = self._client_wrapper.httpx_client.request(
             "tasks",
             method="GET",
             params={
                 "limit": limit,
-                "status": status,
-                "kind": kind,
             },
             request_options=request_options,
         )
@@ -79,62 +60,14 @@ class RawTasksClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     def create(
-        self,
-        *,
-        kind: TasksCreateRequestKind,
-        url: typing.Optional[str] = OMIT,
-        input: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        file_id: typing.Optional[str] = OMIT,
-        workflow: typing.Optional[typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]]] = OMIT,
-        webhook_url: typing.Optional[str] = OMIT,
-        filename: typing.Optional[str] = OMIT,
-        folder: typing.Optional[str] = OMIT,
-        format: typing.Optional[str] = OMIT,
-        width: typing.Optional[int] = OMIT,
-        height: typing.Optional[int] = OMIT,
-        quality: typing.Optional[int] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, request: typing.Optional[typing.Any] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> HttpResponse[TaskResponse]:
         """
-        Creates a new processing task (e.g., ingest, video transcode, speech analysis) or a workflow task.
+        Creates a new task item. See [Tasks](/docs/tasks) for detailed coverage of all available props and values.
 
         Parameters
         ----------
-        kind : TasksCreateRequestKind
-            The type of task to create.
-
-        url : typing.Optional[str]
-            URL of the source file (required for 'ingest' kind unless file_id is used, can be used for others).
-
-        input : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            Task-specific input parameters depending on the kind of task.
-
-        file_id : typing.Optional[str]
-            ID of an existing file to use as input (alternative to url).
-
-        workflow : typing.Optional[typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]]]
-            An array of task definition objects for a workflow.
-
-        webhook_url : typing.Optional[str]
-            An optional HTTPS URL to send a webhook notification to upon task completion or failure.
-
-        filename : typing.Optional[str]
-            Desired filename for the output (if applicable).
-
-        folder : typing.Optional[str]
-            Desired output folder (if applicable).
-
-        format : typing.Optional[str]
-            Output format (e.g., for video/image tasks).
-
-        width : typing.Optional[int]
-            Output width (for video/image tasks).
-
-        height : typing.Optional[int]
-            Output height (for video/image tasks).
-
-        quality : typing.Optional[int]
-            Output quality setting (e.g., for video/image tasks, 0-100).
+        request : typing.Optional[typing.Any]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -142,30 +75,53 @@ class RawTasksClient:
         Returns
         -------
         HttpResponse[TaskResponse]
-            Created task (Deprecated endpoint)
+            Success
         """
         _response = self._client_wrapper.httpx_client.request(
             "tasks",
             method="POST",
-            json={
-                "kind": kind,
-                "url": url,
-                "input": input,
-                "file_id": file_id,
-                "workflow": workflow,
-                "webhook_url": webhook_url,
-                "filename": filename,
-                "folder": folder,
-                "format": format,
-                "width": width,
-                "height": height,
-                "quality": quality,
-            },
+            json=request,
             headers={
                 "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    TaskResponse,
+                    construct_type(
+                        type_=TaskResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return HttpResponse(response=_response, data=_data)
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[TaskResponse]:
+        """
+        Retrieves the task object for a task with the given ID.
+
+        Parameters
+        ----------
+        id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        HttpResponse[TaskResponse]
+            Success
+        """
+        _response = self._client_wrapper.httpx_client.request(
+            f"tasks/{jsonable_encoder(id)}",
+            method="GET",
+            request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
@@ -218,68 +174,18 @@ class RawTasksClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[TaskResponse]:
-        """
-        Retrieves the details of a specific task by its ID.
-
-        Parameters
-        ----------
-        id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        HttpResponse[TaskResponse]
-            Task details.
-        """
-        _response = self._client_wrapper.httpx_client.request(
-            f"tasks/{jsonable_encoder(id)}",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    TaskResponse,
-                    construct_type(
-                        type_=TaskResponse,  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return HttpResponse(response=_response, data=_data)
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
 
 class AsyncRawTasksClient:
     def __init__(self, *, client_wrapper: AsyncClientWrapper):
         self._client_wrapper = client_wrapper
 
     async def list(
-        self,
-        *,
-        limit: typing.Optional[int] = None,
-        status: typing.Optional[TasksListRequestStatus] = None,
-        kind: typing.Optional[TasksListRequestKind] = None,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, limit: typing.Optional[int] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[TaskListResponse]:
         """
-        Retrieves a list of tasks for the project, optionally filtered by status or kind.
-
         Parameters
         ----------
         limit : typing.Optional[int]
-            Items per page.
-
-        status : typing.Optional[TasksListRequestStatus]
-            Filter by task status.
-
-        kind : typing.Optional[TasksListRequestKind]
-            Filter by task kind.
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -287,15 +193,13 @@ class AsyncRawTasksClient:
         Returns
         -------
         AsyncHttpResponse[TaskListResponse]
-            A list of tasks.
+            Success
         """
         _response = await self._client_wrapper.httpx_client.request(
             "tasks",
             method="GET",
             params={
                 "limit": limit,
-                "status": status,
-                "kind": kind,
             },
             request_options=request_options,
         )
@@ -315,62 +219,14 @@ class AsyncRawTasksClient:
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
     async def create(
-        self,
-        *,
-        kind: TasksCreateRequestKind,
-        url: typing.Optional[str] = OMIT,
-        input: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
-        file_id: typing.Optional[str] = OMIT,
-        workflow: typing.Optional[typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]]] = OMIT,
-        webhook_url: typing.Optional[str] = OMIT,
-        filename: typing.Optional[str] = OMIT,
-        folder: typing.Optional[str] = OMIT,
-        format: typing.Optional[str] = OMIT,
-        width: typing.Optional[int] = OMIT,
-        height: typing.Optional[int] = OMIT,
-        quality: typing.Optional[int] = OMIT,
-        request_options: typing.Optional[RequestOptions] = None,
+        self, *, request: typing.Optional[typing.Any] = None, request_options: typing.Optional[RequestOptions] = None
     ) -> AsyncHttpResponse[TaskResponse]:
         """
-        Creates a new processing task (e.g., ingest, video transcode, speech analysis) or a workflow task.
+        Creates a new task item. See [Tasks](/docs/tasks) for detailed coverage of all available props and values.
 
         Parameters
         ----------
-        kind : TasksCreateRequestKind
-            The type of task to create.
-
-        url : typing.Optional[str]
-            URL of the source file (required for 'ingest' kind unless file_id is used, can be used for others).
-
-        input : typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]]
-            Task-specific input parameters depending on the kind of task.
-
-        file_id : typing.Optional[str]
-            ID of an existing file to use as input (alternative to url).
-
-        workflow : typing.Optional[typing.Sequence[typing.Dict[str, typing.Optional[typing.Any]]]]
-            An array of task definition objects for a workflow.
-
-        webhook_url : typing.Optional[str]
-            An optional HTTPS URL to send a webhook notification to upon task completion or failure.
-
-        filename : typing.Optional[str]
-            Desired filename for the output (if applicable).
-
-        folder : typing.Optional[str]
-            Desired output folder (if applicable).
-
-        format : typing.Optional[str]
-            Output format (e.g., for video/image tasks).
-
-        width : typing.Optional[int]
-            Output width (for video/image tasks).
-
-        height : typing.Optional[int]
-            Output height (for video/image tasks).
-
-        quality : typing.Optional[int]
-            Output quality setting (e.g., for video/image tasks, 0-100).
+        request : typing.Optional[typing.Any]
 
         request_options : typing.Optional[RequestOptions]
             Request-specific configuration.
@@ -378,30 +234,55 @@ class AsyncRawTasksClient:
         Returns
         -------
         AsyncHttpResponse[TaskResponse]
-            Created task (Deprecated endpoint)
+            Success
         """
         _response = await self._client_wrapper.httpx_client.request(
             "tasks",
             method="POST",
-            json={
-                "kind": kind,
-                "url": url,
-                "input": input,
-                "file_id": file_id,
-                "workflow": workflow,
-                "webhook_url": webhook_url,
-                "filename": filename,
-                "folder": folder,
-                "format": format,
-                "width": width,
-                "height": height,
-                "quality": quality,
-            },
+            json=request,
             headers={
                 "content-type": "application/json",
             },
             request_options=request_options,
             omit=OMIT,
+        )
+        try:
+            if 200 <= _response.status_code < 300:
+                _data = typing.cast(
+                    TaskResponse,
+                    construct_type(
+                        type_=TaskResponse,  # type: ignore
+                        object_=_response.json(),
+                    ),
+                )
+                return AsyncHttpResponse(response=_response, data=_data)
+            _response_json = _response.json()
+        except JSONDecodeError:
+            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
+        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
+
+    async def get(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AsyncHttpResponse[TaskResponse]:
+        """
+        Retrieves the task object for a task with the given ID.
+
+        Parameters
+        ----------
+        id : str
+
+        request_options : typing.Optional[RequestOptions]
+            Request-specific configuration.
+
+        Returns
+        -------
+        AsyncHttpResponse[TaskResponse]
+            Success
+        """
+        _response = await self._client_wrapper.httpx_client.request(
+            f"tasks/{jsonable_encoder(id)}",
+            method="GET",
+            request_options=request_options,
         )
         try:
             if 200 <= _response.status_code < 300:
@@ -445,44 +326,6 @@ class AsyncRawTasksClient:
                     typing.Dict[str, typing.Optional[typing.Any]],
                     construct_type(
                         type_=typing.Dict[str, typing.Optional[typing.Any]],  # type: ignore
-                        object_=_response.json(),
-                    ),
-                )
-                return AsyncHttpResponse(response=_response, data=_data)
-            _response_json = _response.json()
-        except JSONDecodeError:
-            raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
-        raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
-
-    async def get(
-        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[TaskResponse]:
-        """
-        Retrieves the details of a specific task by its ID.
-
-        Parameters
-        ----------
-        id : str
-
-        request_options : typing.Optional[RequestOptions]
-            Request-specific configuration.
-
-        Returns
-        -------
-        AsyncHttpResponse[TaskResponse]
-            Task details.
-        """
-        _response = await self._client_wrapper.httpx_client.request(
-            f"tasks/{jsonable_encoder(id)}",
-            method="GET",
-            request_options=request_options,
-        )
-        try:
-            if 200 <= _response.status_code < 300:
-                _data = typing.cast(
-                    TaskResponse,
-                    construct_type(
-                        type_=TaskResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
