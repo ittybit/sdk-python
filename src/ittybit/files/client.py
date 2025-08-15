@@ -4,10 +4,12 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..types.confirmation_response import ConfirmationResponse
-from ..types.file_list_response import FileListResponse
-from ..types.file_response import FileResponse
 from .raw_client import AsyncRawFilesClient, RawFilesClient
+from .types.files_create_response import FilesCreateResponse
+from .types.files_delete_response import FilesDeleteResponse
+from .types.files_get_response import FilesGetResponse
+from .types.files_list_response import FilesListResponse
+from .types.files_update_response import FilesUpdateResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -34,7 +36,7 @@ class FilesClient:
         page: typing.Optional[int] = None,
         limit: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FileListResponse:
+    ) -> FilesListResponse:
         """
         Retrieves a paginated list of all files associated with the current project.
 
@@ -49,7 +51,7 @@ class FilesClient:
 
         Returns
         -------
-        FileListResponse
+        FilesListResponse
             Success
 
         Examples
@@ -75,7 +77,7 @@ class FilesClient:
         ref: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FileResponse:
+    ) -> FilesCreateResponse:
         """
         Creates a new file from a publicly accessible or signed URL.
 
@@ -98,7 +100,7 @@ class FilesClient:
 
         Returns
         -------
-        FileResponse
+        FilesCreateResponse
             Success
 
         Examples
@@ -127,7 +129,7 @@ class FilesClient:
         )
         return _response.data
 
-    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> FileResponse:
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> FilesGetResponse:
         """
         Retrieve the file object for a file with the given ID.
 
@@ -140,7 +142,7 @@ class FilesClient:
 
         Returns
         -------
-        FileResponse
+        FilesGetResponse
             Success
 
         Examples
@@ -158,7 +160,7 @@ class FilesClient:
         _response = self._raw_client.get(id, request_options=request_options)
         return _response.data
 
-    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> ConfirmationResponse:
+    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> FilesDeleteResponse:
         """
         Permanently removes a file from the system. This action cannot be undone.
 
@@ -171,7 +173,7 @@ class FilesClient:
 
         Returns
         -------
-        ConfirmationResponse
+        FilesDeleteResponse
             Accepted
 
         Examples
@@ -198,7 +200,7 @@ class FilesClient:
         ref: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FileResponse:
+    ) -> FilesUpdateResponse:
         """
         Update a file's `filename`, `folder`, `ref`, or `metadata`. Only the specified fields will be updated.
 
@@ -219,7 +221,7 @@ class FilesClient:
 
         Returns
         -------
-        FileResponse
+        FilesUpdateResponse
             Success
 
         Examples
@@ -264,7 +266,7 @@ class AsyncFilesClient:
         page: typing.Optional[int] = None,
         limit: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FileListResponse:
+    ) -> FilesListResponse:
         """
         Retrieves a paginated list of all files associated with the current project.
 
@@ -279,7 +281,7 @@ class AsyncFilesClient:
 
         Returns
         -------
-        FileListResponse
+        FilesListResponse
             Success
 
         Examples
@@ -313,7 +315,7 @@ class AsyncFilesClient:
         ref: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FileResponse:
+    ) -> FilesCreateResponse:
         """
         Creates a new file from a publicly accessible or signed URL.
 
@@ -336,7 +338,7 @@ class AsyncFilesClient:
 
         Returns
         -------
-        FileResponse
+        FilesCreateResponse
             Success
 
         Examples
@@ -373,7 +375,7 @@ class AsyncFilesClient:
         )
         return _response.data
 
-    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> FileResponse:
+    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> FilesGetResponse:
         """
         Retrieve the file object for a file with the given ID.
 
@@ -386,7 +388,7 @@ class AsyncFilesClient:
 
         Returns
         -------
-        FileResponse
+        FilesGetResponse
             Success
 
         Examples
@@ -412,7 +414,7 @@ class AsyncFilesClient:
         _response = await self._raw_client.get(id, request_options=request_options)
         return _response.data
 
-    async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> ConfirmationResponse:
+    async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> FilesDeleteResponse:
         """
         Permanently removes a file from the system. This action cannot be undone.
 
@@ -425,7 +427,7 @@ class AsyncFilesClient:
 
         Returns
         -------
-        ConfirmationResponse
+        FilesDeleteResponse
             Accepted
 
         Examples
@@ -460,7 +462,7 @@ class AsyncFilesClient:
         ref: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> FileResponse:
+    ) -> FilesUpdateResponse:
         """
         Update a file's `filename`, `folder`, `ref`, or `metadata`. Only the specified fields will be updated.
 
@@ -481,7 +483,7 @@ class AsyncFilesClient:
 
         Returns
         -------
-        FileResponse
+        FilesUpdateResponse
             Success
 
         Examples

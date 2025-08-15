@@ -9,9 +9,11 @@ from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.request_options import RequestOptions
 from ..core.unchecked_base_model import construct_type
-from ..types.confirmation_response import ConfirmationResponse
-from ..types.file_list_response import FileListResponse
-from ..types.file_response import FileResponse
+from .types.files_create_response import FilesCreateResponse
+from .types.files_delete_response import FilesDeleteResponse
+from .types.files_get_response import FilesGetResponse
+from .types.files_list_response import FilesListResponse
+from .types.files_update_response import FilesUpdateResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -27,7 +29,7 @@ class RawFilesClient:
         page: typing.Optional[int] = None,
         limit: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[FileListResponse]:
+    ) -> HttpResponse[FilesListResponse]:
         """
         Retrieves a paginated list of all files associated with the current project.
 
@@ -42,7 +44,7 @@ class RawFilesClient:
 
         Returns
         -------
-        HttpResponse[FileListResponse]
+        HttpResponse[FilesListResponse]
             Success
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -57,9 +59,9 @@ class RawFilesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FileListResponse,
+                    FilesListResponse,
                     construct_type(
-                        type_=FileListResponse,  # type: ignore
+                        type_=FilesListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -79,7 +81,7 @@ class RawFilesClient:
         ref: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[FileResponse]:
+    ) -> HttpResponse[FilesCreateResponse]:
         """
         Creates a new file from a publicly accessible or signed URL.
 
@@ -102,7 +104,7 @@ class RawFilesClient:
 
         Returns
         -------
-        HttpResponse[FileResponse]
+        HttpResponse[FilesCreateResponse]
             Success
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -125,9 +127,9 @@ class RawFilesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FileResponse,
+                    FilesCreateResponse,
                     construct_type(
-                        type_=FileResponse,  # type: ignore
+                        type_=FilesCreateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -137,7 +139,9 @@ class RawFilesClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[FileResponse]:
+    def get(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[FilesGetResponse]:
         """
         Retrieve the file object for a file with the given ID.
 
@@ -150,7 +154,7 @@ class RawFilesClient:
 
         Returns
         -------
-        HttpResponse[FileResponse]
+        HttpResponse[FilesGetResponse]
             Success
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -161,9 +165,9 @@ class RawFilesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FileResponse,
+                    FilesGetResponse,
                     construct_type(
-                        type_=FileResponse,  # type: ignore
+                        type_=FilesGetResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -175,7 +179,7 @@ class RawFilesClient:
 
     def delete(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[ConfirmationResponse]:
+    ) -> HttpResponse[FilesDeleteResponse]:
         """
         Permanently removes a file from the system. This action cannot be undone.
 
@@ -188,7 +192,7 @@ class RawFilesClient:
 
         Returns
         -------
-        HttpResponse[ConfirmationResponse]
+        HttpResponse[FilesDeleteResponse]
             Accepted
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -199,9 +203,9 @@ class RawFilesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ConfirmationResponse,
+                    FilesDeleteResponse,
                     construct_type(
-                        type_=ConfirmationResponse,  # type: ignore
+                        type_=FilesDeleteResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -220,7 +224,7 @@ class RawFilesClient:
         ref: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[FileResponse]:
+    ) -> HttpResponse[FilesUpdateResponse]:
         """
         Update a file's `filename`, `folder`, `ref`, or `metadata`. Only the specified fields will be updated.
 
@@ -241,7 +245,7 @@ class RawFilesClient:
 
         Returns
         -------
-        HttpResponse[FileResponse]
+        HttpResponse[FilesUpdateResponse]
             Success
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -262,9 +266,9 @@ class RawFilesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FileResponse,
+                    FilesUpdateResponse,
                     construct_type(
-                        type_=FileResponse,  # type: ignore
+                        type_=FilesUpdateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -285,7 +289,7 @@ class AsyncRawFilesClient:
         page: typing.Optional[int] = None,
         limit: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[FileListResponse]:
+    ) -> AsyncHttpResponse[FilesListResponse]:
         """
         Retrieves a paginated list of all files associated with the current project.
 
@@ -300,7 +304,7 @@ class AsyncRawFilesClient:
 
         Returns
         -------
-        AsyncHttpResponse[FileListResponse]
+        AsyncHttpResponse[FilesListResponse]
             Success
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -315,9 +319,9 @@ class AsyncRawFilesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FileListResponse,
+                    FilesListResponse,
                     construct_type(
-                        type_=FileListResponse,  # type: ignore
+                        type_=FilesListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -337,7 +341,7 @@ class AsyncRawFilesClient:
         ref: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[FileResponse]:
+    ) -> AsyncHttpResponse[FilesCreateResponse]:
         """
         Creates a new file from a publicly accessible or signed URL.
 
@@ -360,7 +364,7 @@ class AsyncRawFilesClient:
 
         Returns
         -------
-        AsyncHttpResponse[FileResponse]
+        AsyncHttpResponse[FilesCreateResponse]
             Success
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -383,9 +387,9 @@ class AsyncRawFilesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FileResponse,
+                    FilesCreateResponse,
                     construct_type(
-                        type_=FileResponse,  # type: ignore
+                        type_=FilesCreateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -397,7 +401,7 @@ class AsyncRawFilesClient:
 
     async def get(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[FileResponse]:
+    ) -> AsyncHttpResponse[FilesGetResponse]:
         """
         Retrieve the file object for a file with the given ID.
 
@@ -410,7 +414,7 @@ class AsyncRawFilesClient:
 
         Returns
         -------
-        AsyncHttpResponse[FileResponse]
+        AsyncHttpResponse[FilesGetResponse]
             Success
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -421,9 +425,9 @@ class AsyncRawFilesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FileResponse,
+                    FilesGetResponse,
                     construct_type(
-                        type_=FileResponse,  # type: ignore
+                        type_=FilesGetResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -435,7 +439,7 @@ class AsyncRawFilesClient:
 
     async def delete(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[ConfirmationResponse]:
+    ) -> AsyncHttpResponse[FilesDeleteResponse]:
         """
         Permanently removes a file from the system. This action cannot be undone.
 
@@ -448,7 +452,7 @@ class AsyncRawFilesClient:
 
         Returns
         -------
-        AsyncHttpResponse[ConfirmationResponse]
+        AsyncHttpResponse[FilesDeleteResponse]
             Accepted
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -459,9 +463,9 @@ class AsyncRawFilesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ConfirmationResponse,
+                    FilesDeleteResponse,
                     construct_type(
-                        type_=ConfirmationResponse,  # type: ignore
+                        type_=FilesDeleteResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -480,7 +484,7 @@ class AsyncRawFilesClient:
         ref: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[FileResponse]:
+    ) -> AsyncHttpResponse[FilesUpdateResponse]:
         """
         Update a file's `filename`, `folder`, `ref`, or `metadata`. Only the specified fields will be updated.
 
@@ -501,7 +505,7 @@ class AsyncRawFilesClient:
 
         Returns
         -------
-        AsyncHttpResponse[FileResponse]
+        AsyncHttpResponse[FilesUpdateResponse]
             Success
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -522,9 +526,9 @@ class AsyncRawFilesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    FileResponse,
+                    FilesUpdateResponse,
                     construct_type(
-                        type_=FileResponse,  # type: ignore
+                        type_=FilesUpdateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

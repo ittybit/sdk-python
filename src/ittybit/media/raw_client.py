@@ -9,9 +9,11 @@ from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.request_options import RequestOptions
 from ..core.unchecked_base_model import construct_type
-from ..types.confirmation_response import ConfirmationResponse
 from ..types.media_list_response import MediaListResponse
-from ..types.media_response import MediaResponse
+from .types.media_create_response import MediaCreateResponse
+from .types.media_delete_response import MediaDeleteResponse
+from .types.media_get_response import MediaGetResponse
+from .types.media_update_response import MediaUpdateResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -76,7 +78,7 @@ class RawMediaClient:
         alt: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[MediaResponse]:
+    ) -> HttpResponse[MediaCreateResponse]:
         """
         Creates a new media item. See [Media Object](/docs/media) for more details.
 
@@ -93,7 +95,7 @@ class RawMediaClient:
 
         Returns
         -------
-        HttpResponse[MediaResponse]
+        HttpResponse[MediaCreateResponse]
             Success
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -113,9 +115,9 @@ class RawMediaClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    MediaResponse,
+                    MediaCreateResponse,
                     construct_type(
-                        type_=MediaResponse,  # type: ignore
+                        type_=MediaCreateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -125,7 +127,9 @@ class RawMediaClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[MediaResponse]:
+    def get(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[MediaGetResponse]:
         """
         Retrieves the media object for a media with the given ID.
 
@@ -138,7 +142,7 @@ class RawMediaClient:
 
         Returns
         -------
-        HttpResponse[MediaResponse]
+        HttpResponse[MediaGetResponse]
             Success
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -149,9 +153,9 @@ class RawMediaClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    MediaResponse,
+                    MediaGetResponse,
                     construct_type(
-                        type_=MediaResponse,  # type: ignore
+                        type_=MediaGetResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -163,7 +167,7 @@ class RawMediaClient:
 
     def delete(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[ConfirmationResponse]:
+    ) -> HttpResponse[MediaDeleteResponse]:
         """
         Permanently removes a media object from the system. This action cannot be undone.
 
@@ -176,7 +180,7 @@ class RawMediaClient:
 
         Returns
         -------
-        HttpResponse[ConfirmationResponse]
+        HttpResponse[MediaDeleteResponse]
             Accepted
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -187,9 +191,9 @@ class RawMediaClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ConfirmationResponse,
+                    MediaDeleteResponse,
                     construct_type(
-                        type_=ConfirmationResponse,  # type: ignore
+                        type_=MediaDeleteResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -207,7 +211,7 @@ class RawMediaClient:
         alt: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[MediaResponse]:
+    ) -> HttpResponse[MediaUpdateResponse]:
         """
         Updates a media object's `title`, `alt`, or `metadata`. Only the specified fields will be updated.
 
@@ -226,7 +230,7 @@ class RawMediaClient:
 
         Returns
         -------
-        HttpResponse[MediaResponse]
+        HttpResponse[MediaUpdateResponse]
             Success
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -246,9 +250,9 @@ class RawMediaClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    MediaResponse,
+                    MediaUpdateResponse,
                     construct_type(
-                        type_=MediaResponse,  # type: ignore
+                        type_=MediaUpdateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -318,7 +322,7 @@ class AsyncRawMediaClient:
         alt: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[MediaResponse]:
+    ) -> AsyncHttpResponse[MediaCreateResponse]:
         """
         Creates a new media item. See [Media Object](/docs/media) for more details.
 
@@ -335,7 +339,7 @@ class AsyncRawMediaClient:
 
         Returns
         -------
-        AsyncHttpResponse[MediaResponse]
+        AsyncHttpResponse[MediaCreateResponse]
             Success
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -355,9 +359,9 @@ class AsyncRawMediaClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    MediaResponse,
+                    MediaCreateResponse,
                     construct_type(
-                        type_=MediaResponse,  # type: ignore
+                        type_=MediaCreateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -369,7 +373,7 @@ class AsyncRawMediaClient:
 
     async def get(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[MediaResponse]:
+    ) -> AsyncHttpResponse[MediaGetResponse]:
         """
         Retrieves the media object for a media with the given ID.
 
@@ -382,7 +386,7 @@ class AsyncRawMediaClient:
 
         Returns
         -------
-        AsyncHttpResponse[MediaResponse]
+        AsyncHttpResponse[MediaGetResponse]
             Success
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -393,9 +397,9 @@ class AsyncRawMediaClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    MediaResponse,
+                    MediaGetResponse,
                     construct_type(
-                        type_=MediaResponse,  # type: ignore
+                        type_=MediaGetResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -407,7 +411,7 @@ class AsyncRawMediaClient:
 
     async def delete(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[ConfirmationResponse]:
+    ) -> AsyncHttpResponse[MediaDeleteResponse]:
         """
         Permanently removes a media object from the system. This action cannot be undone.
 
@@ -420,7 +424,7 @@ class AsyncRawMediaClient:
 
         Returns
         -------
-        AsyncHttpResponse[ConfirmationResponse]
+        AsyncHttpResponse[MediaDeleteResponse]
             Accepted
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -431,9 +435,9 @@ class AsyncRawMediaClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    ConfirmationResponse,
+                    MediaDeleteResponse,
                     construct_type(
-                        type_=ConfirmationResponse,  # type: ignore
+                        type_=MediaDeleteResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -451,7 +455,7 @@ class AsyncRawMediaClient:
         alt: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[MediaResponse]:
+    ) -> AsyncHttpResponse[MediaUpdateResponse]:
         """
         Updates a media object's `title`, `alt`, or `metadata`. Only the specified fields will be updated.
 
@@ -470,7 +474,7 @@ class AsyncRawMediaClient:
 
         Returns
         -------
-        AsyncHttpResponse[MediaResponse]
+        AsyncHttpResponse[MediaUpdateResponse]
             Success
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -490,9 +494,9 @@ class AsyncRawMediaClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    MediaResponse,
+                    MediaUpdateResponse,
                     construct_type(
-                        type_=MediaResponse,  # type: ignore
+                        type_=MediaUpdateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

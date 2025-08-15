@@ -3,14 +3,14 @@
 import typing
 
 import typing_extensions
-from .error import ErrorParams
-from .file import FileParams
-from .links_list import LinksListParams
-from .meta_list import MetaListParams
+from .file_list_response_data_item import FileListResponseDataItemParams
+from .file_list_response_error import FileListResponseErrorParams
+from .file_list_response_links import FileListResponseLinksParams
+from .file_list_response_meta import FileListResponseMetaParams
 
 
 class FileListResponseParams(typing_extensions.TypedDict):
-    meta: typing_extensions.NotRequired[MetaListParams]
-    data: typing_extensions.NotRequired[typing.Sequence[FileParams]]
-    error: typing_extensions.NotRequired[ErrorParams]
-    links: typing_extensions.NotRequired[LinksListParams]
+    meta: typing_extensions.NotRequired[FileListResponseMetaParams]
+    data: typing_extensions.NotRequired[typing.Sequence[FileListResponseDataItemParams]]
+    error: typing_extensions.NotRequired[FileListResponseErrorParams]
+    links: typing_extensions.NotRequired[FileListResponseLinksParams]

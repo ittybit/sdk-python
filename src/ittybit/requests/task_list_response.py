@@ -3,14 +3,14 @@
 import typing
 
 import typing_extensions
-from .error import ErrorParams
-from .links_list import LinksListParams
-from .meta_list import MetaListParams
-from .task import TaskParams
+from .task_list_response_data_item import TaskListResponseDataItemParams
+from .task_list_response_error import TaskListResponseErrorParams
+from .task_list_response_links import TaskListResponseLinksParams
+from .task_list_response_meta import TaskListResponseMetaParams
 
 
 class TaskListResponseParams(typing_extensions.TypedDict):
-    meta: typing_extensions.NotRequired[MetaListParams]
-    data: typing_extensions.NotRequired[typing.Sequence[TaskParams]]
-    error: typing_extensions.NotRequired[ErrorParams]
-    links: typing_extensions.NotRequired[LinksListParams]
+    meta: typing_extensions.NotRequired[TaskListResponseMetaParams]
+    data: typing_extensions.NotRequired[typing.Sequence[TaskListResponseDataItemParams]]
+    error: typing_extensions.NotRequired[TaskListResponseErrorParams]
+    links: typing_extensions.NotRequired[TaskListResponseLinksParams]

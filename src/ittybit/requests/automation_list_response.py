@@ -3,14 +3,14 @@
 import typing
 
 import typing_extensions
-from .automation import AutomationParams
-from .error import ErrorParams
-from .links_list import LinksListParams
-from .meta_list import MetaListParams
+from .automation_list_response_data_item import AutomationListResponseDataItemParams
+from .automation_list_response_error import AutomationListResponseErrorParams
+from .automation_list_response_links import AutomationListResponseLinksParams
+from .automation_list_response_meta import AutomationListResponseMetaParams
 
 
 class AutomationListResponseParams(typing_extensions.TypedDict):
-    meta: typing_extensions.NotRequired[MetaListParams]
-    data: typing_extensions.NotRequired[typing.Sequence[AutomationParams]]
-    error: typing_extensions.NotRequired[ErrorParams]
-    links: typing_extensions.NotRequired[LinksListParams]
+    meta: typing_extensions.NotRequired[AutomationListResponseMetaParams]
+    data: typing_extensions.NotRequired[typing.Sequence[AutomationListResponseDataItemParams]]
+    error: typing_extensions.NotRequired[AutomationListResponseErrorParams]
+    links: typing_extensions.NotRequired[AutomationListResponseLinksParams]

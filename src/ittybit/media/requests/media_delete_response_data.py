@@ -3,5 +3,5 @@
 import typing_extensions
 
 
-class ErrorParams(typing_extensions.TypedDict):
+class MediaDeleteResponseDataParams(typing_extensions.TypedDict):
     message: typing_extensions.NotRequired[str]

@@ -2,7 +2,7 @@
 
 import typing
 
-from .conditions_task_step import ConditionsTaskStepParams
-from .workflow_task_step import WorkflowTaskStepParams
+from .automation_workflow_item_conditions import AutomationWorkflowItemConditionsParams
+from .automation_workflow_item_ref import AutomationWorkflowItemRefParams
 
-AutomationWorkflowItemParams = typing.Union[WorkflowTaskStepParams, ConditionsTaskStepParams]
+AutomationWorkflowItemParams = typing.Union[AutomationWorkflowItemRefParams, AutomationWorkflowItemConditionsParams]

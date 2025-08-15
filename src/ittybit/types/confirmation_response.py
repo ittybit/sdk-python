@@ -5,17 +5,17 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
-from .confirmation import Confirmation
-from .error import Error
-from .links import Links
-from .meta import Meta
+from .confirmation_response_data import ConfirmationResponseData
+from .confirmation_response_error import ConfirmationResponseError
+from .confirmation_response_links import ConfirmationResponseLinks
+from .confirmation_response_meta import ConfirmationResponseMeta
 
 
 class ConfirmationResponse(UncheckedBaseModel):
-    meta: typing.Optional[Meta] = None
-    data: typing.Optional[Confirmation] = None
-    error: typing.Optional[Error] = None
-    links: typing.Optional[Links] = None
+    meta: typing.Optional[ConfirmationResponseMeta] = None
+    data: typing.Optional[ConfirmationResponseData] = None
+    error: typing.Optional[ConfirmationResponseError] = None
+    links: typing.Optional[ConfirmationResponseLinks] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

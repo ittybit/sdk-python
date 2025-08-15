@@ -4,9 +4,10 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..types.task_list_response import TaskListResponse
-from ..types.task_response import TaskResponse
 from .raw_client import AsyncRawTasksClient, RawTasksClient
+from .types.tasks_create_response import TasksCreateResponse
+from .types.tasks_get_response import TasksGetResponse
+from .types.tasks_list_response import TasksListResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -33,7 +34,7 @@ class TasksClient:
         page: typing.Optional[int] = None,
         limit: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> TaskListResponse:
+    ) -> TasksListResponse:
         """
         Retrieves a paginated list of all tasks for the current project.
 
@@ -48,7 +49,7 @@ class TasksClient:
 
         Returns
         -------
-        TaskListResponse
+        TasksListResponse
             Success
 
         Examples
@@ -66,7 +67,7 @@ class TasksClient:
 
     def create(
         self, *, request: typing.Optional[typing.Any] = None, request_options: typing.Optional[RequestOptions] = None
-    ) -> TaskResponse:
+    ) -> TasksCreateResponse:
         """
         Creates a new task item. See [Tasks](/docs/tasks) for detailed coverage of all available props and values.
 
@@ -79,7 +80,7 @@ class TasksClient:
 
         Returns
         -------
-        TaskResponse
+        TasksCreateResponse
             Success
 
         Examples
@@ -103,7 +104,7 @@ class TasksClient:
         _response = self._raw_client.create(request=request, request_options=request_options)
         return _response.data
 
-    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> TaskResponse:
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> TasksGetResponse:
         """
         Retrieves the task object for a task with the given ID.
 
@@ -116,7 +117,7 @@ class TasksClient:
 
         Returns
         -------
-        TaskResponse
+        TasksGetResponse
             Success
 
         Examples
@@ -185,7 +186,7 @@ class AsyncTasksClient:
         page: typing.Optional[int] = None,
         limit: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> TaskListResponse:
+    ) -> TasksListResponse:
         """
         Retrieves a paginated list of all tasks for the current project.
 
@@ -200,7 +201,7 @@ class AsyncTasksClient:
 
         Returns
         -------
-        TaskListResponse
+        TasksListResponse
             Success
 
         Examples
@@ -226,7 +227,7 @@ class AsyncTasksClient:
 
     async def create(
         self, *, request: typing.Optional[typing.Any] = None, request_options: typing.Optional[RequestOptions] = None
-    ) -> TaskResponse:
+    ) -> TasksCreateResponse:
         """
         Creates a new task item. See [Tasks](/docs/tasks) for detailed coverage of all available props and values.
 
@@ -239,7 +240,7 @@ class AsyncTasksClient:
 
         Returns
         -------
-        TaskResponse
+        TasksCreateResponse
             Success
 
         Examples
@@ -271,7 +272,7 @@ class AsyncTasksClient:
         _response = await self._raw_client.create(request=request, request_options=request_options)
         return _response.data
 
-    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> TaskResponse:
+    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> TasksGetResponse:
         """
         Retrieves the task object for a task with the given ID.
 
@@ -284,7 +285,7 @@ class AsyncTasksClient:
 
         Returns
         -------
-        TaskResponse
+        TasksGetResponse
             Success
 
         Examples

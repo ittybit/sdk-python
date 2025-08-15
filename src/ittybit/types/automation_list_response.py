@@ -5,17 +5,17 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
-from .automation import Automation
-from .error import Error
-from .links_list import LinksList
-from .meta_list import MetaList
+from .automation_list_response_data_item import AutomationListResponseDataItem
+from .automation_list_response_error import AutomationListResponseError
+from .automation_list_response_links import AutomationListResponseLinks
+from .automation_list_response_meta import AutomationListResponseMeta
 
 
 class AutomationListResponse(UncheckedBaseModel):
-    meta: typing.Optional[MetaList] = None
-    data: typing.Optional[typing.List[Automation]] = None
-    error: typing.Optional[Error] = None
-    links: typing.Optional[LinksList] = None
+    meta: typing.Optional[AutomationListResponseMeta] = None
+    data: typing.Optional[typing.List[AutomationListResponseDataItem]] = None
+    error: typing.Optional[AutomationListResponseError] = None
+    links: typing.Optional[AutomationListResponseLinks] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

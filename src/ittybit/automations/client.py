@@ -4,15 +4,18 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..requests.workflow_task_step import WorkflowTaskStepParams
-from ..types.automation_list_response import AutomationListResponse
-from ..types.automation_response import AutomationResponse
-from ..types.confirmation_response import ConfirmationResponse
 from .raw_client import AsyncRawAutomationsClient, RawAutomationsClient
 from .requests.automations_create_request_trigger import AutomationsCreateRequestTriggerParams
+from .requests.automations_create_request_workflow_item import AutomationsCreateRequestWorkflowItemParams
 from .requests.automations_update_request_trigger import AutomationsUpdateRequestTriggerParams
+from .requests.automations_update_request_workflow_item import AutomationsUpdateRequestWorkflowItemParams
 from .types.automations_create_request_status import AutomationsCreateRequestStatus
+from .types.automations_create_response import AutomationsCreateResponse
+from .types.automations_delete_response import AutomationsDeleteResponse
+from .types.automations_get_response import AutomationsGetResponse
+from .types.automations_list_response import AutomationsListResponse
 from .types.automations_update_request_status import AutomationsUpdateRequestStatus
+from .types.automations_update_response import AutomationsUpdateResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -39,7 +42,7 @@ class AutomationsClient:
         page: typing.Optional[int] = None,
         limit: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AutomationListResponse:
+    ) -> AutomationsListResponse:
         """
         Retrieves a paginated list of all automations for the current project.
 
@@ -54,7 +57,7 @@ class AutomationsClient:
 
         Returns
         -------
-        AutomationListResponse
+        AutomationsListResponse
             Success
 
         Examples
@@ -74,12 +77,12 @@ class AutomationsClient:
         self,
         *,
         trigger: AutomationsCreateRequestTriggerParams,
-        workflow: typing.Sequence[WorkflowTaskStepParams],
+        workflow: typing.Sequence[AutomationsCreateRequestWorkflowItemParams],
         name: typing.Optional[str] = OMIT,
         description: typing.Optional[str] = OMIT,
         status: typing.Optional[AutomationsCreateRequestStatus] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AutomationResponse:
+    ) -> AutomationsCreateResponse:
         """
         Creates a new automation.
 
@@ -87,7 +90,7 @@ class AutomationsClient:
         ----------
         trigger : AutomationsCreateRequestTriggerParams
 
-        workflow : typing.Sequence[WorkflowTaskStepParams]
+        workflow : typing.Sequence[AutomationsCreateRequestWorkflowItemParams]
 
         name : typing.Optional[str]
 
@@ -100,7 +103,7 @@ class AutomationsClient:
 
         Returns
         -------
-        AutomationResponse
+        AutomationsCreateResponse
             Success
 
         Examples
@@ -133,7 +136,7 @@ class AutomationsClient:
         )
         return _response.data
 
-    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationResponse:
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationsGetResponse:
         """
         Retrieve the automation object for a automation with the given ID.
 
@@ -146,7 +149,7 @@ class AutomationsClient:
 
         Returns
         -------
-        AutomationResponse
+        AutomationsGetResponse
             Success
 
         Examples
@@ -164,7 +167,7 @@ class AutomationsClient:
         _response = self._raw_client.get(id, request_options=request_options)
         return _response.data
 
-    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> ConfirmationResponse:
+    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationsDeleteResponse:
         """
         Permanently removes an automation from the system. This action cannot be undone.
 
@@ -177,7 +180,7 @@ class AutomationsClient:
 
         Returns
         -------
-        ConfirmationResponse
+        AutomationsDeleteResponse
             Accepted
 
         Examples
@@ -202,10 +205,10 @@ class AutomationsClient:
         name: typing.Optional[str] = OMIT,
         description: typing.Optional[str] = OMIT,
         trigger: typing.Optional[AutomationsUpdateRequestTriggerParams] = OMIT,
-        workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
+        workflow: typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]] = OMIT,
         status: typing.Optional[AutomationsUpdateRequestStatus] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AutomationResponse:
+    ) -> AutomationsUpdateResponse:
         """
         Updates an automation's `name`, `description`, `trigger`, `workflow`, or `status`. Only the specified fields will be updated.
 
@@ -219,7 +222,7 @@ class AutomationsClient:
 
         trigger : typing.Optional[AutomationsUpdateRequestTriggerParams]
 
-        workflow : typing.Optional[typing.Sequence[WorkflowTaskStepParams]]
+        workflow : typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]]
 
         status : typing.Optional[AutomationsUpdateRequestStatus]
 
@@ -228,7 +231,7 @@ class AutomationsClient:
 
         Returns
         -------
-        AutomationResponse
+        AutomationsUpdateResponse
             Success
 
         Examples
@@ -284,7 +287,7 @@ class AsyncAutomationsClient:
         page: typing.Optional[int] = None,
         limit: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AutomationListResponse:
+    ) -> AutomationsListResponse:
         """
         Retrieves a paginated list of all automations for the current project.
 
@@ -299,7 +302,7 @@ class AsyncAutomationsClient:
 
         Returns
         -------
-        AutomationListResponse
+        AutomationsListResponse
             Success
 
         Examples
@@ -327,12 +330,12 @@ class AsyncAutomationsClient:
         self,
         *,
         trigger: AutomationsCreateRequestTriggerParams,
-        workflow: typing.Sequence[WorkflowTaskStepParams],
+        workflow: typing.Sequence[AutomationsCreateRequestWorkflowItemParams],
         name: typing.Optional[str] = OMIT,
         description: typing.Optional[str] = OMIT,
         status: typing.Optional[AutomationsCreateRequestStatus] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AutomationResponse:
+    ) -> AutomationsCreateResponse:
         """
         Creates a new automation.
 
@@ -340,7 +343,7 @@ class AsyncAutomationsClient:
         ----------
         trigger : AutomationsCreateRequestTriggerParams
 
-        workflow : typing.Sequence[WorkflowTaskStepParams]
+        workflow : typing.Sequence[AutomationsCreateRequestWorkflowItemParams]
 
         name : typing.Optional[str]
 
@@ -353,7 +356,7 @@ class AsyncAutomationsClient:
 
         Returns
         -------
-        AutomationResponse
+        AutomationsCreateResponse
             Success
 
         Examples
@@ -397,7 +400,7 @@ class AsyncAutomationsClient:
         )
         return _response.data
 
-    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationResponse:
+    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> AutomationsGetResponse:
         """
         Retrieve the automation object for a automation with the given ID.
 
@@ -410,7 +413,7 @@ class AsyncAutomationsClient:
 
         Returns
         -------
-        AutomationResponse
+        AutomationsGetResponse
             Success
 
         Examples
@@ -436,7 +439,9 @@ class AsyncAutomationsClient:
         _response = await self._raw_client.get(id, request_options=request_options)
         return _response.data
 
-    async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> ConfirmationResponse:
+    async def delete(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> AutomationsDeleteResponse:
         """
         Permanently removes an automation from the system. This action cannot be undone.
 
@@ -449,7 +454,7 @@ class AsyncAutomationsClient:
 
         Returns
         -------
-        ConfirmationResponse
+        AutomationsDeleteResponse
             Accepted
 
         Examples
@@ -482,10 +487,10 @@ class AsyncAutomationsClient:
         name: typing.Optional[str] = OMIT,
         description: typing.Optional[str] = OMIT,
         trigger: typing.Optional[AutomationsUpdateRequestTriggerParams] = OMIT,
-        workflow: typing.Optional[typing.Sequence[WorkflowTaskStepParams]] = OMIT,
+        workflow: typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]] = OMIT,
         status: typing.Optional[AutomationsUpdateRequestStatus] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AutomationResponse:
+    ) -> AutomationsUpdateResponse:
         """
         Updates an automation's `name`, `description`, `trigger`, `workflow`, or `status`. Only the specified fields will be updated.
 
@@ -499,7 +504,7 @@ class AsyncAutomationsClient:
 
         trigger : typing.Optional[AutomationsUpdateRequestTriggerParams]
 
-        workflow : typing.Optional[typing.Sequence[WorkflowTaskStepParams]]
+        workflow : typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]]
 
         status : typing.Optional[AutomationsUpdateRequestStatus]
 
@@ -508,7 +513,7 @@ class AsyncAutomationsClient:
 
         Returns
         -------
-        AutomationResponse
+        AutomationsUpdateResponse
             Success
 
         Examples

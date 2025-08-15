@@ -6,8 +6,8 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
+from .media_files_item import MediaFilesItem
 from .media_kind import MediaKind
-from .media_source import MediaSource
 
 
 class Media(UncheckedBaseModel):
@@ -19,7 +19,7 @@ class Media(UncheckedBaseModel):
     width: typing.Optional[int] = None
     height: typing.Optional[int] = None
     duration: typing.Optional[float] = None
-    files: typing.List[MediaSource]
+    files: typing.List[MediaFilesItem]
     urls: typing.Dict[str, typing.Optional[typing.Any]]
     background: typing.Optional[str] = None
     metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = None

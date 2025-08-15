@@ -9,8 +9,9 @@ from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.jsonable_encoder import jsonable_encoder
 from ..core.request_options import RequestOptions
 from ..core.unchecked_base_model import construct_type
-from ..types.task_list_response import TaskListResponse
-from ..types.task_response import TaskResponse
+from .types.tasks_create_response import TasksCreateResponse
+from .types.tasks_get_response import TasksGetResponse
+from .types.tasks_list_response import TasksListResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -26,7 +27,7 @@ class RawTasksClient:
         page: typing.Optional[int] = None,
         limit: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[TaskListResponse]:
+    ) -> HttpResponse[TasksListResponse]:
         """
         Retrieves a paginated list of all tasks for the current project.
 
@@ -41,7 +42,7 @@ class RawTasksClient:
 
         Returns
         -------
-        HttpResponse[TaskListResponse]
+        HttpResponse[TasksListResponse]
             Success
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -56,9 +57,9 @@ class RawTasksClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TaskListResponse,
+                    TasksListResponse,
                     construct_type(
-                        type_=TaskListResponse,  # type: ignore
+                        type_=TasksListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -70,7 +71,7 @@ class RawTasksClient:
 
     def create(
         self, *, request: typing.Optional[typing.Any] = None, request_options: typing.Optional[RequestOptions] = None
-    ) -> HttpResponse[TaskResponse]:
+    ) -> HttpResponse[TasksCreateResponse]:
         """
         Creates a new task item. See [Tasks](/docs/tasks) for detailed coverage of all available props and values.
 
@@ -83,7 +84,7 @@ class RawTasksClient:
 
         Returns
         -------
-        HttpResponse[TaskResponse]
+        HttpResponse[TasksCreateResponse]
             Success
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -99,9 +100,9 @@ class RawTasksClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TaskResponse,
+                    TasksCreateResponse,
                     construct_type(
-                        type_=TaskResponse,  # type: ignore
+                        type_=TasksCreateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -111,7 +112,9 @@ class RawTasksClient:
             raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response.text)
         raise ApiError(status_code=_response.status_code, headers=dict(_response.headers), body=_response_json)
 
-    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> HttpResponse[TaskResponse]:
+    def get(
+        self, id: str, *, request_options: typing.Optional[RequestOptions] = None
+    ) -> HttpResponse[TasksGetResponse]:
         """
         Retrieves the task object for a task with the given ID.
 
@@ -124,7 +127,7 @@ class RawTasksClient:
 
         Returns
         -------
-        HttpResponse[TaskResponse]
+        HttpResponse[TasksGetResponse]
             Success
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -135,9 +138,9 @@ class RawTasksClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TaskResponse,
+                    TasksGetResponse,
                     construct_type(
-                        type_=TaskResponse,  # type: ignore
+                        type_=TasksGetResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -194,7 +197,7 @@ class AsyncRawTasksClient:
         page: typing.Optional[int] = None,
         limit: typing.Optional[int] = None,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[TaskListResponse]:
+    ) -> AsyncHttpResponse[TasksListResponse]:
         """
         Retrieves a paginated list of all tasks for the current project.
 
@@ -209,7 +212,7 @@ class AsyncRawTasksClient:
 
         Returns
         -------
-        AsyncHttpResponse[TaskListResponse]
+        AsyncHttpResponse[TasksListResponse]
             Success
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -224,9 +227,9 @@ class AsyncRawTasksClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TaskListResponse,
+                    TasksListResponse,
                     construct_type(
-                        type_=TaskListResponse,  # type: ignore
+                        type_=TasksListResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -238,7 +241,7 @@ class AsyncRawTasksClient:
 
     async def create(
         self, *, request: typing.Optional[typing.Any] = None, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[TaskResponse]:
+    ) -> AsyncHttpResponse[TasksCreateResponse]:
         """
         Creates a new task item. See [Tasks](/docs/tasks) for detailed coverage of all available props and values.
 
@@ -251,7 +254,7 @@ class AsyncRawTasksClient:
 
         Returns
         -------
-        AsyncHttpResponse[TaskResponse]
+        AsyncHttpResponse[TasksCreateResponse]
             Success
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -267,9 +270,9 @@ class AsyncRawTasksClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TaskResponse,
+                    TasksCreateResponse,
                     construct_type(
-                        type_=TaskResponse,  # type: ignore
+                        type_=TasksCreateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -281,7 +284,7 @@ class AsyncRawTasksClient:
 
     async def get(
         self, id: str, *, request_options: typing.Optional[RequestOptions] = None
-    ) -> AsyncHttpResponse[TaskResponse]:
+    ) -> AsyncHttpResponse[TasksGetResponse]:
         """
         Retrieves the task object for a task with the given ID.
 
@@ -294,7 +297,7 @@ class AsyncRawTasksClient:
 
         Returns
         -------
-        AsyncHttpResponse[TaskResponse]
+        AsyncHttpResponse[TasksGetResponse]
             Success
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -305,9 +308,9 @@ class AsyncRawTasksClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    TaskResponse,
+                    TasksGetResponse,
                     construct_type(
-                        type_=TaskResponse,  # type: ignore
+                        type_=TasksGetResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

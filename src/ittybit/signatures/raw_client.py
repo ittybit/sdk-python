@@ -8,8 +8,8 @@ from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.http_response import AsyncHttpResponse, HttpResponse
 from ..core.request_options import RequestOptions
 from ..core.unchecked_base_model import construct_type
-from ..types.signature_response import SignatureResponse
 from .types.signatures_create_request_method import SignaturesCreateRequestMethod
+from .types.signatures_create_response import SignaturesCreateResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -27,7 +27,7 @@ class RawSignaturesClient:
         expiry: typing.Optional[int] = OMIT,
         method: typing.Optional[SignaturesCreateRequestMethod] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> HttpResponse[SignatureResponse]:
+    ) -> HttpResponse[SignaturesCreateResponse]:
         """
         You can use signatures to create signed URLs which grant access to your project's resources, without revealing your project's API key. URLs can expire after a specified time and be limited to HTTP `GET` method for read-only access, or HTTP `PUT` method for client-side uploads.
 
@@ -46,7 +46,7 @@ class RawSignaturesClient:
 
         Returns
         -------
-        HttpResponse[SignatureResponse]
+        HttpResponse[SignaturesCreateResponse]
             Success
         """
         _response = self._client_wrapper.httpx_client.request(
@@ -67,9 +67,9 @@ class RawSignaturesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SignatureResponse,
+                    SignaturesCreateResponse,
                     construct_type(
-                        type_=SignatureResponse,  # type: ignore
+                        type_=SignaturesCreateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )
@@ -92,7 +92,7 @@ class AsyncRawSignaturesClient:
         expiry: typing.Optional[int] = OMIT,
         method: typing.Optional[SignaturesCreateRequestMethod] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> AsyncHttpResponse[SignatureResponse]:
+    ) -> AsyncHttpResponse[SignaturesCreateResponse]:
         """
         You can use signatures to create signed URLs which grant access to your project's resources, without revealing your project's API key. URLs can expire after a specified time and be limited to HTTP `GET` method for read-only access, or HTTP `PUT` method for client-side uploads.
 
@@ -111,7 +111,7 @@ class AsyncRawSignaturesClient:
 
         Returns
         -------
-        AsyncHttpResponse[SignatureResponse]
+        AsyncHttpResponse[SignaturesCreateResponse]
             Success
         """
         _response = await self._client_wrapper.httpx_client.request(
@@ -132,9 +132,9 @@ class AsyncRawSignaturesClient:
         try:
             if 200 <= _response.status_code < 300:
                 _data = typing.cast(
-                    SignatureResponse,
+                    SignaturesCreateResponse,
                     construct_type(
-                        type_=SignatureResponse,  # type: ignore
+                        type_=SignaturesCreateResponse,  # type: ignore
                         object_=_response.json(),
                     ),
                 )

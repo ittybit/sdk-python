@@ -12,20 +12,23 @@ class BaseClientWrapper:
         *,
         version: typing.Optional[str] = None,
         api_key: typing.Union[str, typing.Callable[[], str]],
+        headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
         timeout: typing.Optional[float] = None,
     ):
         self._version = version
         self._api_key = api_key
+        self._headers = headers
         self._base_url = base_url
         self._timeout = timeout
 
     def get_headers(self) -> typing.Dict[str, str]:
         headers: typing.Dict[str, str] = {
-            "User-Agent": "ittybit/0.8.14",
+            "User-Agent": "ittybit/0.8.15",
             "X-Fern-Language": "Python",
             "X-Fern-SDK-Name": "ittybit",
-            "X-Fern-SDK-Version": "0.8.14",
+            "X-Fern-SDK-Version": "0.8.15",
+            **(self.get_custom_headers() or {}),
         }
         if self._version is not None:
             headers["ACCEPT_VERSION"] = self._version
@@ -37,6 +40,9 @@ class BaseClientWrapper:
             return self._api_key
         else:
             return self._api_key()
+
+    def get_custom_headers(self) -> typing.Optional[typing.Dict[str, str]]:
+        return self._headers
 
     def get_base_url(self) -> str:
         return self._base_url
@@ -51,11 +57,12 @@ class SyncClientWrapper(BaseClientWrapper):
         *,
         version: typing.Optional[str] = None,
         api_key: typing.Union[str, typing.Callable[[], str]],
+        headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
         timeout: typing.Optional[float] = None,
         httpx_client: httpx.Client,
     ):
-        super().__init__(version=version, api_key=api_key, base_url=base_url, timeout=timeout)
+        super().__init__(version=version, api_key=api_key, headers=headers, base_url=base_url, timeout=timeout)
         self.httpx_client = HttpClient(
             httpx_client=httpx_client,
             base_headers=self.get_headers,
@@ -70,11 +77,12 @@ class AsyncClientWrapper(BaseClientWrapper):
         *,
         version: typing.Optional[str] = None,
         api_key: typing.Union[str, typing.Callable[[], str]],
+        headers: typing.Optional[typing.Dict[str, str]] = None,
         base_url: str,
         timeout: typing.Optional[float] = None,
         httpx_client: httpx.AsyncClient,
     ):
-        super().__init__(version=version, api_key=api_key, base_url=base_url, timeout=timeout)
+        super().__init__(version=version, api_key=api_key, headers=headers, base_url=base_url, timeout=timeout)
         self.httpx_client = AsyncHttpClient(
             httpx_client=httpx_client,
             base_headers=self.get_headers,

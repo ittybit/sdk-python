@@ -4,10 +4,12 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..types.confirmation_response import ConfirmationResponse
 from ..types.media_list_response import MediaListResponse
-from ..types.media_response import MediaResponse
 from .raw_client import AsyncRawMediaClient, RawMediaClient
+from .types.media_create_response import MediaCreateResponse
+from .types.media_delete_response import MediaDeleteResponse
+from .types.media_get_response import MediaGetResponse
+from .types.media_update_response import MediaUpdateResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -72,7 +74,7 @@ class MediaClient:
         alt: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> MediaResponse:
+    ) -> MediaCreateResponse:
         """
         Creates a new media item. See [Media Object](/docs/media) for more details.
 
@@ -89,7 +91,7 @@ class MediaClient:
 
         Returns
         -------
-        MediaResponse
+        MediaCreateResponse
             Success
 
         Examples
@@ -109,7 +111,7 @@ class MediaClient:
         _response = self._raw_client.create(title=title, alt=alt, metadata=metadata, request_options=request_options)
         return _response.data
 
-    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> MediaResponse:
+    def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> MediaGetResponse:
         """
         Retrieves the media object for a media with the given ID.
 
@@ -122,7 +124,7 @@ class MediaClient:
 
         Returns
         -------
-        MediaResponse
+        MediaGetResponse
             Success
 
         Examples
@@ -140,7 +142,7 @@ class MediaClient:
         _response = self._raw_client.get(id, request_options=request_options)
         return _response.data
 
-    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> ConfirmationResponse:
+    def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> MediaDeleteResponse:
         """
         Permanently removes a media object from the system. This action cannot be undone.
 
@@ -153,7 +155,7 @@ class MediaClient:
 
         Returns
         -------
-        ConfirmationResponse
+        MediaDeleteResponse
             Accepted
 
         Examples
@@ -179,7 +181,7 @@ class MediaClient:
         alt: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> MediaResponse:
+    ) -> MediaUpdateResponse:
         """
         Updates a media object's `title`, `alt`, or `metadata`. Only the specified fields will be updated.
 
@@ -198,7 +200,7 @@ class MediaClient:
 
         Returns
         -------
-        MediaResponse
+        MediaUpdateResponse
             Success
 
         Examples
@@ -289,7 +291,7 @@ class AsyncMediaClient:
         alt: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> MediaResponse:
+    ) -> MediaCreateResponse:
         """
         Creates a new media item. See [Media Object](/docs/media) for more details.
 
@@ -306,7 +308,7 @@ class AsyncMediaClient:
 
         Returns
         -------
-        MediaResponse
+        MediaCreateResponse
             Success
 
         Examples
@@ -336,7 +338,7 @@ class AsyncMediaClient:
         )
         return _response.data
 
-    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> MediaResponse:
+    async def get(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> MediaGetResponse:
         """
         Retrieves the media object for a media with the given ID.
 
@@ -349,7 +351,7 @@ class AsyncMediaClient:
 
         Returns
         -------
-        MediaResponse
+        MediaGetResponse
             Success
 
         Examples
@@ -375,7 +377,7 @@ class AsyncMediaClient:
         _response = await self._raw_client.get(id, request_options=request_options)
         return _response.data
 
-    async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> ConfirmationResponse:
+    async def delete(self, id: str, *, request_options: typing.Optional[RequestOptions] = None) -> MediaDeleteResponse:
         """
         Permanently removes a media object from the system. This action cannot be undone.
 
@@ -388,7 +390,7 @@ class AsyncMediaClient:
 
         Returns
         -------
-        ConfirmationResponse
+        MediaDeleteResponse
             Accepted
 
         Examples
@@ -422,7 +424,7 @@ class AsyncMediaClient:
         alt: typing.Optional[str] = OMIT,
         metadata: typing.Optional[typing.Dict[str, typing.Optional[typing.Any]]] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> MediaResponse:
+    ) -> MediaUpdateResponse:
         """
         Updates a media object's `title`, `alt`, or `metadata`. Only the specified fields will be updated.
 
@@ -441,7 +443,7 @@ class AsyncMediaClient:
 
         Returns
         -------
-        MediaResponse
+        MediaUpdateResponse
             Success
 
         Examples

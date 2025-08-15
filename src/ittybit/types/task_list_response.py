@@ -5,17 +5,17 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
-from .error import Error
-from .links_list import LinksList
-from .meta_list import MetaList
-from .task import Task
+from .task_list_response_data_item import TaskListResponseDataItem
+from .task_list_response_error import TaskListResponseError
+from .task_list_response_links import TaskListResponseLinks
+from .task_list_response_meta import TaskListResponseMeta
 
 
 class TaskListResponse(UncheckedBaseModel):
-    meta: typing.Optional[MetaList] = None
-    data: typing.Optional[typing.List[Task]] = None
-    error: typing.Optional[Error] = None
-    links: typing.Optional[LinksList] = None
+    meta: typing.Optional[TaskListResponseMeta] = None
+    data: typing.Optional[typing.List[TaskListResponseDataItem]] = None
+    error: typing.Optional[TaskListResponseError] = None
+    links: typing.Optional[TaskListResponseLinks] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2

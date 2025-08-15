@@ -144,7 +144,7 @@ client.automations.create(
 <dl>
 <dd>
 
-**workflow:** `typing.Sequence[WorkflowTaskStepParams]` 
+**workflow:** `typing.Sequence[AutomationsCreateRequestWorkflowItemParams]` 
     
 </dd>
 </dl>
@@ -421,7 +421,7 @@ client.automations.update(
 <dl>
 <dd>
 
-**workflow:** `typing.Optional[typing.Sequence[WorkflowTaskStepParams]]` 
+**workflow:** `typing.Optional[typing.Sequence[AutomationsUpdateRequestWorkflowItemParams]]` 
     
 </dd>
 </dl>

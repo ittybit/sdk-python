@@ -4,9 +4,9 @@ import typing
 
 from ..core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from ..core.request_options import RequestOptions
-from ..types.signature_response import SignatureResponse
 from .raw_client import AsyncRawSignaturesClient, RawSignaturesClient
 from .types.signatures_create_request_method import SignaturesCreateRequestMethod
+from .types.signatures_create_response import SignaturesCreateResponse
 
 # this is used as the default value for optional parameters
 OMIT = typing.cast(typing.Any, ...)
@@ -35,7 +35,7 @@ class SignaturesClient:
         expiry: typing.Optional[int] = OMIT,
         method: typing.Optional[SignaturesCreateRequestMethod] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SignatureResponse:
+    ) -> SignaturesCreateResponse:
         """
         You can use signatures to create signed URLs which grant access to your project's resources, without revealing your project's API key. URLs can expire after a specified time and be limited to HTTP `GET` method for read-only access, or HTTP `PUT` method for client-side uploads.
 
@@ -54,7 +54,7 @@ class SignaturesClient:
 
         Returns
         -------
-        SignatureResponse
+        SignaturesCreateResponse
             Success
 
         Examples
@@ -101,7 +101,7 @@ class AsyncSignaturesClient:
         expiry: typing.Optional[int] = OMIT,
         method: typing.Optional[SignaturesCreateRequestMethod] = OMIT,
         request_options: typing.Optional[RequestOptions] = None,
-    ) -> SignatureResponse:
+    ) -> SignaturesCreateResponse:
         """
         You can use signatures to create signed URLs which grant access to your project's resources, without revealing your project's API key. URLs can expire after a specified time and be limited to HTTP `GET` method for read-only access, or HTTP `PUT` method for client-side uploads.
 
@@ -120,7 +120,7 @@ class AsyncSignaturesClient:
 
         Returns
         -------
-        SignatureResponse
+        SignaturesCreateResponse
             Success
 
         Examples

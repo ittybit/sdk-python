@@ -5,7 +5,7 @@ import typing
 
 import typing_extensions
 from ..types.media_kind import MediaKind
-from .media_source import MediaSourceParams
+from .media_files_item import MediaFilesItemParams
 
 
 class MediaParams(typing_extensions.TypedDict):
@@ -17,7 +17,7 @@ class MediaParams(typing_extensions.TypedDict):
     width: typing_extensions.NotRequired[int]
     height: typing_extensions.NotRequired[int]
     duration: typing_extensions.NotRequired[float]
-    files: typing.Sequence[MediaSourceParams]
+    files: typing.Sequence[MediaFilesItemParams]
     urls: typing.Dict[str, typing.Optional[typing.Any]]
     background: typing_extensions.NotRequired[str]
     metadata: typing_extensions.NotRequired[typing.Dict[str, typing.Optional[typing.Any]]]

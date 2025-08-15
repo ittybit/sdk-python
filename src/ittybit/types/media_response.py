@@ -5,17 +5,17 @@ import typing
 import pydantic
 from ..core.pydantic_utilities import IS_PYDANTIC_V2
 from ..core.unchecked_base_model import UncheckedBaseModel
-from .error import Error
-from .links import Links
-from .media import Media
-from .meta import Meta
+from .media_response_data import MediaResponseData
+from .media_response_error import MediaResponseError
+from .media_response_links import MediaResponseLinks
+from .media_response_meta import MediaResponseMeta
 
 
 class MediaResponse(UncheckedBaseModel):
-    meta: typing.Optional[Meta] = None
-    data: typing.Optional[Media] = None
-    error: typing.Optional[Error] = None
-    links: typing.Optional[Links] = None
+    meta: typing.Optional[MediaResponseMeta] = None
+    data: typing.Optional[MediaResponseData] = None
+    error: typing.Optional[MediaResponseError] = None
+    links: typing.Optional[MediaResponseLinks] = None
 
     if IS_PYDANTIC_V2:
         model_config: typing.ClassVar[pydantic.ConfigDict] = pydantic.ConfigDict(extra="allow", frozen=True)  # type: ignore # Pydantic v2
