@@ -12,7 +12,7 @@
 <dl>
 <dd>
 
-Retrieves a paginated list of all automations for the current project
+Retrieves a paginated list of all automations for the current project.
 </dd>
 </dl>
 </dd>
@@ -31,7 +31,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.automations.list()
 
@@ -108,7 +108,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.automations.create(
     name="My Example Automation",
@@ -219,7 +219,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.automations.get(
     id="auto_abcdefgh1234",
@@ -290,7 +290,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.automations.delete(
     id="auto_abcdefgh1234",
@@ -361,7 +361,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.automations.update(
     id="auto_abcdefgh1234",
@@ -481,7 +481,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.files.list()
 
@@ -558,13 +558,13 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.files.create(
     url="https://ittyb.it/sample.mp4",
     folder="ittybit/samples",
     filename="video.mp4",
-    metadata={"customKey2": "a different custom value"},
+    metadata={"customKey": "your custom value"},
 )
 
 ```
@@ -672,7 +672,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.files.get(
     id="file_abcdefgh1234",
@@ -743,7 +743,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.files.delete(
     id="file_abcdefgh1234",
@@ -814,7 +814,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.files.update(
     id="file_abcdefgh1234",
@@ -902,7 +902,7 @@ client.files.update(
 <dl>
 <dd>
 
-Retrieves a paginated list of all media for the current project
+Retrieves a paginated list of all media for the current project.
 </dd>
 </dl>
 </dd>
@@ -921,7 +921,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.media.list()
 
@@ -998,7 +998,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.media.create(
     title="My Video Example",
@@ -1087,7 +1087,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.media.get(
     id="med_abcdefgh1234",
@@ -1158,7 +1158,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.media.delete(
     id="med_abcdefgh1234",
@@ -1229,7 +1229,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.media.update(
     id="med_abcdefgh1234",
@@ -1301,6 +1301,20 @@ client.media.update(
 <dl>
 <dd>
 
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieves a paginated list of all tasks for the current project.
+</dd>
+</dl>
+</dd>
+</dl>
+
 #### 🔌 Usage
 
 <dl>
@@ -1314,7 +1328,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.tasks.list()
 
@@ -1391,7 +1405,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.tasks.create(
     request={
@@ -1468,7 +1482,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.tasks.get(
     id="task_abcdefgh1234",
@@ -1539,7 +1553,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.tasks.get_task_config()
 
@@ -1601,7 +1615,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.signatures.create(
     filename="video.mp4",

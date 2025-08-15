@@ -29,7 +29,7 @@ class RawMediaClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[MediaListResponse]:
         """
-        Retrieves a paginated list of all media for the current project
+        Retrieves a paginated list of all media for the current project.
 
         Parameters
         ----------
@@ -271,7 +271,7 @@ class AsyncRawMediaClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[MediaListResponse]:
         """
-        Retrieves a paginated list of all media for the current project
+        Retrieves a paginated list of all media for the current project.
 
         Parameters
         ----------

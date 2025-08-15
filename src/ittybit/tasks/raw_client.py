@@ -28,6 +28,8 @@ class RawTasksClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[TaskListResponse]:
         """
+        Retrieves a paginated list of all tasks for the current project.
+
         Parameters
         ----------
         page : typing.Optional[int]
@@ -194,6 +196,8 @@ class AsyncRawTasksClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[TaskListResponse]:
         """
+        Retrieves a paginated list of all tasks for the current project.
+
         Parameters
         ----------
         page : typing.Optional[int]

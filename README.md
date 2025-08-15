@@ -24,7 +24,7 @@ from ittybit import Ittybit
 
 client = Ittybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 client.automations.create(
     name="My Example Automation",
@@ -50,7 +50,7 @@ from ittybit import AsyncIttybit
 
 client = AsyncIttybit(
     version="YOUR_VERSION",
-    token="YOUR_TOKEN",
+    api_key="YOUR_API_KEY",
 )
 
 

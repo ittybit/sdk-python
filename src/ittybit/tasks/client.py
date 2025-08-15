@@ -35,6 +35,8 @@ class TasksClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> TaskListResponse:
         """
+        Retrieves a paginated list of all tasks for the current project.
+
         Parameters
         ----------
         page : typing.Optional[int]
@@ -55,7 +57,7 @@ class TasksClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.tasks.list()
         """
@@ -86,7 +88,7 @@ class TasksClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.tasks.create(
             request={
@@ -123,7 +125,7 @@ class TasksClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.tasks.get(
             id="task_abcdefgh1234",
@@ -154,7 +156,7 @@ class TasksClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.tasks.get_task_config()
         """
@@ -185,6 +187,8 @@ class AsyncTasksClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> TaskListResponse:
         """
+        Retrieves a paginated list of all tasks for the current project.
+
         Parameters
         ----------
         page : typing.Optional[int]
@@ -207,7 +211,7 @@ class AsyncTasksClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 
@@ -246,7 +250,7 @@ class AsyncTasksClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 
@@ -291,7 +295,7 @@ class AsyncTasksClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 
@@ -330,7 +334,7 @@ class AsyncTasksClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 

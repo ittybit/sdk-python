@@ -41,7 +41,7 @@ class AutomationsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AutomationListResponse:
         """
-        Retrieves a paginated list of all automations for the current project
+        Retrieves a paginated list of all automations for the current project.
 
         Parameters
         ----------
@@ -63,7 +63,7 @@ class AutomationsClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.automations.list()
         """
@@ -109,7 +109,7 @@ class AutomationsClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.automations.create(
             name="My Example Automation",
@@ -155,7 +155,7 @@ class AutomationsClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.automations.get(
             id="auto_abcdefgh1234",
@@ -186,7 +186,7 @@ class AutomationsClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.automations.delete(
             id="auto_abcdefgh1234",
@@ -237,7 +237,7 @@ class AutomationsClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.automations.update(
             id="auto_abcdefgh1234",
@@ -286,7 +286,7 @@ class AsyncAutomationsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AutomationListResponse:
         """
-        Retrieves a paginated list of all automations for the current project
+        Retrieves a paginated list of all automations for the current project.
 
         Parameters
         ----------
@@ -310,7 +310,7 @@ class AsyncAutomationsClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 
@@ -364,7 +364,7 @@ class AsyncAutomationsClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 
@@ -421,7 +421,7 @@ class AsyncAutomationsClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 
@@ -460,7 +460,7 @@ class AsyncAutomationsClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 
@@ -519,7 +519,7 @@ class AsyncAutomationsClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 

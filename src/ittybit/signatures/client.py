@@ -63,7 +63,7 @@ class SignaturesClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.signatures.create(
             filename="video.mp4",
@@ -131,7 +131,7 @@ class AsyncSignaturesClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 

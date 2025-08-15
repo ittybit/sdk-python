@@ -36,7 +36,7 @@ class MediaClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> MediaListResponse:
         """
-        Retrieves a paginated list of all media for the current project
+        Retrieves a paginated list of all media for the current project.
 
         Parameters
         ----------
@@ -58,7 +58,7 @@ class MediaClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.media.list()
         """
@@ -98,7 +98,7 @@ class MediaClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.media.create(
             title="My Video Example",
@@ -131,7 +131,7 @@ class MediaClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.media.get(
             id="med_abcdefgh1234",
@@ -162,7 +162,7 @@ class MediaClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.media.delete(
             id="med_abcdefgh1234",
@@ -207,7 +207,7 @@ class MediaClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.media.update(
             id="med_abcdefgh1234",
@@ -245,7 +245,7 @@ class AsyncMediaClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> MediaListResponse:
         """
-        Retrieves a paginated list of all media for the current project
+        Retrieves a paginated list of all media for the current project.
 
         Parameters
         ----------
@@ -269,7 +269,7 @@ class AsyncMediaClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 
@@ -317,7 +317,7 @@ class AsyncMediaClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 
@@ -360,7 +360,7 @@ class AsyncMediaClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 
@@ -399,7 +399,7 @@ class AsyncMediaClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 
@@ -452,7 +452,7 @@ class AsyncMediaClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 

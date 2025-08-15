@@ -58,7 +58,7 @@ class FilesClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.files.list()
         """
@@ -107,13 +107,13 @@ class FilesClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.files.create(
             url="https://ittyb.it/sample.mp4",
             folder="ittybit/samples",
             filename="video.mp4",
-            metadata={"customKey2": "a different custom value"},
+            metadata={"customKey": "your custom value"},
         )
         """
         _response = self._raw_client.create(
@@ -149,7 +149,7 @@ class FilesClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.files.get(
             id="file_abcdefgh1234",
@@ -180,7 +180,7 @@ class FilesClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.files.delete(
             id="file_abcdefgh1234",
@@ -228,7 +228,7 @@ class FilesClient:
 
         client = Ittybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
         client.files.update(
             id="file_abcdefgh1234",
@@ -290,7 +290,7 @@ class AsyncFilesClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 
@@ -347,7 +347,7 @@ class AsyncFilesClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 
@@ -356,7 +356,7 @@ class AsyncFilesClient:
                 url="https://ittyb.it/sample.mp4",
                 folder="ittybit/samples",
                 filename="video.mp4",
-                metadata={"customKey2": "a different custom value"},
+                metadata={"customKey": "your custom value"},
             )
 
 
@@ -397,7 +397,7 @@ class AsyncFilesClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 
@@ -436,7 +436,7 @@ class AsyncFilesClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 
@@ -492,7 +492,7 @@ class AsyncFilesClient:
 
         client = AsyncIttybit(
             version="YOUR_VERSION",
-            token="YOUR_TOKEN",
+            api_key="YOUR_API_KEY",
         )
 
 

@@ -35,7 +35,7 @@ class RawAutomationsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> HttpResponse[AutomationListResponse]:
         """
-        Retrieves a paginated list of all automations for the current project
+        Retrieves a paginated list of all automations for the current project.
 
         Parameters
         ----------
@@ -303,7 +303,7 @@ class AsyncRawAutomationsClient:
         request_options: typing.Optional[RequestOptions] = None,
     ) -> AsyncHttpResponse[AutomationListResponse]:
         """
-        Retrieves a paginated list of all automations for the current project
+        Retrieves a paginated list of all automations for the current project.
 
         Parameters
         ----------
