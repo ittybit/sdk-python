@@ -4,9 +4,14 @@ import os
 import typing
 
 import httpx
+from .automations.client import AsyncAutomationsClient, AutomationsClient
 from .core.api_error import ApiError
 from .core.client_wrapper import AsyncClientWrapper, SyncClientWrapper
 from .environment import IttybitEnvironment
+from .files.client import AsyncFilesClient, FilesClient
+from .media.client import AsyncMediaClient, MediaClient
+from .signatures.client import AsyncSignaturesClient, SignaturesClient
+from .tasks.client import AsyncTasksClient, TasksClient
 
 
 class Ittybit:
@@ -82,6 +87,11 @@ class Ittybit:
             else httpx.Client(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
+        self.automations = AutomationsClient(client_wrapper=self._client_wrapper)
+        self.files = FilesClient(client_wrapper=self._client_wrapper)
+        self.media = MediaClient(client_wrapper=self._client_wrapper)
+        self.tasks = TasksClient(client_wrapper=self._client_wrapper)
+        self.signatures = SignaturesClient(client_wrapper=self._client_wrapper)
 
 
 class AsyncIttybit:
@@ -157,6 +167,11 @@ class AsyncIttybit:
             else httpx.AsyncClient(timeout=_defaulted_timeout),
             timeout=_defaulted_timeout,
         )
+        self.automations = AsyncAutomationsClient(client_wrapper=self._client_wrapper)
+        self.files = AsyncFilesClient(client_wrapper=self._client_wrapper)
+        self.media = AsyncMediaClient(client_wrapper=self._client_wrapper)
+        self.tasks = AsyncTasksClient(client_wrapper=self._client_wrapper)
+        self.signatures = AsyncSignaturesClient(client_wrapper=self._client_wrapper)
 
 
 def _get_base_url(*, base_url: typing.Optional[str] = None, environment: IttybitEnvironment) -> str:
